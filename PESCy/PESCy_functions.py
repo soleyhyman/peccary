@@ -170,8 +170,6 @@ def generateCurves(n=5):				# Creates a blank CH plane with maximum and minimum 
     
 def constructPatternCount(data,n=5,delay=1):#originally called PE_dist(), but added n output for new version
     '''
-    
-
     Parameters
     ----------
     data : 1-D array
@@ -238,19 +236,30 @@ def calcS_fromPatternCount(count,tot_perms,n):#originally called PE_calc_only(),
         Se += -q * np.log2(q)
     return S,Se
 
-def calcPESCcurves(data,n=5,max_delay=100):
-    '''
+def calcPESCcurves(data, n=5, min_delay=1, max_delay=100):
+    """
     function calcPESCcurves - Returns PE(tau) and SC(tau)
-    Input:
-        data  - array
-        n     - embedding dimension (default=5)
-        max_delay - largest embedding delays to loop through (default=100)
-    Output:
-        C(tau) - Normalized Jensen-Shannon complexity as function of embedding delay tau
-        H - Normalized Shannon Perumation Entropy as function of embedding delay tau
-    '''
+
+    Parameters
+    ----------
+    data : array
+        Timeseries data for PESCy
+    n : int, optional
+        Embedding dimension, by default 5
+    min_delay : int, optional
+        Smallest embedding delay to loop through, by default 1
+    max_delay : int, optional
+        Largest embedding delay to loop through, by default 100
+
+    Returns
+    -------
+    C(tau) : array
+        Normalized Jensen-Shannon complexity as function of embedding delay tau
+    H : array
+        Normalized Shannon Perumation Entropy as function of embedding delay tau
+    """
     nfac = factorial(n)
-    delay_array = np.arange(1,max_delay)
+    delay_array = np.arange(min_delay,max_delay)
     num_delays=len(delay_array)
     PEs=np.zeros([num_delays])
     SCs=np.zeros([num_delays])
