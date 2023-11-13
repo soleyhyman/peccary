@@ -104,7 +104,7 @@ class PESCy:
         """
         Ptot = self.t - delay*(self.n - 1) # Total number of order n permutations in T; Weck+2015 Eq.(1) denominator
         
-        patterns = np.array([self.T[i:i+(self.n-1)*delay+1:delay].argsort() for i in range(Ptot)]) # Get patterns based on n and delay (aka tau)
+        patterns = np.array([self.T[i:i+(self.n-1)*delay+1:delay].argsort(kind='stable') for i in range(Ptot)]) # Get patterns based on n and delay (aka tau)
         count = np.unique(patterns, axis=0, return_counts=True) # Count the number of unique ordinal patterns
         
         return count, Ptot
@@ -129,7 +129,7 @@ class PESCy:
         """
         Ptot = self.t - delay*(self.n - 1) # Total number of order n permutations in T; Weck+2015 Eq.(1) denominator
         
-        patterns = np.array([self.T[i:i+(self.n-1)*delay+1:delay].argsort() for i in range(Ptot)]) # Get patterns based on n and delay (aka tau)
+        patterns = np.array([self.T[i:i+(self.n-1)*delay+1:delay].argsort('stable') for i in range(Ptot)]) # Get patterns based on n and delay (aka tau)
         count = np.unique(patterns, axis=0, return_counts=True) # Count the number of unique ordinal patterns
         
         return count[0],count[1], Ptot
