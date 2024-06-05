@@ -20,17 +20,17 @@ class PESCy:
             Data must be a 1-D array
         """
         # Setting up data
-        self.T=np.array(data)
+        self.T=np.array(data) # data timeseries
         if len(self.T.shape)>1:
             raise TypeError( 'Data must be a 1-D array')
 
         # Precalculate constant values for later use
-        self.t = len(self.T)
-        self.n = n
-        self.N=factorial(n)
-        self.invN = 1./self.N
-        self.log2_N = np.log2(self.N)
-        self.log2_Np1 = np.log2(self.N+1.)
+        self.t = len(self.T) # length of timeseries
+        self.n = n # sampling size
+        self.N=factorial(n) # n!
+        self.invN = 1./self.N # 1/n!
+        self.log2_N = np.log2(self.N) # log_2(n!)
+        self.log2_Np1 = np.log2(self.N+1.) # log_2(n! + 1)
 
     def tPattern(self, dt, delay=1):
         """
@@ -129,7 +129,7 @@ class PESCy:
         """
         Ptot = self.t - delay*(self.n - 1) # Total number of order n permutations in T; Weck+2015 Eq.(1) denominator
         
-        patterns = np.array([self.T[i:i+(self.n-1)*delay+1:delay].argsort('stable') for i in range(Ptot)]) # Get patterns based on n and delay (aka tau)
+        patterns = np.array([self.T[i:i+(self.n-1)*delay+1:delay].argsort(kind='stable') for i in range(Ptot)]) # Get patterns based on n and delay (aka tau)
         count = np.unique(patterns, axis=0, return_counts=True) # Count the number of unique ordinal patterns
         
         return count[0],count[1], Ptot
@@ -244,7 +244,7 @@ class PESCy:
         Se = -1.*np.sum([P_Pe_sum_2*np.log2(P_Pe_sum_2) for P_Pe_sum_2 in 0.5*(probabilities+self.invN)]) + 0.5*(self.N-len(probabilities))*self.invN*(1+self.log2_N) # Disequilibrium between distribution and uniform distribution; Schaffner & Daniel (in prep), Eq.(8)
         return S,Se
 
-    def calcPESCcurves(self, min_delay=1, max_delay=100):
+    def calcPESCcurves(self, min_delay=1, max_delay=100, delayInt=1):
         """
         Returns PE(tau) and SC(tau) for specified range of tau values
 
@@ -258,6 +258,8 @@ class PESCy:
             Smallest embedding delay to loop through, by default 1
         max_delay : int, optional
             Largest embedding delay to loop through, by default 100
+        delayInt : int, optional
+            How many sampling interval values to skip over
 
         Returns
         -------
@@ -266,7 +268,7 @@ class PESCy:
         C(tau) : array
             Normalized Jensen-Shannon complexity as function of embedding delay tau
         """
-        delays = np.arange(min_delay,max_delay) # Make array of embed delay integers from min_delay to max_delay, increasing by 1
+        delays = np.arange(min_delay,max_delay,delayInt) # Make array of embed delay integers from min_delay to max_delay, increasing by 1
         Hvals, Cvals = np.array([self.calcCofH(delay=delays[i]) for i in range(len(delays))]).T # Get normalized permutation entropy and statisical complexity for each of the embed delays
         return Hvals, Cvals
     
