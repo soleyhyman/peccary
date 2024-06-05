@@ -2,7 +2,7 @@ import numpy as np
 from math import factorial
 import matplotlib.pylab as plt
 
-class PESCy:
+class peccary:
     def __init__(self, data, n=5):
         """
         Initialize PESCy class
@@ -272,10 +272,10 @@ class PESCy:
         Hvals, Cvals = np.array([self.calcCofH(delay=delays[i]) for i in range(len(delays))]).T # Get normalized permutation entropy and statisical complexity for each of the embed delays
         return Hvals, Cvals
     
-class CHplots:
+class HCplots:
     def __init__(self, nsteps, n=5):
         """
-        Initialize CHplots class
+        Initialize HCplots class
 
         Parameters
         ----------
@@ -292,21 +292,28 @@ class CHplots:
         self.log2_N = np.log2(self.N)
         self.log2_Np1 = np.log2(self.N+1.)
 
+    def HmaxPer(self): # eq. 6 in PESCy paper (updated)
+        Nper = 2.*(2.*(self.n-2.)+1.)
+        return np.log(Nper)/np.log(self.N)
+
+    def HminPer(self): # eq. 6 in PESCy paper (updated)
+        return np.log(2)/np.log(self.N)
+
     def Cmaxmin(self):	
         """
         Get maximum and minimum C(H) curves based on pattern length
-        for plotting on the CH plane
+        for plotting on the HC plane
 
         Returns
         -------
         Cminx
-            H values for minimum CH curve
+            H values for minimum HC curve
         Cminy
-            C values for minimum CH curve
+            C values for minimum HC curve
         Cmaxx
-            H values for maximum CH curve
+            H values for maximum HC curve
         Cmaxy
-            C values for maximum CH curve
+            C values for maximum HC curve
         """
         # Set up blank arrays for x- and y-values of max/min curves
         Cmaxx = np.zeros((self.N-1)*self.nsteps)
@@ -314,7 +321,7 @@ class CHplots:
         Cminx = np.zeros(self.nsteps)
         Cminy = np.zeros(self.nsteps)
         
-        # Calculate H and C values for minimum CH curve
+        # Calculate H and C values for minimum HC curve
         for i in np.arange(self.nsteps):
             pk = self.invN + i*(1.-(self.invN))/self.nsteps
             pj = (1. - pk)/(self.N - 1.)
@@ -326,7 +333,7 @@ class CHplots:
             Cminy[i] = -2. * (S/self.log2_N) * (Scom - 0.5*S - 0.5*self.log2_N)\
             /((1 + self.invN)*self.log2_Np1 - 2*np.log2(2.*self.N) + self.log2_N)	
             
-        # Calculate H and C values for maximum CH curve
+        # Calculate H and C values for maximum HC curve
         for i in np.arange(1,self.N):
             for l in np.arange(self.nsteps):
                 pk = l*(1./(self.N-i+1.))/self.nsteps
@@ -343,18 +350,56 @@ class CHplots:
                 Cmaxy[(i-1)*self.nsteps+l] = -2.*(S/self.log2_N)*(Scom - 0.5*S - 0.5*self.log2_N) \
                 /((1. + self.invN)*self.log2_Np1 - 2.*np.log2(2.*self.N) + self.log2_N)
                 
-        return Cminx, Cminy, Cmaxx, Cmaxy       
+        return Cminx, Cminy, Cmaxx, Cmaxy     
 
-    def generateCurves(self, ax, savePlot=False, savePath=''):
+    def getHC_boundary_lines(self, ax, lw=1., ls='--', color='k', alpha=0.5):
         """
-        Creates a blank CH plane with maximum and minimum curves for the given embedding dimension
+        Creates boundary lines on HC plane
 
         Parameters
         ----------
         ax : Matplotlib axis
-            Axis on which to plot empty CH curves
+            Axis on which to plot empty HC curves
+        lw : float, optional
+            Line width of boundary lines (must be float >0), by default 1.
+        ls : string, optional
+            Line style (Matplotlib linestyle string) of boundary lines, by default '--'
+        color : string, optional
+            Color of boundary lines (Matplotlib color string), by default 'k'
+        alpha : float, optional
+            Opacity of boundary lines (float between 0 and 1), by default 0.5
+        """
+        minH, minC, maxH, maxC = self.Cmaxmin() # H and C values for HC min/max curves
+        minHVal = self.HminPer() # Min. H value for periodic fnct
+        maxHVal = self.HmaxPer() # Max. H value for periodic fnct
+        argMinH_CminCurve = np.argmin(np.abs(minH-minHVal)) # Min. H value argument for H values for min HC curve
+        argMinH_CmaxCurve = np.argmin(np.abs(maxH-minHVal)) # Min. H value argument for H values for max HC curve
+        argMaxH_CminCurve = np.argmin(np.abs(minH-maxHVal)) # Max. H value argument for H values for min HC curve
+        argMaxH_CmaxCurve = np.argmin(np.abs(maxH-maxHVal)) # Max. H value argument for H values for max HC curve
+        ax.plot(np.array([minHVal,minHVal]), np.array([minC[argMinH_CminCurve], maxC[argMinH_CmaxCurve]]), lw=lw, ls=ls, color=color, alpha=alpha)
+        ax.plot(np.array([maxHVal,maxHVal]), np.array([minC[argMaxH_CminCurve], maxC[argMaxH_CmaxCurve]]), lw=lw, ls=ls, color=color, alpha=alpha)
+        ax.plot(np.array([minHVal,maxHVal]), np.array([maxC[argMinH_CmaxCurve], maxC[argMaxH_CmaxCurve]]), lw=lw, ls=ls, color=color, alpha=alpha)  
+
+    def generateCurves(self, ax, lw=1., ls='--', color='k', alpha=0.5, fontsize=12, showAxLabels=True, savePlot=False, savePath=''):
+        """
+        Creates a blank HC plane with maximum and minimum curves for the given embedding dimension
+
+        Parameters
+        ----------
+        ax : Matplotlib axis
+            Axis on which to plot empty HC curves
+        lw : float, optional
+            Line width of boundary lines (must be float >0), by default 1.
+        ls : string, optional
+            Line style (Matplotlib linestyle string) of boundary lines, by default '--'
+        color : string, optional
+            Color of boundary lines (Matplotlib color string), by default 'k'
+        alpha : float, optional
+            Opacity of boundary lines (float between 0 and 1), by default 0.5
+        fonstize : integer or float, optional
+            Fontsize of axis labels, by default 12
         savePlot : bool, optional
-            Saves CH plot if set to True, by default False
+            Saves HC plot if set to True, by default False
         savePath : str, optional
             Path to save plot if savePlot set to True, by default ''
             Note: Use only forward slashes in savePath
@@ -362,15 +407,19 @@ class CHplots:
         Cminx, Cminy, Cmaxx, Cmaxy = self.Cmaxmin()
 
         ax.plot(Cminx,Cminy,'k-',Cmaxx,Cmaxy,'k-')
-        ax.set_xlabel(r"Normalized Permutation Entropy, $H$", fontsize=12)
-        ax.set_ylabel(r"Statistical Complexity, $C$", fontsize=12)
+        self.getHC_boundary_lines(ax, lw=lw, ls=ls, color=color, alpha=alpha)
+        if showAxLabels == True:
+            ax.set_xlabel(r"Normalized Permutation Entropy, $H$", fontsize=fontsize)
+            ax.set_ylabel(r"Statistical Complexity, $C$", fontsize=fontsize)
+        else:
+            pass
         
         if savePlot==True:
             ax.set(xlim=(0,1.0), ylim=(0,0.45))
             ax.set_xticks(np.arange(0,1.1,0.1))
             ax.set_yticks(np.arange(0,0.45,0.05))
             if savePath.endswith('/'):
-                savefile=savePath + 'CHn5_blank'
+                savefile=savePath + 'HCn5_blank'
             else:
-                savefile=savePath + '/CHn5_blank'
+                savefile=savePath + '/HCn5_blank'
             plt.savefig(savefile+'.png')
