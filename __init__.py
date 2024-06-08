@@ -1,11 +1,11 @@
-# This file is part of the PESCy technique package
+# This file is part of the peccary technique package
 #
 
-__all__ = ["PESCy"]
+__all__ = ["peccary"]
 
 import pkg_resources
 
-#from PESCy import PESCy
+#from peccary import peccary
 
 # --- Define version -----------------------------------------------------------
 try:
@@ -14,12 +14,12 @@ try:
     # note: if there's any distribution metadata in your source files, then this
     #       will find a version based on those files.  Keep distribution metadata
     #       out of your repository unless you've intentionally installed the package
-    #       as editable (e.g. `pip install -e {PESCy_directory_root}`),
+    #       as editable (e.g. `pip install -e {peccary_directory_root}`),
     #       but then __version__ will not be updated with each commit, it is
     #       frozen to the version at time of install.
     #
-    #: `PESCy` version string
-    __version__ = pkg_resources.get_distribution("PESCy").version
+    #: `peccary` version string
+    __version__ = pkg_resources.get_distribution("peccary").version
 except pkg_resources.DistributionNotFound:
     # package is not installed
     fallback_version = "unknown"
@@ -42,7 +42,7 @@ except pkg_resources.DistributionNotFound:
         from warnings import warn
 
         warn(
-            f"PESCy.__version__ not generated (set to 'unknown'), PESCy is "
+            f"peccary.__version__ not generated (set to 'unknown'), peccary is "
             f"not an installed package and {warn_add}.",
             RuntimeWarning,
         )
