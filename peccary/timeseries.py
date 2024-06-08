@@ -1,92 +1,184 @@
 
-"""Timeseries functions for testing PECCARY"""
-__all__ = [
-    "lorenz",
-    "lorenz_mod",
-    "generateLorenz"
-]
+# """Timeseries functions for testing PECCARY"""
+# __all__ = [
+#     "lorenz",
+#     "lorenz_mod",
+#     "generateLorenz"
+# ]
 
 import numpy as np
 
-def lorenz(x, y, z, s=10, r=20, b=2.667):
+def generateHenon(n, a=1.4, b=0.3):
     """
-    Given:
-       x, y, z: a point of interest in three dimensional space
-       s, r, b: parameters defining the lorenz attractor
-    Returns:
-       x_dot, y_dot, z_dot: values of the lorenz attractor's partial
-           derivatives at the point x, y, z
-    """
-    x_dot = s*(y - x)
-    y_dot = r*x - y - x*z
-    z_dot = x*y - b*z
-    return x_dot, y_dot, z_dot
-
-def lorenz_mod(x, y, z, s=10, r=28, b=2.667):
-    """
-    Given:
-       x, y, z: a point of interest in three dimensional space
-       s, r, b: parameters defining the lorenz attractor
-    Returns:
-       x_dot, y_dot, z_dot: values of the lorenz attractor's partial
-           derivatives at the point x, y, z
-    """
-    x_dot = s*(y - x)
-    y_dot = 2.3*r*x - y - x*z
-    z_dot = x*y - b*z
-    return x_dot, y_dot, z_dot
-
-def generateLorenz(dt=0.01,num_steps=10000,s=10,r=20,b=2.667):
-    # Need one more for the initial values
-    xs = np.empty(num_steps + 1)
-    ys = np.empty(num_steps + 1)
-    zs = np.empty(num_steps + 1)
+    Generate timeseries from Hénon map. 
     
-    # Set initial values
-    xs[0], ys[0], zs[0] = (0., 1., 1.05)
-    
-    # Step through "time", calculating the partial derivatives at the current point
-    # and using them to estimate the next point
-    for i in range(num_steps):
-        x_dot, y_dot, z_dot = lorenz(xs[i], ys[i], zs[i])
-        xs[i + 1] = xs[i] + (x_dot * dt)
-        ys[i + 1] = ys[i] + (y_dot * dt)
-        zs[i + 1] = zs[i] + (z_dot * dt)
-        
-    return xs,ys,zs
+    Default parameters are for the classical Hénon map, 
+    where values are chaotic.
 
-def generateHenon(N):
+    Parameters
+    ----------
+    n : int
+        Number of timesteps to generate
+    a : float, optional
+        Parameter for Hénon map, by default 1.4
+    b : float, optional
+        Parameter for Hénon map, by default 0.3
 
-    X = np.zeros((2,N))
+    Returns
+    -------
+    ndarray
+        1D array (length n) of timeseries for Hénon map
+    """
+    X = np.zeros((2,n))
     X[0,0] = 1.
     X[1,0] = 1.
-    a = 1.4
-    b = 0.3
-    for i in range(1,N):
+    for i in range(1,n):
         X[0,i] = 1. - a * X[0,i-1] ** 2. + X[1,i-1]
         X[1,i] = b * X[0,i-1]
     return X[0,:]
 
-def generateTent(N):
-    w=0.1847
-    X = np.zeros([N])
+def generateTent(n, mu=2.):
+    """
+    Generate timeseries from tent map with parameter mu
+
+    Parameters
+    ----------
+    n : int
+        Number of timesteps to generate
+    mu : float, optional
+        Parameter for changing the map, by default 2.
+
+    Returns
+    -------
+    ndarray
+        1D array (length n) of timeseries for tent map
+    """
+    X = np.zeros([n])
     X[0] = 0.1
 
-    for i in range(1,N):
-        if X[i-1] < w:
-            X[i] = X[i-1]/w
+    for i in range(1,n):
+        if X[i-1] < mu:
+            X[i] = mu*X[i-1]
         else:
-            X[i] = (1 - X[i-1])/(1 - w)
+            X[i] = mu*(1 - X[i-1])
     return X
-	#address = '/Users/peterweck/Documents/extimeseries/tent'+str(N)+'.npz'
-	#np.savez_compressed(address, x=X)
 
-def generateLogisticMap(N,r=4.):
-	
-    X = np.zeros([N])
+def generateAsymmTent(n, a=0.1847):
+    """
+    Generate timeseries from asymmetric tent map with parameter a
+
+    Parameters
+    ----------
+    n : int
+        Number of timesteps to generate
+    a : float, optional
+        Parameter for changing the map, by default 0.1847
+
+    Returns
+    -------
+    ndarray
+        1D array (length n) of timeseries for asymmetric tent map
+    """
+    X = np.zeros([n])
     X[0] = 0.1
-    for i in range(1,N):
+
+    for i in range(1,n):
+        if X[i-1] < a:
+            X[i] = X[i-1]/a
+        else:
+            X[i] = (1 - X[i-1])/(1 - a)
+    return X
+
+def generateLogisticMap(n, r=4.):
+    """
+    Generate timeseries from logistic map with growth rate parameter r
+
+    Parameters
+    ----------
+    n : int
+        Number of timesteps to generate
+    r : float, optional
+        Growth rate parameter, by default 4.
+
+    Returns
+    -------
+    ndarray
+        1D array (length n) of timeseries for logisitic map with parameter r
+    """
+    X = np.zeros([n])
+    X[0] = 0.1
+    for i in range(1,n):
         X[i] = r * X[i-1] * (1 - X[i-1])
     return X
-	#address = '/Users/peterweck/Documents/extimeseries/logis'+str(N)+'.npz'
-	#np.savez_compressed(address, x=X)
+
+class lorenz:
+    def __init__(self, s=10, r=20, b=2.667):
+        """
+        Initialize Lorenz Strange Attractor class.
+
+        Parameters
+        ----------
+        s : int, optional
+            Sigma parameter, by default 10
+        r : int, optional
+            Rho parameter, by default 20
+        b : float, optional
+            Beta parameter, by default 2.667
+
+        Notes
+        -----
+        Modified from `Matplotlib tutorial<https://matplotlib.org/stable/gallery/mplot3d/lorenz_attractor.html>`_
+
+        """
+        self.s = s
+        self.r = r
+        self.b = b
+
+    def getPartials(self, xyz):
+        """
+        Get partial derivatives for initialized Lorenz system
+
+        Parameters
+        ----------
+        xyz : ndarray,
+            3D array containing points of interest in three-dimensional space
+
+        Returns
+        -------
+        ndarray
+            3D array containing partial derivatives at xyz
+        """
+        x, y, z = xyz
+        x_dot = self.s*(y - x)
+        y_dot = self.r*x - y - x*z
+        z_dot = x*y - self.b*z
+        return np.array([x_dot, y_dot, z_dot])
+    
+    def generate(self, dt=0.01, nsteps=10000):
+        """
+        Generate x/y/z timeseries for Lorenz strange attractor
+
+        Parameters
+        ----------
+        dt : float, optional
+            Timestep resolution, by default 0.01
+        nsteps : int, optional
+            Number of timesteps to integrate, by default 10000
+
+        Returns
+        -------
+        lorenzX: ndarray
+            x-coordinate timeseries for Lorenz system
+        lorenzY: ndarray
+            y-coordinate timeseries for Lorenz system
+        lorenzZ: ndarray
+            z-coordinate timeseries for Lorenz system
+        """
+        xyzs = np.empty((nsteps + 1, 3))  # Need one more for the initial values
+        xyzs[0] = (0., 1., 1.05)  # Set initial values
+        # Step through "time", calculating the partial derivatives at the current point
+        # and using them to estimate the next point
+        for i in range(nsteps):
+            xyzs[i + 1] = xyzs[i] + self.getPartials(xyzs[i]) * dt
+
+        return xyzs.T[0], xyzs.T[1], xyzs.T[2]
