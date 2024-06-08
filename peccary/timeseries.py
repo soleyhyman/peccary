@@ -1,5 +1,5 @@
 
-"""Timeseries functions for testing PESCy"""
+"""Timeseries functions for testing PECCARY"""
 __all__ = [
     "lorenz",
     "lorenz_mod",
