@@ -1,3 +1,12 @@
+"""
+Within the ``peccary`` module, there are two main classes.
+The first class, ``peccary``, is the core of the packagke and does
+all of the Permutation Entropy and Statistical Complexity calculations.
+The second class, ``HCplots``, is used for plotting the HC plane and
+for creating the bases of other plot formats that can be useful for
+diagnostics, interpretation, and analysis with PECCARY.
+"""
+
 import numpy as np
 from math import factorial
 import matplotlib.pylab as plt
