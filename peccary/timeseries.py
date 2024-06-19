@@ -7,8 +7,11 @@ different functions and physical systems used for testing PECCARY
 
 import numpy as np
 from scipy.integrate import solve_ivp
+import scipy.fft as sfft
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+
+__all__ = ["generateHenon", "generateTent", "generateAsymmTent", "generateLogisticMap", "lorenz", "doublePendulum", "noiseColors"]
 
 def generateHenon(n, a=1.4, b=0.3):
     """
@@ -359,3 +362,114 @@ class doublePendulum:
         
         ani = FuncAnimation(fig, self.animateFrame, len(self.y2), interval=self.dt*1000, blit=True)
         plt.show()
+
+class noiseColors:
+    def __init__(self, N):
+        """
+        Initialize noiseColors class to generate noisy timeseries
+        with different power spectra.
+
+        Parameters
+        ----------
+        N : int
+            Number of data points to generate
+        """
+        self.N = int(N)
+        self.whiteNoiseDat = np.random.random(self.N)
+        self.whiteFTT = sfft.rfft(self.whiteNoiseDat)
+        self.whiteFreq = sfft.rfftfreq(self.N)
+        self.nonzeroFreq = np.where(self.whiteFreq == 0, np.inf, self.whiteFreq)
+        
+    def whiteNoise(self):
+        """
+        Generate white noise (flat frequency power spectrum)
+
+        Returns
+        -------
+        ndarray
+            1D array of length N containing white noise
+        """
+        freqs = np.power(self.whiteFreq,0.)
+        freqs = freqs/np.sqrt(np.mean(freqs**2))
+        noiseSpec = self.whiteFTT*freqs
+        return sfft.irfft(noiseSpec)
+      
+    def blueNoise(self):
+        """
+        Generate blue noise (density :math:`\propto f`)
+
+        Returns
+        -------
+        ndarray
+            1D array of length N containing blue noise
+        """
+        freqs = np.power(self.whiteFreq,0.5)
+        freqs = freqs/np.sqrt(np.mean(freqs**2))
+        noiseSpec = self.whiteFTT*freqs
+        return sfft.irfft(noiseSpec)
+    
+    def violetNoise(self):
+        """
+        Generate violet noise (density :math:`\propto f^2`)
+
+        Returns
+        -------
+        ndarray
+            1D array of length N containing violet noise
+        """
+        freqs = np.power(self.whiteFreq,1.)
+        freqs = freqs/np.sqrt(np.mean(freqs**2))
+        noiseSpec = self.whiteFTT*freqs
+        return sfft.irfft(noiseSpec)
+    
+    def brownianNoise(self):
+        """
+        Generate Brownian noise (density :math:`\propto 1/f^2`)
+
+        Returns
+        -------
+        ndarray
+            1D array of length N containing Brownian/red noise
+        """
+        freqs = np.power(self.nonzeroFreq,-1.)
+        freqs = freqs/np.sqrt(np.mean(freqs**2))
+        noiseSpec = self.whiteFTT*freqs
+        return sfft.irfft(noiseSpec)
+    
+    def redNoise(self):
+        """
+        Generate red noise (density :math:`\propto 1/f^2`).
+        This is an alias of the Brownian noise function
+
+        Returns
+        -------
+        ndarray
+            1D array of length N containing red/Brownian noise
+        """
+        return self.brownianNoise()
+    
+    def pinkNoise(self):
+        """
+        Generate pink noise (density :math:`\propto 1/f`)
+
+        Returns
+        -------
+        ndarray
+            1D array of length N containing pink noise
+        """
+        freqs = np.power(self.nonzeroFreq,-0.5)
+        freqs = freqs/np.sqrt(np.mean(freqs**2))
+        noiseSpec = self.whiteFTT*freqs
+        return sfft.irfft(noiseSpec)
+    
+    def getNoiseTypes(self):
+        """
+        Generate all noise types
+
+        Returns
+        -------
+        list
+            List containing generated white, blue, violet, 
+            Brownian/red, and pink noise timeseries
+        """
+        return [self.whiteNoise(), self.blueNoise(), self.violetNoise(), self.brownianNoise(), self.pinkNoise()]
