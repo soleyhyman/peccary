@@ -10,15 +10,17 @@ import numpy as np
 from math import factorial
 import matplotlib.pylab as plt
 
+__all__ = ["HCplots"]
+
 class HCplots:
-    def __init__(self, nsteps, n=5):
+    def __init__(self, nsteps=1000, n=5):
         """
         Initialize HCplots class
 
         Parameters
         ----------
         nsteps : int
-            Number of timesteps
+            Number of timesteps, by default 1000
         n : int, optional
             Embedding dimension/pattern length, by default 5
         """
