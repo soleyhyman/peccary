@@ -1,4 +1,6 @@
 """
+Test functions for PECCARY method.
+
 The functions and classes in the ``timeseries`` module consist of
 different functions and physical systems used for testing PECCARY
 """
@@ -127,7 +129,7 @@ class lorenz:
 
         Notes
         -----
-        Modified from `Matplotlib tutorial<https://matplotlib.org/stable/gallery/mplot3d/lorenz_attractor.html>`_
+        Modified from `Matplotlib tutorial <https://matplotlib.org/stable/gallery/mplot3d/lorenz_attractor.html>`_
 
         """
         self.s = s
@@ -184,19 +186,19 @@ class lorenz:
         return xyzs.T[0], xyzs.T[1], xyzs.T[2]
     
 class doublePendulum:
-    def __init__(self, t_stop=2.5, dt=np.power(2.,-6.), L1=1.0, L2=1.0, M1=1.0, M2=1.0):
+    def __init__(self, tf=2.5, dt=np.power(2.,-6.), L1=1.0, L2=1.0, M1=1.0, M2=1.0):
         """
         Initialize double pendulum function
 
         Notes
         -----
-        Code based on a `Matplotlib tutorial<https://matplotlib.org/stable/gallery/animation/double_pendulum.html>`_
+        Code based on a `Matplotlib tutorial <https://matplotlib.org/stable/gallery/animation/double_pendulum.html>`_
         and translated into a Python class by Sóley Hyman.
-        The formulae in that tutorial turn were translated from the C code by `Michael S. Wheatland<http://www.physics.usyd.edu.au/~wheat/dpend_html/solve_dpend.c>`_
+        The formulae in that tutorial turn were translated from the C code by `Michael S. Wheatland <http://www.physics.usyd.edu.au/~wheat/dpend_html/solve_dpend.c>`_
 
         Parameters
         ----------
-        t_stop : float, optional
+        tf : float, optional
             How many seconds to simulate, by default 2.5
         dt : float, optional
             Time resolution in seconds, by default 0.015625
@@ -209,7 +211,7 @@ class doublePendulum:
         M2 : float, optional
             Mass of pendulum 2 in kg, by default 1.0
         """
-        self.t_stop = t_stop
+        self.tf = tf
         self.dt = dt
         self.L1 = L1
         self.L2 = L2
@@ -218,8 +220,8 @@ class doublePendulum:
         self.M2 = M2
         self.g = 9.80665 # m/s^2
 
-        # create a time array from 0 to t_stop, sampled at intervals of dt
-        self.t = np.arange(0, self.t_stop, self.dt)
+        # create a time array from 0 to tf, sampled at intervals of dt
+        self.t = np.arange(0, self.tf, self.dt)
 
     def derivs(self, t, state):
         """
@@ -260,7 +262,7 @@ class doublePendulum:
 
         return dydx
     
-    def integrateSim(self, th1=120.0, w1=0.0, th2=-10.0, w2=0.0):
+    def integrate(self, th1=120.0, w1=0.0, th2=-10.0, w2=0.0):
         """
         Integrate double pendulum system
 
