@@ -1,4 +1,6 @@
 """
+PECCARY method and plotting.
+
 Within the ``peccary`` module, there are two main classes.
 The first class, ``peccary``, is the core of the packagke and does
 all of the Permutation Entropy and Statistical Complexity calculations.
@@ -14,12 +16,12 @@ import matplotlib.pylab as plt
 class peccary:
     def __init__(self, data, n=5):
         """
-        Initialize PESCy class
+        Initialize PECCARY class
 
         Parameters
         ----------
         data : 1-D array
-            Timeseries data for PESCy 
+            Timeseries data for PECCARY 
         n : int, optional
             Embedding dimension, by default 5
 
@@ -43,7 +45,7 @@ class peccary:
 
     def tPattern(self, dt, delay=1):
         """
-        Calculates pattern time of in PESCy routine, based on 
+        Calculates pattern time of in PECCARY routine, based on 
         embedding dimension and embed delay
 
         Parameters
@@ -62,7 +64,7 @@ class peccary:
     
     def tau_from_tPattern(self, dt, tPattern):
         """
-        Calculates the embed delay in PESCy routine based 
+        Calculates the embed delay in PECCARY routine based 
         on the pattern time and embedding dimension
 
         Parameters
@@ -260,7 +262,7 @@ class peccary:
         Parameters
         ----------
         data : array
-            Timeseries data for PESCy
+            Timeseries data for PECCARY
         n : int, optional
             Embedding dimension, by default 5
         min_delay : int, optional
@@ -301,11 +303,33 @@ class HCplots:
         self.log2_N = np.log2(self.N)
         self.log2_Np1 = np.log2(self.N+1.)
 
-    def HmaxPer(self): # eq. 6 in PESCy paper (updated)
+    def HmaxPer(self): 
+        """
+        Calculate maximum Permutation Entropy value (H) for a
+        periodic function given the specified sampling size n.
+        
+        Equation: [insert equation here]
+
+        Returns
+        -------
+        float
+            Maximum Permuation Entropy for periodic function
+        """
         Nper = 2.*(2.*(self.n-2.)+1.)
         return np.log(Nper)/np.log(self.N)
 
-    def HminPer(self): # eq. 6 in PESCy paper (updated)
+    def HminPer(self):
+        """
+        Calculate minimum Permutation Entropy value (H) for a
+        periodic function given the specified sampling size n.
+        
+        Equation: [insert equation here]
+
+        Returns
+        -------
+        float
+            Minimum Permuation Entropy for periodic function
+        """
         return np.log(2)/np.log(self.N)
 
     def Cmaxmin(self):	
@@ -389,7 +413,7 @@ class HCplots:
         ax.plot(np.array([maxHVal,maxHVal]), np.array([minC[argMaxH_CminCurve], maxC[argMaxH_CmaxCurve]]), lw=lw, ls=ls, color=color, alpha=alpha)
         ax.plot(np.array([minHVal,maxHVal]), np.array([maxC[argMinH_CmaxCurve], maxC[argMaxH_CmaxCurve]]), lw=lw, ls=ls, color=color, alpha=alpha)  
 
-    def generateCurves(self, ax, lw=1., ls='--', color='k', alpha=0.5, fontsize=12, showAxLabels=True, savePlot=False, savePath=''):
+    def generateCurves(self, ax, lw=1., ls='--', color='k', alpha=0.5, fontsize=12, showAxLabels=True, showBoundaryLines=True, savePlot=False, savePath=''):
         """
         Creates a blank HC plane with maximum and minimum curves for the given embedding dimension
 
@@ -407,6 +431,10 @@ class HCplots:
             Opacity of boundary lines (float between 0 and 1), by default 0.5
         fonstize : integer or float, optional
             Fontsize of axis labels, by default 12
+        showAxLabels : bool, optional
+            Show pre-defined axis labels, by default True
+        showBoundaryLines : bool, optional
+            Show HC plane boundary lines, by default True
         savePlot : bool, optional
             Saves HC plot if set to True, by default False
         savePath : str, optional
@@ -416,7 +444,12 @@ class HCplots:
         Cminx, Cminy, Cmaxx, Cmaxy = self.Cmaxmin()
 
         ax.plot(Cminx,Cminy,'k-',Cmaxx,Cmaxy,'k-')
-        self.getHC_boundary_lines(ax, lw=lw, ls=ls, color=color, alpha=alpha)
+
+        if showBoundaryLines == True:
+            self.getHC_boundary_lines(ax, lw=lw, ls=ls, color=color, alpha=alpha)
+        else:
+            pass
+
         if showAxLabels == True:
             ax.set_xlabel(r"Normalized Permutation Entropy, $H$", fontsize=fontsize)
             ax.set_ylabel(r"Statistical Complexity, $C$", fontsize=fontsize)
