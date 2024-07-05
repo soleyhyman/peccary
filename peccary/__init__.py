@@ -1,5 +1,5 @@
 #
-# This file is part of the PESCy technique package
+# This file is part of the PECCARY technique package
 #
 #
 #
@@ -8,6 +8,8 @@
 """
 The PECCARY package
 """
-__all__ = ["peccary","timeseries"]
+__all__ = ["peccary","HCplots","timeseries"]
 
-from peccary import peccary,timeseries
+from peccary import *
+from HCplots import *
+from timeseries import *
