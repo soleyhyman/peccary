@@ -114,6 +114,10 @@ class HCplots:
                 
         return Cminx, Cminy, Cmaxx, Cmaxy     
 
+    def getMaxC(self):
+        Cminx, Cminy, Cmaxx, Cmaxy = self.Cmaxmin()
+        return np.max(Cmaxy)
+
     def getHC_boundary_lines(self, ax, lw=1., ls='--', color='k', alpha=0.5):
         """
         Creates boundary lines on HC plane
