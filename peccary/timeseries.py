@@ -117,27 +117,47 @@ def generateLogisticMap(n, r=4.):
     return X
 
 class lorenz:
-    def __init__(self, s=10, r=20, b=2.667):
+    def __init__(self, dt=0.01, nsteps=10000, tDur=None, t0=0., s=10, r=20, b=2.667, initialVals=(0.,1.,1.05)):
         """
         Initialize Lorenz Strange Attractor class.
 
         Parameters
         ----------
+        dt : float, optional
+            Timestep resolution, by default 0.01
+        nsteps : int, optional
+            Number of timesteps to integrate, by default 10000
+        tDur : float, optional
+            Duration of time to integrate over, supersedes nsteps,
+            by default None
+        t0 : float, optional
+            Initial time value, only used if tDur is not None,
+            by default 0.
         s : int, optional
             Sigma parameter, by default 10
         r : int, optional
             Rho parameter, by default 20
         b : float, optional
             Beta parameter, by default 2.667
+        initialVals: 3-tuple or similar three-element array
+            Initial values for system, by default (0.,1.,1.05)
 
         Notes
         -----
         Modified from `Matplotlib tutorial <https://matplotlib.org/stable/gallery/mplot3d/lorenz_attractor.html>`_
 
         """
+        self.dt = dt
+        self.nsteps = nsteps 
+        self.tDur = tDur
+        self.t0 = t0
         self.s = s
         self.r = r
         self.b = b
+        self.initialVals = initialVals
+
+        self.xyzSim = self.generate()
+        self.x, self.y, self.z = self.xyzSim
 
     def getPartials(self, xyz):
         """
@@ -159,16 +179,9 @@ class lorenz:
         z_dot = x*y - self.b*z
         return np.array([x_dot, y_dot, z_dot])
     
-    def generate(self, dt=0.01, nsteps=10000):
+    def generate(self):
         """
         Generate x/y/z timeseries for Lorenz strange attractor
-
-        Parameters
-        ----------
-        dt : float, optional
-            Timestep resolution, by default 0.01
-        nsteps : int, optional
-            Number of timesteps to integrate, by default 10000
 
         Returns
         -------
@@ -179,17 +192,22 @@ class lorenz:
         lorenzZ: ndarray
             z-coordinate timeseries for Lorenz system
         """
-        xyzs = np.empty((nsteps + 1, 3))  # Need one more for the initial values
-        xyzs[0] = (0., 1., 1.05)  # Set initial values
+        if type(self.tDur) != type(None):
+            self.t = np.arange(self.t0,self.tDur+self.dt,self.dt)
+            self.nsteps = len(self.t[:-1])
+        else:
+            pass
+        xyzs = np.empty((self.nsteps + 1, 3))  # Need one more for the initial values
+        xyzs[0] = self.initialVals  # Set initial values
         # Step through "time", calculating the partial derivatives at the current point
         # and using them to estimate the next point
-        for i in range(nsteps):
-            xyzs[i + 1] = xyzs[i] + self.getPartials(xyzs[i]) * dt
+        for i in range(self.nsteps):
+            xyzs[i + 1] = xyzs[i] + self.getPartials(xyzs[i]) * self.dt
 
         return xyzs.T[0], xyzs.T[1], xyzs.T[2]
     
 class doublePendulum:
-    def __init__(self, tf=2.5, dt=np.power(2.,-6.), L1=1.0, L2=1.0, M1=1.0, M2=1.0):
+    def __init__(self, tf=2.5, dt=np.power(2.,-6.), L1=1.0, L2=1.0, M1=1.0, M2=1.0, th1=120.0, w1=0.0, th2=-10.0, w2=0.0):
         """
         Initialize double pendulum function
 
@@ -213,6 +231,14 @@ class doublePendulum:
             Mass of pendulum 1 in kg, by default 1.0
         M2 : float, optional
             Mass of pendulum 2 in kg, by default 1.0
+        th1 : float, optional
+            Initial angle of mass 1 in degrees, by default 120.0*u.deg
+        w1 : float, optional
+            Initial angular velocity of mass 1 in degrees/second, by default 0.0
+        th2 : float, optional
+            Initial angle of mass 2 in degrees, by default -10.0*u.deg
+        w2 : float, optional
+            Initial angular velocity of mass 2 in degrees/second, by default 0.0
         """
         self.tf = tf
         self.dt = dt
@@ -221,10 +247,16 @@ class doublePendulum:
         self.L = L1 + L2
         self.M1 = M1
         self.M2 = M2
+        self.th1 = th1
+        self.w1 = w1
+        self.th2 = th2
+        self.w2 = w2
         self.g = 9.80665 # m/s^2
 
         # create a time array from 0 to tf, sampled at intervals of dt
         self.t = np.arange(0, self.tf, self.dt)
+        self.simPos = self.integrate()
+        self.x1, self.y1, self.x2, self.y2 = self.simPos
 
     def derivs(self, t, state):
         """
@@ -265,31 +297,33 @@ class doublePendulum:
 
         return dydx
     
-    def integrate(self, th1=120.0, w1=0.0, th2=-10.0, w2=0.0):
+    def integrate(self):
         """
         Integrate double pendulum system
 
-        Parameters
-        ----------
-        th1 : float, optional
-            Initial angle of mass 1 in degrees, by default 120.0*u.deg
-        w1 : float, optional
-            Initial angular velocity of mass 1 in degrees/second, by default 0.0
-        th2 : float, optional
-            Initial angle of mass 2 in degrees, by default -10.0*u.deg
-        w2 : float, optional
-            Initial angular velocity of mass 2 in degrees/second, by default 0.0
+        Returns
+        -------
+        ndarray
+            Timeseries of x-coordinates for mass 1
+        ndarray
+            Timeseries of y-coordinates for mass 1
+        ndarray
+            Timeseries of x-coordinates for mass 2
+        ndarray
+            Timeseries of y-coordinates for mass 2
         """
         # initial state
-        state = np.radians([th1, w1, th2, w2])
+        state = np.radians([self.th1, self.w1, self.th2, self.w2])
 
         y = solve_ivp(self.derivs, self.t[[0, -1]], state, t_eval=self.t).y.T
 
-        self.x1 = self.L1*np.sin(y[:, 0])
-        self.y1 = -self.L1*np.cos(y[:, 0])
+        x1 = self.L1*np.sin(y[:, 0])
+        y1 = -self.L1*np.cos(y[:, 0])
 
-        self.x2 = self.L2*np.sin(y[:, 2]) + self.x1
-        self.y2 = -self.L2*np.cos(y[:, 2]) + self.y1
+        x2 = self.L2*np.sin(y[:, 2]) + x1
+        y2 = -self.L2*np.cos(y[:, 2]) + y1
+
+        return x1, y1, x2, y2
 
     def plotStatic(self):
         """
