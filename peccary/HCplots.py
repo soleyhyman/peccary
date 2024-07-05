@@ -20,9 +20,26 @@ class HCplots:
         Parameters
         ----------
         nsteps : int
-            Number of timesteps, by default 1000
+            Number of steps to use for generating HC bounding curves,
+            by default 1000
         n : int, optional
             Embedding dimension/pattern length, by default 5
+
+        Attributes
+        ----------
+        nsteps : int
+            Number of steps used in generating HC bounding curves
+        n : int
+            Sampling size
+        N : int
+            Total number of possible ordinal pattern permutations (:math:`n!`)
+        invN : float
+            Probability of all ordinal patterns for uniform distribution (:math:`1/n!`)
+        log2_N : float
+            Calculated value of :math:`\log_2 (n!)`
+        log2_Np1 : float
+            Calculated value of :math:`\log_2 (n! + 1)`
+
         """
         # Precalculate constant values for later use
         self.nsteps = nsteps
@@ -115,6 +132,15 @@ class HCplots:
         return Cminx, Cminy, Cmaxx, Cmaxy     
 
     def getMaxC(self):
+        """
+        Get maximum possible Statistical Complexity value
+        from HC bounding curves for sampling size n
+
+        Returns
+        -------
+        float
+            Maximum possible C value for given n
+        """
         Cminx, Cminy, Cmaxx, Cmaxy = self.Cmaxmin()
         return np.max(Cmaxy)
 

@@ -1,5 +1,5 @@
 """
-PECCARY method and plotting.
+PECCARY method.
 
 The class ``peccary`` is the core of the packagke and does
 all of the Permutation Entropy and Statistical Complexity calculations.
@@ -63,6 +63,23 @@ class peccary:
         n : int, optional
             Embedding dimension, by default 5
 
+        Attributes
+        ----------
+        T : 1-D array
+            Data timeseries
+        t : int
+            Length (number of timesteps of timeseries)
+        n : int
+            Sampling size
+        N : int
+            Total number of possible ordinal pattern permutations (:math:`n!`)
+        invN : float
+            Probability of all ordinal patterns for unifor distribution (:math:`1/n!`)
+        log2_N : float
+            Calculated value of :math:`\log_2 (n!)`
+        log2_Np1 : float
+            Calculated value of :math:`\log_2 (n! + 1)`
+
         Raises
         ------
         TypeError
@@ -70,6 +87,7 @@ class peccary:
         """
         # Setting up data
         self.T=np.array(data) # data timeseries
+        
         if len(self.T.shape)>1:
             raise TypeError( 'Data must be a 1-D array')
 

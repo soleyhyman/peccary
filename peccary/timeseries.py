@@ -142,6 +142,36 @@ class lorenz:
         initialVals: 3-tuple or similar three-element array
             Initial values for system, by default (0.,1.,1.05)
 
+        Attributes
+        ----------
+        dt : float
+            Timestep resolution
+        nsteps : int
+            Number of timesteps used in integration
+        tDur : None or float
+            Duration of timseries, None unless specified
+        t : None or ndarray
+            Array of timesteps corresponding to timeseries,
+            None unless tDur has been specified
+        t0 : float
+            Initial time for integration
+        s : int
+            Sigma parameter
+        r : int
+            Rho parameter
+        b : float
+            Beta parameter
+        initialVals: 3-tuple
+            Initial values for system
+        x : ndarray
+            x-coordinates of system after integration
+        y : ndarray
+            y-coordinates of system after integration
+        z : ndarray
+            z-coordinates of system after integration
+        xyzSim : 3-tuple of ndarrays
+            x-, y-, and z- coordinates of system after integration
+
         Notes
         -----
         Modified from `Matplotlib tutorial <https://matplotlib.org/stable/gallery/mplot3d/lorenz_attractor.html>`_
@@ -151,10 +181,11 @@ class lorenz:
         self.nsteps = nsteps 
         self.tDur = tDur
         self.t0 = t0
+        self.t = None
         self.s = s
         self.r = r
         self.b = b
-        self.initialVals = initialVals
+        self.initialVals = tuple(initialVals)
 
         self.xyzSim = self.generate()
         self.x, self.y, self.z = self.xyzSim
@@ -239,6 +270,57 @@ class doublePendulum:
             Initial angle of mass 2 in degrees, by default -10.0*u.deg
         w2 : float, optional
             Initial angular velocity of mass 2 in degrees/second, by default 0.0
+
+        Attributes
+        ----------
+        tf : float
+            Final timestep in seconds
+        dt : float
+            Time resolution in seconds
+        L1 : float
+            Length of pendulum 1 in m
+        L2 : float
+            Length of pendulum 2 in m
+        L : float
+            Combined length of both pendulums in m
+        M1 : float
+            Mass of pendulum 1 in kg
+        M2 : float
+            Mass of pendulum 2 in kg
+        th1 : float
+            Initial angle of mass 1 in degrees
+        w1 : float
+            Initial angular velocity of mass 1 in degrees/second
+        th2 : float
+            Initial angle of mass 2 in degrees
+        w2 : float
+            Initial angular velocity of mass 2 in degrees/second
+        g : 9.80665
+            Hardcoded value of Earth's gravitational constant in m/s:math:`^2`
+        t : ndarray
+            Array of timesteps used in integration
+        x1 : ndarray
+            x-coordinates of mass 1 after integration
+        y1 : ndarray
+            y-coordinates of mass 1 after integration
+        x2 : ndarray
+            x-coordinates of mass 1 after integration
+        y2 : ndarray
+            y-coordinates of mass 1 after integration
+        simPos : 4-tuple
+            Timeseries of x- and y- coordinates for masses 1 and 2, respectively
+        line : Matplotlib Line2D object
+            Lines representing the pendulum rods, 
+            *only exists when plotAnimate is used*
+        trace : Matplotlib Line2D object
+            Points representing history,
+            *only exists when plotAnimate is used* 
+        textCurrentTime : Matplotlib Text object
+            Text object of current frame timestep,
+            *only exists when plotAnimate is used*
+        time_template : str
+            String format for frame timestep labels,
+            *only exists when plotAnimate is used*
         """
         self.tf = tf
         self.dt = dt
@@ -407,10 +489,24 @@ class noiseColors:
         ----------
         N : int
             Number of data points to generate
+
+        Attributes
+        ----------
+        N : int
+            Number of data points used in generating timeseries
+        whiteNoiseDat : ndarray
+            Default white noise generated with specified size
+        whiteFTT : complex ndarray
+            1-D discrete Fourier transform of whiteNoiseDat
+        whiteFreq : ndarray
+            Frequencies corresponding to whiteFFT
+        nonzeroFreq : ndarray
+            whiteFreq with all frequencies equal to 0 replaced with inf
+            (needed for brownianNoise and pinkNoise)
         """
         self.N = int(N)
         self.whiteNoiseDat = np.random.random(self.N)
-        self.whiteFTT = sfft.rfft(self.whiteNoiseDat)
+        self.whiteFFT = sfft.rfft(self.whiteNoiseDat)
         self.whiteFreq = sfft.rfftfreq(self.N)
         self.nonzeroFreq = np.where(self.whiteFreq == 0, np.inf, self.whiteFreq)
         
@@ -425,7 +521,7 @@ class noiseColors:
         """
         freqs = np.power(self.whiteFreq,0.)
         freqs = freqs/np.sqrt(np.mean(freqs**2))
-        noiseSpec = self.whiteFTT*freqs
+        noiseSpec = self.whiteFFT*freqs
         return sfft.irfft(noiseSpec)
       
     def blueNoise(self):
@@ -439,7 +535,7 @@ class noiseColors:
         """
         freqs = np.power(self.whiteFreq,0.5)
         freqs = freqs/np.sqrt(np.mean(freqs**2))
-        noiseSpec = self.whiteFTT*freqs
+        noiseSpec = self.whiteFFT*freqs
         return sfft.irfft(noiseSpec)
     
     def violetNoise(self):
@@ -453,7 +549,7 @@ class noiseColors:
         """
         freqs = np.power(self.whiteFreq,1.)
         freqs = freqs/np.sqrt(np.mean(freqs**2))
-        noiseSpec = self.whiteFTT*freqs
+        noiseSpec = self.whiteFFT*freqs
         return sfft.irfft(noiseSpec)
     
     def brownianNoise(self):
@@ -467,7 +563,7 @@ class noiseColors:
         """
         freqs = np.power(self.nonzeroFreq,-1.)
         freqs = freqs/np.sqrt(np.mean(freqs**2))
-        noiseSpec = self.whiteFTT*freqs
+        noiseSpec = self.whiteFFT*freqs
         return sfft.irfft(noiseSpec)
     
     def redNoise(self):
@@ -493,7 +589,7 @@ class noiseColors:
         """
         freqs = np.power(self.nonzeroFreq,-0.5)
         freqs = freqs/np.sqrt(np.mean(freqs**2))
-        noiseSpec = self.whiteFTT*freqs
+        noiseSpec = self.whiteFFT*freqs
         return sfft.irfft(noiseSpec)
     
     def getNoiseTypes(self):
