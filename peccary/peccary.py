@@ -9,7 +9,47 @@ import numpy as np
 from math import factorial
 import matplotlib.pylab as plt
 
-__all__ = ["peccary"]
+__all__ = ["ell2tpat", "tpat2ell", "peccary"]
+
+def ell2tpat(ell,n,dt):
+    """
+    Convert sampling interval to pattern timescale
+
+    Parameters
+    ----------
+    ell : float
+        Sampling interval
+    n : float
+        Sampling size
+    dt : float
+        Timestep or timeseries resolution
+
+    Returns
+    -------
+    float
+        Equivalent pattern timescale
+    """
+    return ell*dt*(n-1.)
+
+def tpat2ell(tpat,n,dt):
+    """
+    Convert pattern timescale to sampling interval
+
+    Parameters
+    ----------
+    tpat : float
+        Pattern timescale
+    n : float
+        Sampling size
+    dt : float
+        Timestep or timeseries resolution
+
+    Returns
+    -------
+    float
+        Equivalent sampling interval
+    """
+    return tpat/(dt*(n-1.))
 
 class peccary:
     def __init__(self, data, n=5):
@@ -253,7 +293,7 @@ class peccary:
         Se = -1.*np.sum([P_Pe_sum_2*np.log2(P_Pe_sum_2) for P_Pe_sum_2 in 0.5*(probabilities+self.invN)]) + 0.5*(self.N-len(probabilities))*self.invN*(1+self.log2_N) # Disequilibrium between distribution and uniform distribution; Schaffner & Daniel (in prep), Eq.(8)
         return S,Se
 
-    def calcPESCcurves(self, min_delay=1, max_delay=100, delayInt=1):
+    def calcPESCcurves(self, min_delay=1, max_delay=100, delayInt=1, delayArray=None):
         """
         Returns PE(tau) and SC(tau) for specified range of tau values
 
@@ -269,6 +309,10 @@ class peccary:
             Largest embedding delay to loop through, by default 100
         delayInt : int, optional
             How many sampling interval values to skip over
+        delayArray: ndarray or list
+            Custom array of sampling intervals, supersedes min_delay,
+            max_delay, and delayInt, by default None
+
 
         Returns
         -------
@@ -277,6 +321,9 @@ class peccary:
         C(tau) : array
             Normalized Jensen-Shannon complexity as function of embedding delay tau
         """
-        delays = np.arange(min_delay,max_delay,delayInt) # Make array of embed delay integers from min_delay to max_delay, increasing by 1
-        Hvals, Cvals = np.array([self.calcCofH(delay=delays[i]) for i in range(len(delays))]).T # Get normalized permutation entropy and statisical complexity for each of the embed delays
+        if type(delayArray) != type(None):
+            delays = delayArray # Array of sampling intervals from delayArray
+        else:
+            delays = np.arange(min_delay,max_delay,delayInt) # Make array of embed delay integers from min_delay to max_delay, increasing by 1
+        Hvals, Cvals = np.array([self.calcCofH(delay=int(delays[i])) for i in range(len(delays))]).T # Get normalized permutation entropy and statisical complexity for each of the embed delays
         return Hvals, Cvals
