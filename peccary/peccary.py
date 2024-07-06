@@ -9,10 +9,16 @@ import numpy as np
 from math import factorial
 import matplotlib.pylab as plt
 
+### USE THIS LINE FOR DISTRIBUTION ###
+# from peccary.timeseries import Timeseries
+
+### USING THIS LOCAL VERSION FOR NOW ###
+from timeseries import Timeseries
+
 __all__ = ["peccary"]
 
 class peccary:
-    def __init__(self, data, n=5):
+    def __init__(self, data, n=5, attr=None):
         """
         Initialize PECCARY class
 
@@ -22,6 +28,9 @@ class peccary:
             Timeseries data for PECCARY 
         n : int, optional
             Sampling size, by default 5
+        attr : Timeseries attribute, optional
+            Needed if extracting a coordinate or data attribute from a
+            Timeseries object
 
         Attributes
         ----------
@@ -45,8 +54,13 @@ class peccary:
         TypeError
             Data must be a 1-D array
         """
-        # Setting up data
-        self.T=np.array(data) # data timeseries
+        # Check if data is Timeseries object
+        if isinstance(data, Timeseries):
+            self.T = getattr(data, attr) # data timeseries
+            self.dt = data.dt
+        else:
+            # Setting up data
+            self.T=np.array(data) # data timeseries
         
         if len(self.T.shape)>1:
             raise TypeError( 'Data must be a 1-D array')
@@ -59,43 +73,43 @@ class peccary:
         self.log2_N = np.log2(self.N) # log_2(n!)
         self.log2_Np1 = np.log2(self.N+1.) # log_2(n! + 1)
 
-    def tPat(self, dt, sampInt=1):
-        """
-        Calculates pattern time of in PECCARY routine, based on 
-        sampling size and sampling interval
+    # def tPat(self, dt, sampInt=1):
+    #     """
+    #     Calculates pattern time of in PECCARY routine, based on 
+    #     sampling size and sampling interval
 
-        Parameters
-        ----------
-        dt : float
-            Timestep interval
-        sampInt : int or ndarray, optional
-            Sampling interval, by default 1
+    #     Parameters
+    #     ----------
+    #     dt : float
+    #         Timestep interval
+    #     sampInt : int or ndarray, optional
+    #         Sampling interval, by default 1
 
-        Returns
-        -------
-        float or ndarray
-            Pattern time(s) corresponding to inputted sampling interval(s)
-        """
-        return sampInt * dt * (self.n - 1.)
+    #     Returns
+    #     -------
+    #     float or ndarray
+    #         Pattern time(s) corresponding to inputted sampling interval(s)
+    #     """
+    #     return sampInt * dt * (self.n - 1.)
     
-    def ell_from_tPat(self, dt, tPat):
-        """
-        Calculates the sampling interval in PECCARY routine based 
-        on the pattern time and sampling size
+    # def ell_from_tPat(self, dt, tPat):
+    #     """
+    #     Calculates the sampling interval in PECCARY routine based 
+    #     on the pattern time and sampling size
 
-        Parameters
-        ----------
-        dt : float
-            Timestep interval
-        tPat : float or ndarray
-            Pattern time
+    #     Parameters
+    #     ----------
+    #     dt : float
+    #         Timestep interval
+    #     tPat : float or ndarray
+    #         Pattern time
 
-        Returns
-        -------
-        float or ndarray
-            Sampling interval(s) corresponding to inputted pattern time(s)
-        """
-        return tPat/(dt * (self.n - 1.))
+    #     Returns
+    #     -------
+    #     float or ndarray
+    #         Sampling interval(s) corresponding to inputted pattern time(s)
+    #     """
+    #     return tPat/(dt * (self.n - 1.))
     
     def getPtot(self,sampInt=1):
         """
