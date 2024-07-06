@@ -205,7 +205,7 @@ class peccary:
         S, Se = self.calcS(sampInt) # Shannon entropy and disequilibrium
         return S/self.log2_N,Se/self.log2_N 
 
-    def calcCofH(self,sampInt=1):
+    def calcHC(self,sampInt=1):
         """
         Calculate normalized Jensen-Shannon statistical complexity 
         and normalized permutation entropy
@@ -242,6 +242,11 @@ class peccary:
             Shannon permutation entropy
         Se : float
             Disequilibrium
+
+        Returns
+        -------
+        float
+            Normalized Jensen-Shannon statistical complexity
         """
         return -2.*((Se - 0.5*S - 0.5*self.log2_N)/((1. + self.invN)*self.log2_Np1 - 2.*np.log2(2.*self.N) + self.log2_N)*(S/self.log2_N)) # Jensen-Shannon statistical complexity; Weck+15 Eq.(4)
 
@@ -271,7 +276,7 @@ class peccary:
         Se = -1.*np.sum([P_Pe_sum_2*np.log2(P_Pe_sum_2) for P_Pe_sum_2 in 0.5*(probabilities+self.invN)]) + 0.5*(self.N-len(probabilities))*self.invN*(1+self.log2_N) # Disequilibrium between distribution and uniform distribution; Schaffner & Daniel (in prep), Eq.(8)
         return S,Se
 
-    def calcPESCcurves(self, min_sampInt=1, max_sampInt=100, step_sampInt=1, sampIntArray=None):
+    def calcHCcurves(self, min_sampInt=1, max_sampInt=100, step_sampInt=1, sampIntArray=None):
         """
         Returns Permutation Entropy and Statistical Complexity values for multiple
         sampling interval values, i.e., :math:`H(\ell)` and :math:`C(\ell) `
@@ -303,5 +308,5 @@ class peccary:
             sampInts = sampIntArray # Array of sampling intervals from sampIntArray
         else:
             sampInts = np.arange(min_sampInt,max_sampInt,step_sampInt) # Make array of sampling intervals from min_sampInt to max_sampInt, increasing by 1
-        Hvals, Cvals = np.array([self.calcCofH(sampInt=int(sampInts[i])) for i in range(len(sampInts))]).T # Get normalized permutation entropy and statisical complexity for each of the sampling intervals
+        Hvals, Cvals = np.array([self.calcHC(sampInt=int(sampInts[i])) for i in range(len(sampInts))]).T # Get normalized permutation entropy and statisical complexity for each of the sampling intervals
         return Hvals, Cvals
