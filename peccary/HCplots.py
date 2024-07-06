@@ -57,7 +57,8 @@ def plotBoundsHC(ax, n=5, nsteps=1000, **kwargs):
     ax.plot(np.array([maxHVal,maxHVal]), np.array([minC[argMaxH_CminCurve], maxC[argMaxH_CmaxCurve]]), **kwargs)
     ax.plot(np.array([minHVal,maxHVal]), np.array([maxC[argMinH_CmaxCurve], maxC[argMaxH_CmaxCurve]]), **kwargs)
 
-def HCplane(H=None, C=None, ax=None, n=5, nsteps=1000, fontsize=12, showAxLabels=True, showBoundaryLines=True, savePlot=False, savePath='', **kwargs):
+def HCplane(H=None, C=None, ax=None, n=5, nsteps=1000, fontsize=12, showAxLabels=True, showBoundaryLines=True, 
+            savePlot=False, savePath='', kwargsHC={'ls':'-','color':'k','zorder':0}, kwargsBnds={}, kwargsPts={}):
     """
     Creates a blank HC plane with maximum and minimum curves for the given embedding dimension
 
@@ -81,7 +82,13 @@ def HCplane(H=None, C=None, ax=None, n=5, nsteps=1000, fontsize=12, showAxLabels
     savePath : str, optional
         Path to save plot if savePlot set to True, by default ''
         Note: Use only forward slashes in savePath
-    **kwargs : dict, optional
+    kwargsHC : dict, optional
+        Style arguments for region boundary lines passed to 
+        ``matplotlib.pyplot.plot``, if none given uses PECCARY defaults
+    kwargsHC : dict, optional
+        Style arguments for region boundary lines passed to 
+        ``matplotlib.pyplot.plot``, if none given uses PECCARY defaults
+    kwargsHC : dict, optional
         Style arguments for region boundary lines passed to 
         ``matplotlib.pyplot.plot``, if none given uses PECCARY defaults
     """
@@ -97,11 +104,12 @@ def HCplane(H=None, C=None, ax=None, n=5, nsteps=1000, fontsize=12, showAxLabels
         returnAx = False
 
     # Plot HC envelope
-    ax.plot(Cminx,Cminy,'k-',Cmaxx,Cmaxy,'k-', zorder=0)
+    ax.plot(Cminx,Cminy,**kwargsHC)
+    ax.plot(Cmaxx,Cmaxy,**kwargsHC)
 
     # Check whether or not to plot HC plane boundaries
     if showBoundaryLines:
-        plotBoundsHC(ax, **kwargs)
+        plotBoundsHC(ax, **kwargsBnds)
     else:
         pass
 
@@ -110,7 +118,7 @@ def HCplane(H=None, C=None, ax=None, n=5, nsteps=1000, fontsize=12, showAxLabels
     if (H is None) or (C is None):
         pass
     else:
-        ax.scatter(H, C)
+        ax.scatter(H, C, **kwargsPts)
 
     # Check whether to include axis labels
     if showAxLabels:
