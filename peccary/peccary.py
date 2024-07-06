@@ -9,47 +9,7 @@ import numpy as np
 from math import factorial
 import matplotlib.pylab as plt
 
-__all__ = ["ell2tpat", "tpat2ell", "peccary"]
-
-def ell2tpat(ell,n,dt):
-    """
-    Convert sampling interval to pattern timescale
-
-    Parameters
-    ----------
-    ell : float
-        Sampling interval
-    n : float
-        Sampling size
-    dt : float
-        Timestep or timeseries resolution
-
-    Returns
-    -------
-    float
-        Equivalent pattern timescale
-    """
-    return ell*dt*(n-1.)
-
-def tpat2ell(tpat,n,dt):
-    """
-    Convert pattern timescale to sampling interval
-
-    Parameters
-    ----------
-    tpat : float
-        Pattern timescale
-    n : float
-        Sampling size
-    dt : float
-        Timestep or timeseries resolution
-
-    Returns
-    -------
-    float
-        Equivalent sampling interval
-    """
-    return tpat/(dt*(n-1.))
+__all__ = ["peccary"]
 
 class peccary:
     def __init__(self, data, n=5):
@@ -94,7 +54,7 @@ class peccary:
         # Precalculate constant values for later use
         self.t = len(self.T) # length of timeseries
         self.n = n # sampling size
-        self.N=factorial(n) # n!
+        self.N = factorial(n) # n!
         self.invN = 1./self.N # 1/n!
         self.log2_N = np.log2(self.N) # log_2(n!)
         self.log2_Np1 = np.log2(self.N+1.) # log_2(n! + 1)
