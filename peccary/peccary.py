@@ -1,7 +1,7 @@
 """
 PECCARY method.
 
-The class ``peccary`` is the core of the packagke and does
+The class ``peccary`` is the core of the package and does
 all of the Permutation Entropy and Statistical Complexity calculations.
 """
 
@@ -279,7 +279,7 @@ class peccary:
     def calcHCcurves(self, min_sampInt=1, max_sampInt=100, step_sampInt=1, sampIntArray=None):
         """
         Returns Permutation Entropy and Statistical Complexity values for multiple
-        sampling interval values, i.e., :math:`H(\ell)` and :math:`C(\ell) `
+        sampling interval values, i.e., :math:`H(\ell)` and :math:`C(\ell)`
 
         Parameters
         ----------

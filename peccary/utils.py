@@ -6,7 +6,7 @@ import numpy as np
 from math import factorial
 import matplotlib.pylab as plt
 
-__all__ = ["ell2tpat", "tpat2ell", "HmaxPer", "HminPer", "Cmaxmin", "getMaxC"]
+__all__ = ["ell2tpat", "tpat2ell", "HmaxPer", "HminPer", "calcHCplane", "getMaxC"]
 
 def ell2tpat(ell,n,dt):
     """
@@ -87,7 +87,7 @@ def HminPer(n=5):
     """
     return np.log(2)/np.log(factorial(n))
 
-def calcBoundsHC(n=5, nsteps=1000):	
+def calcHCplane(n=5, nsteps=1000):	
     """
     Get maximum and minimum C(H) curves based on pattern length
     for plotting on the HC plane
@@ -102,14 +102,12 @@ def calcBoundsHC(n=5, nsteps=1000):
 
     Returns
     -------
-    Cminx : ndarray
-        H values for minimum HC curve
-    Cminy : ndarray
-        C values for minimum HC curve
-    Cmaxx : ndarray
-        H values for maximum HC curve
-    Cmaxy : ndarray
-        C values for maximum HC curve
+    4-tuple
+        4-tuple of ndarrays consisting (respectively) of:
+        - H values for minimum HC curve
+        - C values for minimum HC curve
+        - H values for maximum HC curve
+        - C values for maximum HC curve
     """
     nsteps = nsteps
     n = n
@@ -173,5 +171,5 @@ def getMaxC(n=5, nsteps=1000):
     float
         Maximum possible C value for given n
     """
-    Cminx, Cminy, Cmaxx, Cmaxy = calcBoundsHC(n=n, nsteps=nsteps)
+    Cminx, Cminy, Cmaxx, Cmaxy = calcHCplane(n=n, nsteps=nsteps)
     return np.max(Cmaxy)
