@@ -17,9 +17,9 @@ from matplotlib.animation import FuncAnimation
 ### USING THIS LOCAL VERSION FOR NOW ###
 from timeseries import Timeseries
 
-__all__ = ["generateHenon", "generateTent", "generateAsymmTent", "generateLogisticMap", "lorenz", "doublePendulum", "noiseColors"]
+__all__ = ["henonMap", "tentMap", "asymmTentMap", "logisticMap", "lorenz", "doublePendulum", "noiseColors"]
 
-def generateHenon(n, a=1.4, b=0.3):
+def henonMap(n, a=1.4, b=0.3):
     """
     Generate timeseries from Hénon map. 
     
@@ -50,7 +50,7 @@ def generateHenon(n, a=1.4, b=0.3):
 
     return Timeseries(t=np.arange(n), data=X[0,:], dt=1.)
 
-def generateTent(n, mu=2.):
+def tentMap(n, mu=2.):
     """
     Generate timeseries from tent map with parameter mu
 
@@ -77,7 +77,7 @@ def generateTent(n, mu=2.):
             X[i] = mu*(1 - X[i-1])
     return Timeseries(t=np.arange(n), data=X, dt=1.)
 
-def generateAsymmTent(n, a=0.1847):
+def asymmTentMap(n, a=0.1847):
     """
     Generate timeseries from asymmetric tent map with parameter a
 
@@ -104,7 +104,7 @@ def generateAsymmTent(n, a=0.1847):
             X[i] = (1 - X[i-1])/(1 - a)
     return Timeseries(t=np.arange(n), data=X, dt=1.)
 
-def generateLogisticMap(n, r=4.):
+def logisticMap(n, r=4.):
     """
     Generate timeseries from logistic map with growth rate parameter r
 
