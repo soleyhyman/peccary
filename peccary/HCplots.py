@@ -10,6 +10,12 @@ import numpy as np
 from math import factorial
 import matplotlib.pylab as plt
 
+### USE THIS LINE FOR DISTRIBUTION ###
+import peccary.utils
+
+### USING THIS LOCAL VERSION FOR NOW ###
+import utils
+
 __all__ = ["HCplots"]
 
 class HCplots:
@@ -48,35 +54,6 @@ class HCplots:
         self.invN = 1./self.N
         self.log2_N = np.log2(self.N)
         self.log2_Np1 = np.log2(self.N+1.)
-
-    def HmaxPer(self): 
-        """
-        Calculate maximum Permutation Entropy value (H) for a
-        periodic function given the specified sampling size n.
-        
-        Equation: [insert equation here]
-
-        Returns
-        -------
-        float
-            Maximum Permuation Entropy for periodic function
-        """
-        Nper = 2.*(2.*(self.n-2.)+1.)
-        return np.log(Nper)/np.log(self.N)
-
-    def HminPer(self):
-        """
-        Calculate minimum Permutation Entropy value (H) for a
-        periodic function given the specified sampling size n.
-        
-        Equation: [insert equation here]
-
-        Returns
-        -------
-        float
-            Minimum Permuation Entropy for periodic function
-        """
-        return np.log(2)/np.log(self.N)
 
     def Cmaxmin(self):	
         """
@@ -162,8 +139,8 @@ class HCplots:
             Opacity of boundary lines (float between 0 and 1), by default 0.5
         """
         minH, minC, maxH, maxC = self.Cmaxmin() # H and C values for HC min/max curves
-        minHVal = self.HminPer() # Min. H value for periodic fnct
-        maxHVal = self.HmaxPer() # Max. H value for periodic fnct
+        minHVal = utils.HminPer() # Min. H value for periodic fnct
+        maxHVal = utils.HmaxPer() # Max. H value for periodic fnct
         argMinH_CminCurve = np.argmin(np.abs(minH-minHVal)) # Min. H value argument for H values for min HC curve
         argMinH_CmaxCurve = np.argmin(np.abs(maxH-minHVal)) # Min. H value argument for H values for max HC curve
         argMaxH_CminCurve = np.argmin(np.abs(minH-maxHVal)) # Max. H value argument for H values for min HC curve
