@@ -37,9 +37,9 @@ def henonMap(n, a=1.4, b=0.3):
 
     Returns
     -------
-    `Timeseries` object from `peccary`
-        Timeseries for Hénon map, stored in `data` attribute
-        of `Timeseries` object
+    ``Timeseries`` object from ``peccary``
+        Timeseries for Hénon map, stored in ``data`` attribute
+        of ``Timeseries`` object
     """
     X = np.zeros((2,n))
     X[0,0] = 1.
@@ -63,9 +63,9 @@ def tentMap(n, mu=2.):
 
     Returns
     -------
-    `Timeseries` object from `peccary`
-        Timeseries for tent map, stored in `data` attribute
-        of `Timeseries` object
+    ``Timeseries`` object from ``peccary``
+        Timeseries for tent map, stored in ``data`` attribute
+        of ``Timeseries`` object
     """
     X = np.zeros([n])
     X[0] = 0.1
@@ -90,9 +90,9 @@ def asymmTentMap(n, a=0.1847):
 
     Returns
     -------
-    `Timeseries` object from `peccary`
-        Timeseries for asymmetric tent map, stored in `data` attribute
-        of `Timeseries` object
+    ``Timeseries`` object from ``peccary``
+        Timeseries for asymmetric tent map, stored in ``data`` attribute
+        of ``Timeseries`` object
     """
     X = np.zeros([n])
     X[0] = 0.1
@@ -117,9 +117,9 @@ def logisticMap(n, r=4.):
 
     Returns
     -------
-    `Timeseries` object from `peccary`
+    ``Timeseries`` object from ``peccary``
         Timeseries for logisitic map with parameter r, 
-        stored in `data` attribute of `Timeseries` object
+        stored in ``data`` attribute of ``Timeseries`` object
     """
     X = np.zeros([n])
     X[0] = 0.1
@@ -216,9 +216,9 @@ class lorenz:
 
         Returns
         -------
-        `Timeseries` object from `peccary`
+        ``Timeseries`` object from ``peccary``
             Timeseries for x-, y-, and z- coordinates of Lorenz strange
-            attractor, stored in `x`, `y`, and `z` attributes of `Timeseries` object
+            attractor, stored in ``x``, ``y``, and ``z`` attributes of ``Timeseries`` object
         """
         self.dt = dt
         self.nsteps = nsteps 
@@ -278,10 +278,10 @@ class doublePendulum:
             Mass of pendulum 2 in kg
         g : 9.80665
             Hardcoded value of Earth's gravitational constant in m/s:math:`^2`
-        line : `matplotlib.lines.Line2D` object
+        line : ``matplotlib.lines.Line2D`` object
             Lines representing the pendulum rods, 
             *only exists when plotAnimate is used*
-        trace : `matplotlib.lines.Line2D` object
+        trace : ``matplotlib.lines.Line2D`` object
             Points representing history,
             *only exists when plotAnimate is used* 
         textCurrentTime : Matplotlib Text object
@@ -395,23 +395,23 @@ class doublePendulum:
 
         Returns
         -------
-        fig : `matplotlib.figure.Figure`
-            `matplotlib` figure created for plot
-        ax : array of `matplotlib.axes.Axes`
-            Array of `matplotlib` Axes created for plot
+        fig : ``matplotlib.figure.Figure``
+            ``matplotlib`` figure created for plot
+        ax : array of ``matplotlib.axes.Axes``
+            Array of ``matplotlib`` Axes created for plot
         """
         fig,axs = plt.subplots(1,3, figsize=(15, 4))
         axs[0].set_aspect('equal')
         axs[0].plot(tser.x[1],tser.y[1])
-        axs[0].set_title('XY plane of pendulum movment')
+        axs[0].set_title('Double Pendulum Mass 2')
 
         axs[1].plot(tser.t,tser.x[1])
         axs[1].set_xlabel('Time (seconds)')
-        axs[1].set_title('X coordinate')
+        axs[1].set_title('Mass 2 x-coordinate')
 
         axs[2].plot(tser.t,tser.y[1])
         axs[2].set_xlabel('Time (seconds)')
-        axs[2].set_title('Y coordinate')
+        axs[2].set_title('Mass 2 x-coordinate')
 
         return fig,axs
     
@@ -434,11 +434,11 @@ class doublePendulum:
 
         Returns
         -------
-        `matplotlib.lines.Line2D` object
+        ``matplotlib.lines.Line2D`` object
             Lines representing the pendulum rods
-        `matplotlib.lines.Line2D` object
+        ``matplotlib.lines.Line2D`` object
             Points representing history 
-        `matplotlib.text.Text` instance
+        ``matplotlib.text.Text`` instance
             Text object of current frame timestep
         """
         presentX = [0, tser.x[0][i], tser.x[1][i]]
@@ -513,9 +513,9 @@ class noiseColors:
 
         Returns
         -------
-        `Timeseries` object from `peccary`
-            Timeseries for white noise, stored in `data` attribute
-            of `Timeseries` object
+        ``Timeseries`` object from ``peccary``
+            Timeseries for white noise, stored in ``data`` attribute
+            of ``Timeseries`` object
         """
         freqs = np.power(self.whiteFreq,0.)
         freqs = freqs/np.sqrt(np.mean(freqs**2))
@@ -528,9 +528,9 @@ class noiseColors:
 
         Returns
         -------
-        `Timeseries` object from `peccary`
-            Timeseries for blue noise, stored in `data` attribute
-            of `Timeseries` object
+        ``Timeseries`` object from ``peccary``
+            Timeseries for blue noise, stored in ``data`` attribute
+            of ``Timeseries`` object
         """
         freqs = np.power(self.whiteFreq,0.5)
         freqs = freqs/np.sqrt(np.mean(freqs**2))
@@ -543,9 +543,9 @@ class noiseColors:
 
         Returns
         -------
-        `Timeseries` object from `peccary`
-            Timeseries for violet noise, stored in `data` attribute
-            of `Timeseries` object
+        ``Timeseries`` object from ``peccary``
+            Timeseries for violet noise, stored in ``data`` attribute
+            of ``Timeseries`` object
         """
         freqs = np.power(self.whiteFreq,1.)
         freqs = freqs/np.sqrt(np.mean(freqs**2))
@@ -558,9 +558,9 @@ class noiseColors:
 
         Returns
         -------
-        `Timeseries` object from `peccary`
+        ``Timeseries`` object from ``peccary``
             Timeseries for Brownian/red noise noise, stored in 
-            `data` attribute of `Timeseries` object
+            ``data`` attribute of ``Timeseries`` object
         """
         freqs = np.power(self.nonzeroFreq,-1.)
         freqs = freqs/np.sqrt(np.mean(freqs**2))
@@ -574,9 +574,9 @@ class noiseColors:
 
         Returns
         -------
-        `Timeseries` object from `peccary`
+        ``Timeseries`` object from ``peccary``
             Timeseries for red/Brownian noise noise, stored in 
-            `data` attribute of `Timeseries` object
+            ``data`` attribute of ``Timeseries`` object
         """
         return self.brownian()
     
@@ -586,9 +586,9 @@ class noiseColors:
 
         Returns
         -------
-        `Timeseries` object from `peccary`
-            Timeseries for pink noise, stored in `data` attribute
-            of `Timeseries` object
+        ``Timeseries`` object from ``peccary``
+            Timeseries for pink noise, stored in ``data`` attribute
+            of ``Timeseries`` object
         """
         freqs = np.power(self.nonzeroFreq,-0.5)
         freqs = freqs/np.sqrt(np.mean(freqs**2))
