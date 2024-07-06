@@ -507,7 +507,7 @@ class noiseColors:
         self.nonzeroFreq = np.where(self.whiteFreq == 0, np.inf, self.whiteFreq)
         self.tArt = np.arange(self.N) # create artificial "timesteps" for generated timeseries
         
-    def whiteNoise(self):
+    def white(self):
         """
         Generate white noise (flat frequency power spectrum)
 
@@ -522,7 +522,7 @@ class noiseColors:
         noiseSpec = self.whiteFFT*freqs
         return Timeseries(t=self.tArt, data=sfft.irfft(noiseSpec), dt=1.)
       
-    def blueNoise(self):
+    def blue(self):
         """
         Generate blue noise (density :math:`\propto f`)
 
@@ -537,7 +537,7 @@ class noiseColors:
         noiseSpec = self.whiteFFT*freqs
         return Timeseries(t=self.tArt, data=sfft.irfft(noiseSpec), dt=1.)
     
-    def violetNoise(self):
+    def violet(self):
         """
         Generate violet noise (density :math:`\propto f^2`)
 
@@ -552,7 +552,7 @@ class noiseColors:
         noiseSpec = self.whiteFFT*freqs
         return Timeseries(t=self.tArt, data=sfft.irfft(noiseSpec), dt=1.)
     
-    def brownianNoise(self):
+    def brownian(self):
         """
         Generate Brownian noise (density :math:`\propto 1/f^2`)
 
@@ -567,7 +567,7 @@ class noiseColors:
         noiseSpec = self.whiteFFT*freqs
         return Timeseries(t=self.tArt, data=sfft.irfft(noiseSpec), dt=1.)
     
-    def redNoise(self):
+    def red(self):
         """
         Generate red noise (density :math:`\propto 1/f^2`).
         This is an alias of the Brownian noise function
@@ -578,9 +578,9 @@ class noiseColors:
             Timeseries for red/Brownian noise noise, stored in 
             `data` attribute of `Timeseries` object
         """
-        return self.brownianNoise()
+        return self.brownian()
     
-    def pinkNoise(self):
+    def pink(self):
         """
         Generate pink noise (density :math:`\propto 1/f`)
 
@@ -605,4 +605,4 @@ class noiseColors:
             List containing generated white, blue, violet, 
             Brownian/red, and pink noise timeseries
         """
-        return [self.whiteNoise(), self.blueNoise(), self.violetNoise(), self.brownianNoise(), self.pinkNoise()]
+        return [self.white(), self.blue(), self.violet(), self.brownian(), self.pink()]
