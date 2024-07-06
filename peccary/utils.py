@@ -87,73 +87,73 @@ def HminPer(n=5):
     """
     return np.log(2)/np.log(factorial(n))
 
-def Cmaxmin(n=5, nsteps=1000):	
-        """
-        Get maximum and minimum C(H) curves based on pattern length
-        for plotting on the HC plane
+def calcBoundsHC(n=5, nsteps=1000):	
+    """
+    Get maximum and minimum C(H) curves based on pattern length
+    for plotting on the HC plane
 
-        Parameters
-        ----------
-        n : int, optional
-            Embedding dimension/pattern length, by default 5
-        nsteps : int, optional
-            Number of steps to use for generating HC bounding curves,
-            by default 1000
+    Parameters
+    ----------
+    n : int, optional
+        Embedding dimension/pattern length, by default 5
+    nsteps : int, optional
+        Number of steps to use for generating HC bounding curves,
+        by default 1000
 
-        Returns
-        -------
-        Cminx : ndarray
-            H values for minimum HC curve
-        Cminy : ndarray
-            C values for minimum HC curve
-        Cmaxx : ndarray
-            H values for maximum HC curve
-        Cmaxy : ndarray
-            C values for maximum HC curve
-        """
-        nsteps = nsteps
-        n = n
-        N = factorial(n)
-        invN = 1./N
-        log2_N = np.log2(N)
-        log2_Np1 = np.log2(N+1.)     
+    Returns
+    -------
+    Cminx : ndarray
+        H values for minimum HC curve
+    Cminy : ndarray
+        C values for minimum HC curve
+    Cmaxx : ndarray
+        H values for maximum HC curve
+    Cmaxy : ndarray
+        C values for maximum HC curve
+    """
+    nsteps = nsteps
+    n = n
+    N = factorial(n)
+    invN = 1./N
+    log2_N = np.log2(N)
+    log2_Np1 = np.log2(N+1.)     
 
-        # Set up blank arrays for x- and y-values of max/min curves
-        Cmaxx = np.zeros((N-1)*nsteps)
-        Cmaxy = np.zeros((N-1)*nsteps)
-        Cminx = np.zeros(nsteps)
-        Cminy = np.zeros(nsteps)
+    # Set up blank arrays for x- and y-values of max/min curves
+    Cmaxx = np.zeros((N-1)*nsteps)
+    Cmaxy = np.zeros((N-1)*nsteps)
+    Cminx = np.zeros(nsteps)
+    Cminy = np.zeros(nsteps)
+    
+    # Calculate H and C values for minimum HC curve
+    for i in np.arange(nsteps):
+        pk = invN + i*(1.-(invN))/nsteps
+        pj = (1. - pk)/(N - 1.)
+        S = -pk * np.log2(pk) - (N - 1.) * pj * np.log2(pj)
+        qk = pk/2. + 1./(2.*N)
+        qj = pj/2. + 1./(2.*N)
+        Scom = -qk * np.log2(qk) - (N - 1.) * qj * np.log2(qj)
+        Cminx[i] = S / log2_N
+        Cminy[i] = -2. * (S/log2_N) * (Scom - 0.5*S - 0.5*log2_N)\
+        /((1 + invN)*log2_Np1 - 2*np.log2(2.*N) + log2_N)	
         
-        # Calculate H and C values for minimum HC curve
-        for i in np.arange(nsteps):
-            pk = invN + i*(1.-(invN))/nsteps
-            pj = (1. - pk)/(N - 1.)
-            S = -pk * np.log2(pk) - (N - 1.) * pj * np.log2(pj)
+    # Calculate H and C values for maximum HC curve
+    for i in np.arange(1,N):
+        for l in np.arange(nsteps):
+            pk = l*(1./(N-i+1.))/nsteps
+            pj = (1. - pk)/(N - i)
+            if pk ==0.:
+                S = -(N - i) * pj * np.log2(pj)
+            else:
+                S = -pk * np.log2(pk) - (N - i) * pj * np.log2(pj)
             qk = pk/2. + 1./(2.*N)
             qj = pj/2. + 1./(2.*N)
-            Scom = -qk * np.log2(qk) - (N - 1.) * qj * np.log2(qj)
-            Cminx[i] = S / log2_N
-            Cminy[i] = -2. * (S/log2_N) * (Scom - 0.5*S - 0.5*log2_N)\
-            /((1 + invN)*log2_Np1 - 2*np.log2(2.*N) + log2_N)	
+            Scom = -qk * np.log2(qk) - (N - i) * qj * np.log2(qj) - \
+            (i-1)*(1./(2.*N))*np.log2(1./(2.*N))
+            Cmaxx[(i-1)*nsteps+l] = S / log2_N
+            Cmaxy[(i-1)*nsteps+l] = -2.*(S/log2_N)*(Scom - 0.5*S - 0.5*log2_N) \
+            /((1. + invN)*log2_Np1 - 2.*np.log2(2.*N) + log2_N)
             
-        # Calculate H and C values for maximum HC curve
-        for i in np.arange(1,N):
-            for l in np.arange(nsteps):
-                pk = l*(1./(N-i+1.))/nsteps
-                pj = (1. - pk)/(N - i)
-                if pk ==0.:
-                    S = -(N - i) * pj * np.log2(pj)
-                else:
-                    S = -pk * np.log2(pk) - (N - i) * pj * np.log2(pj)
-                qk = pk/2. + 1./(2.*N)
-                qj = pj/2. + 1./(2.*N)
-                Scom = -qk * np.log2(qk) - (N - i) * qj * np.log2(qj) - \
-                (i-1)*(1./(2.*N))*np.log2(1./(2.*N))
-                Cmaxx[(i-1)*nsteps+l] = S / log2_N
-                Cmaxy[(i-1)*nsteps+l] = -2.*(S/log2_N)*(Scom - 0.5*S - 0.5*log2_N) \
-                /((1. + invN)*log2_Np1 - 2.*np.log2(2.*N) + log2_N)
-                
-        return Cminx, Cminy, Cmaxx, Cmaxy
+    return Cminx, Cminy, Cmaxx, Cmaxy
 
 def getMaxC(n=5, nsteps=1000):
     """
@@ -173,5 +173,5 @@ def getMaxC(n=5, nsteps=1000):
     float
         Maximum possible C value for given n
     """
-    Cminx, Cminy, Cmaxx, Cmaxy = Cmaxmin(n=n, nsteps=nsteps)
+    Cminx, Cminy, Cmaxx, Cmaxy = calcBoundsHC(n=n, nsteps=nsteps)
     return np.max(Cmaxy)

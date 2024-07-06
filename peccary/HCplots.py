@@ -58,7 +58,7 @@ class HCplots:
         alpha : float, optional
             Opacity of boundary lines (float between 0 and 1), by default 0.5
         """
-        minH, minC, maxH, maxC = utils.Cmaxmin(n=self.n, nsteps=self.nsteps) # H and C values for HC min/max curves
+        minH, minC, maxH, maxC = utils.calcBoundsHC(n=self.n, nsteps=self.nsteps) # H and C values for HC min/max curves
         minHVal = utils.HminPer(n=self.n) # Min. H value for periodic fnct
         maxHVal = utils.HmaxPer(n=self.n) # Max. H value for periodic fnct
         argMinH_CminCurve = np.argmin(np.abs(minH-minHVal)) # Min. H value argument for H values for min HC curve
@@ -97,7 +97,7 @@ class HCplots:
             Path to save plot if savePlot set to True, by default ''
             Note: Use only forward slashes in savePath
         """
-        Cminx, Cminy, Cmaxx, Cmaxy = utils.Cmaxmin(n=self.n, nsteps=self.nsteps)
+        Cminx, Cminy, Cmaxx, Cmaxy = utils.calcBoundsHC(n=self.n, nsteps=self.nsteps)
 
         ax.plot(Cminx,Cminy,'k-',Cmaxx,Cmaxy,'k-')
 
