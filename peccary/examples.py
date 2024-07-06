@@ -476,19 +476,19 @@ class doublePendulum:
         plt.show()
 
 class noiseColors:
-    def __init__(self, N):
+    def __init__(self, n):
         """
         Initialize noiseColors class to generate noisy timeseries
         with different power spectra.
 
         Parameters
         ----------
-        N : int
+        n : int
             Number of data points to generate
 
         Attributes
         ----------
-        N : int
+        n : int
             Number of data points used in generating timeseries
         whiteNoiseDat : ndarray
             Default white noise generated with specified size
@@ -500,12 +500,12 @@ class noiseColors:
             whiteFreq with all frequencies equal to 0 replaced with inf
             (needed for brownianNoise and pinkNoise)
         """
-        self.N = int(N)
-        self.whiteNoiseDat = np.random.random(self.N)
+        self.n = int(n)
+        self.whiteNoiseDat = np.random.random(self.n)
         self.whiteFFT = sfft.rfft(self.whiteNoiseDat)
-        self.whiteFreq = sfft.rfftfreq(self.N)
+        self.whiteFreq = sfft.rfftfreq(self.n)
         self.nonzeroFreq = np.where(self.whiteFreq == 0, np.inf, self.whiteFreq)
-        self.tArt = np.arange(self.N) # create artificial "timesteps" for generated timeseries
+        self.tArt = np.arange(self.n) # create artificial "timesteps" for generated timeseries
         
     def white(self):
         """
