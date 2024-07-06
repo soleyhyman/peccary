@@ -513,8 +513,9 @@ class noiseColors:
 
         Returns
         -------
-        ndarray
-            1D array of length N containing white noise
+        `Timeseries` object from `peccary`
+            Timeseries for white noise, stored in `data` attribute
+            of `Timeseries` object
         """
         freqs = np.power(self.whiteFreq,0.)
         freqs = freqs/np.sqrt(np.mean(freqs**2))
@@ -527,8 +528,9 @@ class noiseColors:
 
         Returns
         -------
-        ndarray
-            1D array of length N containing blue noise
+        `Timeseries` object from `peccary`
+            Timeseries for blue noise, stored in `data` attribute
+            of `Timeseries` object
         """
         freqs = np.power(self.whiteFreq,0.5)
         freqs = freqs/np.sqrt(np.mean(freqs**2))
@@ -541,8 +543,9 @@ class noiseColors:
 
         Returns
         -------
-        ndarray
-            1D array of length N containing violet noise
+        `Timeseries` object from `peccary`
+            Timeseries for violet noise, stored in `data` attribute
+            of `Timeseries` object
         """
         freqs = np.power(self.whiteFreq,1.)
         freqs = freqs/np.sqrt(np.mean(freqs**2))
@@ -555,8 +558,9 @@ class noiseColors:
 
         Returns
         -------
-        ndarray
-            1D array of length N containing Brownian/red noise
+        `Timeseries` object from `peccary`
+            Timeseries for Brownian/red noise noise, stored in 
+            `data` attribute of `Timeseries` object
         """
         freqs = np.power(self.nonzeroFreq,-1.)
         freqs = freqs/np.sqrt(np.mean(freqs**2))
@@ -570,8 +574,9 @@ class noiseColors:
 
         Returns
         -------
-        ndarray
-            1D array of length N containing red/Brownian noise
+        `Timeseries` object from `peccary`
+            Timeseries for red/Brownian noise noise, stored in 
+            `data` attribute of `Timeseries` object
         """
         return self.brownianNoise()
     
@@ -581,8 +586,9 @@ class noiseColors:
 
         Returns
         -------
-        ndarray
-            1D array of length N containing pink noise
+        `Timeseries` object from `peccary`
+            Timeseries for pink noise, stored in `data` attribute
+            of `Timeseries` object
         """
         freqs = np.power(self.nonzeroFreq,-0.5)
         freqs = freqs/np.sqrt(np.mean(freqs**2))
