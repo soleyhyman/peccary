@@ -1,7 +1,7 @@
 """
 Test functions for PECCARY method.
 
-The functions and classes in the ``timeseries`` module consist of
+The functions and classes in the ``examples`` module consist of
 different functions and physical systems used for testing PECCARY
 """
 
@@ -10,6 +10,12 @@ from scipy.integrate import solve_ivp
 import scipy.fft as sfft
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+
+### USE THIS LINE FOR DISTRIBUTION ###
+# from peccary.timeseries import Timeseries
+
+### USING THIS LOCAL VERSION FOR NOW ###
+from timeseries import Timeseries
 
 __all__ = ["generateHenon", "generateTent", "generateAsymmTent", "generateLogisticMap", "lorenz", "doublePendulum", "noiseColors"]
 
@@ -31,8 +37,9 @@ def generateHenon(n, a=1.4, b=0.3):
 
     Returns
     -------
-    ndarray
-        1D array (length n) of timeseries for Hénon map
+    `Timeseries` object from `peccary`
+        Timeseries for Hénon map, stored in `data` attribute
+        of `Timeseries` object
     """
     X = np.zeros((2,n))
     X[0,0] = 1.
@@ -40,7 +47,8 @@ def generateHenon(n, a=1.4, b=0.3):
     for i in range(1,n):
         X[0,i] = 1. - a * X[0,i-1] ** 2. + X[1,i-1]
         X[1,i] = b * X[0,i-1]
-    return X[0,:]
+
+    return Timeseries(t=np.arange(n), data=X[0,:], dt=1.)
 
 def generateTent(n, mu=2.):
     """
@@ -55,8 +63,9 @@ def generateTent(n, mu=2.):
 
     Returns
     -------
-    ndarray
-        1D array (length n) of timeseries for tent map
+    `Timeseries` object from `peccary`
+        Timeseries for tent map, stored in `data` attribute
+        of `Timeseries` object
     """
     X = np.zeros([n])
     X[0] = 0.1
@@ -66,7 +75,7 @@ def generateTent(n, mu=2.):
             X[i] = mu*X[i-1]
         else:
             X[i] = mu*(1 - X[i-1])
-    return X
+    return Timeseries(t=np.arange(n), data=X, dt=1.)
 
 def generateAsymmTent(n, a=0.1847):
     """
@@ -81,8 +90,9 @@ def generateAsymmTent(n, a=0.1847):
 
     Returns
     -------
-    ndarray
-        1D array (length n) of timeseries for asymmetric tent map
+    `Timeseries` object from `peccary`
+        Timeseries for asymmetric tent map, stored in `data` attribute
+        of `Timeseries` object
     """
     X = np.zeros([n])
     X[0] = 0.1
@@ -92,7 +102,7 @@ def generateAsymmTent(n, a=0.1847):
             X[i] = X[i-1]/a
         else:
             X[i] = (1 - X[i-1])/(1 - a)
-    return X
+    return Timeseries(t=np.arange(n), data=X, dt=1.)
 
 def generateLogisticMap(n, r=4.):
     """
@@ -107,32 +117,23 @@ def generateLogisticMap(n, r=4.):
 
     Returns
     -------
-    ndarray
-        1D array (length n) of timeseries for logisitic map with parameter r
+    `Timeseries` object from `peccary`
+        Timeseries for logisitic map with parameter r, 
+        stored in `data` attribute of `Timeseries` object
     """
     X = np.zeros([n])
     X[0] = 0.1
     for i in range(1,n):
         X[i] = r * X[i-1] * (1 - X[i-1])
-    return X
+    return Timeseries(t=np.arange(n), data=X, dt=1.)
 
 class lorenz:
-    def __init__(self, dt=0.01, nsteps=10000, tDur=None, t0=0., s=10, r=20, b=2.667, initialVals=(0.,1.,1.05)):
+    def __init__(self, s=10, r=20, b=2.667, initialVals=(0.,1.,1.05)):
         """
         Initialize Lorenz Strange Attractor class.
 
         Parameters
         ----------
-        dt : float, optional
-            Timestep resolution, by default 0.01
-        nsteps : int, optional
-            Number of timesteps to integrate, by default 10000
-        tDur : float, optional
-            Duration of time to integrate over, supersedes nsteps,
-            by default None
-        t0 : float, optional
-            Initial time value, only used if tDur is not None,
-            by default 0.
         s : int, optional
             Sigma parameter, by default 10
         r : int, optional
@@ -144,17 +145,6 @@ class lorenz:
 
         Attributes
         ----------
-        dt : float
-            Timestep resolution
-        nsteps : int
-            Number of timesteps used in integration
-        tDur : None or float
-            Duration of timseries, None unless specified
-        t : None or ndarray
-            Array of timesteps corresponding to timeseries,
-            None unless tDur has been specified
-        t0 : float
-            Initial time for integration
         s : int
             Sigma parameter
         r : int
@@ -163,32 +153,16 @@ class lorenz:
             Beta parameter
         initialVals: 3-tuple
             Initial values for system
-        x : ndarray
-            x-coordinates of system after integration
-        y : ndarray
-            y-coordinates of system after integration
-        z : ndarray
-            z-coordinates of system after integration
-        xyzSim : 3-tuple of ndarrays
-            x-, y-, and z- coordinates of system after integration
 
         Notes
         -----
         Modified from `Matplotlib tutorial <https://matplotlib.org/stable/gallery/mplot3d/lorenz_attractor.html>`_
 
         """
-        self.dt = dt
-        self.nsteps = nsteps 
-        self.tDur = tDur
-        self.t0 = t0
-        self.t = None
         self.s = s
         self.r = r
         self.b = b
         self.initialVals = tuple(initialVals)
-
-        self.xyzSim = self.generate()
-        self.x, self.y, self.z = self.xyzSim
 
     def getPartials(self, xyz):
         """
@@ -196,7 +170,7 @@ class lorenz:
 
         Parameters
         ----------
-        xyz : ndarray,
+        xyz : ndarray
             3D array containing points of interest in three-dimensional space
 
         Returns
@@ -210,35 +184,66 @@ class lorenz:
         z_dot = x*y - self.b*z
         return np.array([x_dot, y_dot, z_dot])
     
-    def generate(self):
+    def generate(self, dt=0.01, nsteps=10000, tDur=None, t0=0.):
         """
         Generate x/y/z timeseries for Lorenz strange attractor
 
+        Parameters
+        ----------
+        dt : float, optional
+            Timestep resolution, by default 0.01
+        nsteps : int, optional
+            Number of timesteps to integrate, by default 10000
+        tDur : float, optional
+            Duration of time to integrate over, supersedes nsteps,
+            by default None
+        t0 : float, optional
+            Initial time value, only used if tDur is not None,
+            by default 0.
+
+        Attributes
+        ----------
+        dt : float
+            Timestep resolution
+        nsteps : int
+            Number of timesteps used in integration
+        tDur : None or float
+            Duration of timseries, None unless specified
+        t : None or ndarray
+            Array of timesteps corresponding to timeseries
+        t0 : float
+            Initial time for integration
+
         Returns
         -------
-        lorenzX: ndarray
-            x-coordinate timeseries for Lorenz system
-        lorenzY: ndarray
-            y-coordinate timeseries for Lorenz system
-        lorenzZ: ndarray
-            z-coordinate timeseries for Lorenz system
+        `Timeseries` object from `peccary`
+            Timeseries for x-, y-, and z- coordinates of Lorenz strange
+            attractor, stored in `x`, `y`, and `z` attributes of `Timeseries` object
         """
-        if type(self.tDur) != type(None):
+        self.dt = dt
+        self.nsteps = nsteps 
+        self.tDur = tDur
+        self.t0 = t0
+        if self.tDur is not None:
+            # check if time duration has been set, if so create times array from that
             self.t = np.arange(self.t0,self.tDur+self.dt,self.dt)
             self.nsteps = len(self.t[:-1])
         else:
-            pass
+            # if duration has not be set, create "times" array from nsteps and dt
+            self.t = np.arange(0.,(self.nsteps+1)*self.dt,self.dt)
         xyzs = np.empty((self.nsteps + 1, 3))  # Need one more for the initial values
         xyzs[0] = self.initialVals  # Set initial values
-        # Step through "time", calculating the partial derivatives at the current point
-        # and using them to estimate the next point
+        
+        # Integrate for each timestep
         for i in range(self.nsteps):
             xyzs[i + 1] = xyzs[i] + self.getPartials(xyzs[i]) * self.dt
 
-        return xyzs.T[0], xyzs.T[1], xyzs.T[2]
+        x,y,z = xyzs.T[0], xyzs.T[1], xyzs.T[2]
+
+        return Timeseries(t=self.t, x=x, y=y, z=z, dt=self.dt)
     
 class doublePendulum:
-    def __init__(self, tf=2.5, dt=np.power(2.,-6.), L1=1.0, L2=1.0, M1=1.0, M2=1.0, th1=120.0, w1=0.0, th2=-10.0, w2=0.0):
+    def __init__(self, L1=1.0, L2=1.0, M1=1.0, M2=1.0):
         """
         Initialize double pendulum function
 
@@ -250,10 +255,6 @@ class doublePendulum:
 
         Parameters
         ----------
-        tf : float, optional
-            How many seconds to simulate, by default 2.5
-        dt : float, optional
-            Time resolution in seconds, by default 0.015625
         L1 : float, optional
             Length of pendulum 1 in m, by default 1.0
         L2 : float, optional
@@ -262,21 +263,9 @@ class doublePendulum:
             Mass of pendulum 1 in kg, by default 1.0
         M2 : float, optional
             Mass of pendulum 2 in kg, by default 1.0
-        th1 : float, optional
-            Initial angle of mass 1 in degrees, by default 120.0*u.deg
-        w1 : float, optional
-            Initial angular velocity of mass 1 in degrees/second, by default 0.0
-        th2 : float, optional
-            Initial angle of mass 2 in degrees, by default -10.0*u.deg
-        w2 : float, optional
-            Initial angular velocity of mass 2 in degrees/second, by default 0.0
 
         Attributes
         ----------
-        tf : float
-            Final timestep in seconds
-        dt : float
-            Time resolution in seconds
         L1 : float
             Length of pendulum 1 in m
         L2 : float
@@ -287,32 +276,12 @@ class doublePendulum:
             Mass of pendulum 1 in kg
         M2 : float
             Mass of pendulum 2 in kg
-        th1 : float
-            Initial angle of mass 1 in degrees
-        w1 : float
-            Initial angular velocity of mass 1 in degrees/second
-        th2 : float
-            Initial angle of mass 2 in degrees
-        w2 : float
-            Initial angular velocity of mass 2 in degrees/second
         g : 9.80665
             Hardcoded value of Earth's gravitational constant in m/s:math:`^2`
-        t : ndarray
-            Array of timesteps used in integration
-        x1 : ndarray
-            x-coordinates of mass 1 after integration
-        y1 : ndarray
-            y-coordinates of mass 1 after integration
-        x2 : ndarray
-            x-coordinates of mass 1 after integration
-        y2 : ndarray
-            y-coordinates of mass 1 after integration
-        simPos : 4-tuple
-            Timeseries of x- and y- coordinates for masses 1 and 2, respectively
-        line : Matplotlib Line2D object
+        line : `matplotlib.lines.Line2D` object
             Lines representing the pendulum rods, 
             *only exists when plotAnimate is used*
-        trace : Matplotlib Line2D object
+        trace : `matplotlib.lines.Line2D` object
             Points representing history,
             *only exists when plotAnimate is used* 
         textCurrentTime : Matplotlib Text object
@@ -322,24 +291,13 @@ class doublePendulum:
             String format for frame timestep labels,
             *only exists when plotAnimate is used*
         """
-        self.tf = tf
-        self.dt = dt
         self.L1 = L1
         self.L2 = L2
         self.L = L1 + L2
         self.M1 = M1
         self.M2 = M2
-        self.th1 = th1
-        self.w1 = w1
-        self.th2 = th2
-        self.w2 = w2
         self.g = 9.80665 # m/s^2
-
-        # create a time array from 0 to tf, sampled at intervals of dt
-        self.t = np.arange(0, self.tf, self.dt)
-        self.simPos = self.integrate()
-        self.x1, self.y1, self.x2, self.y2 = self.simPos
-
+    
     def derivs(self, t, state):
         """
         Get partial derivatives for double pendulum system
@@ -379,9 +337,24 @@ class doublePendulum:
 
         return dydx
     
-    def integrate(self):
+    def integrate(self, tf=2.5, dt=np.power(2.,-6.), th1=120.0, w1=0.0, th2=-10.0, w2=0.0):
         """
         Integrate double pendulum system
+
+        Parameters
+        ----------
+        tf : float, optional
+            How many seconds to simulate, by default 2.5
+        dt : float, optional
+            Time resolution in seconds, by default 0.015625
+        th1 : float, optional
+            Initial angle of mass 1 in degrees, by default 120.0*u.deg
+        w1 : float, optional
+            Initial angular velocity of mass 1 in degrees/second, by default 0.0
+        th2 : float, optional
+            Initial angle of mass 2 in degrees, by default -10.0*u.deg
+        w2 : float, optional
+            Initial angular velocity of mass 2 in degrees/second, by default 0.0
 
         Returns
         -------
@@ -394,10 +367,13 @@ class doublePendulum:
         ndarray
             Timeseries of y-coordinates for mass 2
         """
-        # initial state
-        state = np.radians([self.th1, self.w1, self.th2, self.w2])
+        # create a time array from 0 to tf, sampled at intervals of dt
+        t = np.arange(0, tf, dt)
 
-        y = solve_ivp(self.derivs, self.t[[0, -1]], state, t_eval=self.t).y.T
+        # initial state
+        state = np.radians([th1, w1, th2, w2])
+
+        y = solve_ivp(self.derivs, t[[0, -1]], state, t_eval=t).y.T
 
         x1 = self.L1*np.sin(y[:, 0])
         y1 = -self.L1*np.cos(y[:, 0])
@@ -405,29 +381,41 @@ class doublePendulum:
         x2 = self.L2*np.sin(y[:, 2]) + x1
         y2 = -self.L2*np.cos(y[:, 2]) + y1
 
-        return x1, y1, x2, y2
+        return Timeseries(t=t, x=np.vstack((x1,x2)), y=np.vstack((y1,y2)), dt=dt)
 
-    def plotStatic(self):
+    def plotStatic(self, tser):
         """
         Quick-plot y(x), x(t), and y(t) for the second mass (lower mass)
-        of the double pendulum system.
+        of a double pendulum system.
+
+        Parameters
+        ----------
+        tser : Timeseries object
+            Timeseries object created by doublePendulum.integrate()
+
+        Returns
+        -------
+        fig : `matplotlib.figure.Figure`
+            `matplotlib` figure created for plot
+        ax : array of `matplotlib.axes.Axes`
+            Array of `matplotlib` Axes created for plot
         """
         fig,axs = plt.subplots(1,3, figsize=(15, 4))
         axs[0].set_aspect('equal')
-        axs[0].plot(self.x2,self.y2)
+        axs[0].plot(tser.x[1],tser.y[1])
         axs[0].set_title('XY plane of pendulum movment')
 
-        axs[1].plot(self.t,self.x2)
+        axs[1].plot(tser.t,tser.x[1])
         axs[1].set_xlabel('Time (seconds)')
         axs[1].set_title('X coordinate')
 
-        axs[2].plot(self.t,self.y2)
+        axs[2].plot(tser.t,tser.y[1])
         axs[2].set_xlabel('Time (seconds)')
         axs[2].set_title('Y coordinate')
 
         return fig,axs
     
-    def animateFrame(self, i):
+    def animateFrame(self, i, tser):
         """
         Animate a frame of the double pendulum system
 
@@ -441,30 +429,37 @@ class doublePendulum:
         ----------
         i : int
             Index of the frame to animate
+        tser : Timeseries object
+            Timeseries object created by doublePendulum.integrate()
 
         Returns
         -------
-        Matplotlib Line2D object
+        `matplotlib.lines.Line2D` object
             Lines representing the pendulum rods
-        Matplotlib Line2D object
+        `matplotlib.lines.Line2D` object
             Points representing history 
-        Matplotlib Text object
+        `matplotlib.text.Text` instance
             Text object of current frame timestep
         """
-        presentX = [0, self.x1[i], self.x2[i]]
-        presentY = [0, self.y1[i], self.y2[i]]
+        presentX = [0, tser.x[0][i], tser.x[1][i]]
+        presentY = [0, tser.y[0][i], tser.y[1][i]]
 
-        pastX = self.x2[:i]
-        pastY = self.y2[:i]
+        pastX = tser.x[1][:i]
+        pastY = tser.y[1][:i]
 
         self.line.set_data(presentX, presentY)
         self.trace.set_data(pastX, pastY)
-        self.textCurrentTime.set_text(self.time_template % (i*self.dt))
+        self.textCurrentTime.set_text(self.time_template % (i*tser.dt))
         return self.line, self.trace, self.textCurrentTime
 
-    def plotAnimate(self):
+    def plotAnimate(self, tser):
         """
-        Animate the integrated double pendulum system
+        Animate a integrated double pendulum system
+
+        Parameters
+        ----------
+        tser : Timeseries object
+            Timeseries object created by doublePendulum.integrate()
         """
         fig = plt.figure(figsize=(5, 4))
         ax = fig.add_subplot(autoscale_on=False, xlim=(-self.L, self.L), ylim=(-self.L, 1.))
@@ -476,7 +471,8 @@ class doublePendulum:
         self.time_template = 'time = %.1fs'
         self.textCurrentTime = ax.text(0.05, 0.9, '', transform=ax.transAxes)
         
-        ani = FuncAnimation(fig, self.animateFrame, len(self.y2), interval=self.dt*1000, blit=True)
+        ani = FuncAnimation(fig, self.animateFrame, len(tser.y[1]), 
+                            fargs=(tser,), interval=tser.dt*1000, blit=True)
         plt.show()
 
 class noiseColors:
@@ -509,6 +505,7 @@ class noiseColors:
         self.whiteFFT = sfft.rfft(self.whiteNoiseDat)
         self.whiteFreq = sfft.rfftfreq(self.N)
         self.nonzeroFreq = np.where(self.whiteFreq == 0, np.inf, self.whiteFreq)
+        self.tArt = np.arange(self.N) # create artificial "timesteps" for generated timeseries
         
     def whiteNoise(self):
         """
@@ -522,7 +519,7 @@ class noiseColors:
         freqs = np.power(self.whiteFreq,0.)
         freqs = freqs/np.sqrt(np.mean(freqs**2))
         noiseSpec = self.whiteFFT*freqs
-        return sfft.irfft(noiseSpec)
+        return Timeseries(t=self.tArt, data=sfft.irfft(noiseSpec), dt=1.)
       
     def blueNoise(self):
         """
@@ -536,7 +533,7 @@ class noiseColors:
         freqs = np.power(self.whiteFreq,0.5)
         freqs = freqs/np.sqrt(np.mean(freqs**2))
         noiseSpec = self.whiteFFT*freqs
-        return sfft.irfft(noiseSpec)
+        return Timeseries(t=self.tArt, data=sfft.irfft(noiseSpec), dt=1.)
     
     def violetNoise(self):
         """
@@ -550,7 +547,7 @@ class noiseColors:
         freqs = np.power(self.whiteFreq,1.)
         freqs = freqs/np.sqrt(np.mean(freqs**2))
         noiseSpec = self.whiteFFT*freqs
-        return sfft.irfft(noiseSpec)
+        return Timeseries(t=self.tArt, data=sfft.irfft(noiseSpec), dt=1.)
     
     def brownianNoise(self):
         """
@@ -564,7 +561,7 @@ class noiseColors:
         freqs = np.power(self.nonzeroFreq,-1.)
         freqs = freqs/np.sqrt(np.mean(freqs**2))
         noiseSpec = self.whiteFFT*freqs
-        return sfft.irfft(noiseSpec)
+        return Timeseries(t=self.tArt, data=sfft.irfft(noiseSpec), dt=1.)
     
     def redNoise(self):
         """
@@ -590,7 +587,7 @@ class noiseColors:
         freqs = np.power(self.nonzeroFreq,-0.5)
         freqs = freqs/np.sqrt(np.mean(freqs**2))
         noiseSpec = self.whiteFFT*freqs
-        return sfft.irfft(noiseSpec)
+        return Timeseries(t=self.tArt, data=sfft.irfft(noiseSpec), dt=1.)
     
     def getNoiseTypes(self):
         """
