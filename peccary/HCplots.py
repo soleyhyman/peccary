@@ -57,8 +57,8 @@ def plotBoundsHC(ax, n=5, nsteps=1000, **kwargs):
     ax.plot(np.array([maxHVal,maxHVal]), np.array([minC[argMaxH_CminCurve], maxC[argMaxH_CmaxCurve]]), **kwargs)
     ax.plot(np.array([minHVal,maxHVal]), np.array([maxC[argMinH_CmaxCurve], maxC[argMaxH_CmaxCurve]]), **kwargs)
 
-def HCplane(H=None, C=None, ax=None, n=5, nsteps=1000, fontsize=12, showAxLabels=True, showBoundaryLines=True, 
-            savePlot=False, savePath='', kwargsHC={'ls':'-','color':'k','zorder':0}, kwargsBnds={}, kwargsPts={}):
+def HCplane(H=None, C=None, ax=None, n=5, nsteps=1000, fontsize=12, showAxLabels=True, showBoundaries=True, annotatePlane=False, 
+            savePlot=False, savePath='', kwargsHC={'ls':'-','color':'k','zorder':0}, kwargsBnds={}, kwargsPts={}, annotateFontsize=None):
     """
     Creates a blank HC plane with maximum and minimum curves for the given embedding dimension
 
@@ -75,22 +75,26 @@ def HCplane(H=None, C=None, ax=None, n=5, nsteps=1000, fontsize=12, showAxLabels
         Fontsize of axis labels, by default 12
     showAxLabels : bool, optional
         Show pre-defined axis labels, by default True
-    showBoundaryLines : bool, optional
+    showBoundaries : bool, optional
         Show HC plane boundary lines, by default True
+    annotatePlane : bool, optional
+        Annotate HC plane regions, by default False
     savePlot : bool, optional
         Saves HC plot if set to True, by default False
     savePath : str, optional
         Path to save plot if savePlot set to True, by default ''
         Note: Use only forward slashes in savePath
     kwargsHC : dict, optional
+        Style arguments for HC plane envelope lines passed to 
+        ``matplotlib.pyplot.plot``, if none given uses PECCARY defaults
+    kwargsBnds : dict, optional
         Style arguments for region boundary lines passed to 
         ``matplotlib.pyplot.plot``, if none given uses PECCARY defaults
-    kwargsHC : dict, optional
-        Style arguments for region boundary lines passed to 
-        ``matplotlib.pyplot.plot``, if none given uses PECCARY defaults
-    kwargsHC : dict, optional
-        Style arguments for region boundary lines passed to 
-        ``matplotlib.pyplot.plot``, if none given uses PECCARY defaults
+    kwargsPts : dict, optional
+        Style arguments for [H,C] values plotted on HC-plane with 
+        ``matplotlib.pyplot.scatter``, if none given uses PECCARY defaults
+    annotateFontsize : float, optional
+        Fontsize for HC plane regions annotations, by default None
     """
     # Calculate HC plane envelope
     Cminx, Cminy, Cmaxx, Cmaxy = utils.calcHCplane(n=n, nsteps=nsteps)
@@ -108,8 +112,21 @@ def HCplane(H=None, C=None, ax=None, n=5, nsteps=1000, fontsize=12, showAxLabels
     ax.plot(Cmaxx,Cmaxy,**kwargsHC)
 
     # Check whether or not to plot HC plane boundaries
-    if showBoundaryLines:
+    if showBoundaries:
         plotBoundsHC(ax, **kwargsBnds)
+    else:
+        pass
+
+    # Check whether or not to include HC plane annotation
+    if annotatePlane:
+        if annotateFontsize is None:
+            annotateFontsize = fontsize
+        else:
+            pass
+        ax.text(0.30,0.27,'periodic',rotation=46., fontdict={'fontsize':annotateFontsize-4, 'color':'grey'})
+        ax.text(0.35,0.24,'regular',rotation=35., fontdict={'fontsize':annotateFontsize-1})
+        ax.text(0.56,0.36,'complex', fontdict={'fontsize':annotateFontsize-1})
+        ax.text(0.76,0.09,'stochastic',rotation=-53., fontdict={'fontsize':annotateFontsize-1})
     else:
         pass
 
