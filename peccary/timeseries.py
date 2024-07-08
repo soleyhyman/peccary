@@ -45,6 +45,11 @@ class Timeseries:
             Generic 1D-array timeseries
         dt : float, optional
             Timestep resolution
+
+        Raises
+        ------
+        ValueError:
+            If inputted t or data are not a 1D-array
         """
         if not isinstance(t, np.ndarray) or len(t.shape) != 1:
             raise ValueError("'t' attribute must be 1D-array")
