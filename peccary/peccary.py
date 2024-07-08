@@ -11,14 +11,16 @@ import matplotlib.pylab as plt
 
 ### USE THIS LINE FOR DISTRIBUTION ###
 # from peccary.timeseries import Timeseries
+# from peccary.utils import ell2tpat, tpat2ell
 
 ### USING THIS LOCAL VERSION FOR NOW ###
 from timeseries import Timeseries
+import utils
 
 __all__ = ["peccary"]
 
 class peccary:
-    def __init__(self, data, n=5, attr=None):
+    def __init__(self, data, n=5, attr=None, dt=None):
         """
         Initialize PECCARY class
 
@@ -28,15 +30,17 @@ class peccary:
             Timeseries data for PECCARY 
         n : int, optional
             Sampling size, by default 5
-        attr : Timeseries attribute, optional
-            Needed if extracting a coordinate or data attribute from a
-            Timeseries object
+        attr : str, optional
+            Timeseries attribute; needed if extracting a coordinate
+            or data attribute from a Timeseries object
+        dt : float, optional
+            Timestep resolution; needed if using built-in
 
         Attributes
         ----------
-        T : 1-D array
+        tser : 1-D array
             Data timeseries
-        t : int
+        tlen : int
             Length (number of timesteps of timeseries)
         n : int
             Sampling size
@@ -56,60 +60,64 @@ class peccary:
         """
         # Check if data is Timeseries object
         if isinstance(data, Timeseries):
-            self.T = getattr(data, attr) # data timeseries
+            # # Check if there's more than one data attribute stored
+            # attrCheck = np.array([x is not None for x in [data.x, data.y, data.z, data.data]])
+            # if np.sum(attrCheck) > 1:
+            #     self.tser = np.where(attrCheck)
+            self.tser = getattr(data, attr) # data timeseries
             self.dt = data.dt
         else:
             # Setting up data
-            self.T=np.array(data) # data timeseries
+            self.tser=np.array(data) # data timeseries
         
-        if len(self.T.shape)>1:
+        if len(self.tser.shape)>1:
             raise TypeError( 'Data must be a 1-D array')
 
         # Precalculate constant values for later use
-        self.t = len(self.T) # length of timeseries
+        self.tlen = len(self.tser) # length of timeseries
         self.n = n # sampling size
         self.N = factorial(n) # n!
         self.invN = 1./self.N # 1/n!
         self.log2_N = np.log2(self.N) # log_2(n!)
         self.log2_Np1 = np.log2(self.N+1.) # log_2(n! + 1)
 
-    # def tPat(self, dt, sampInt=1):
-    #     """
-    #     Calculates pattern time of in PECCARY routine, based on 
-    #     sampling size and sampling interval
+    def tPat(self, sampInt=1):
+        """
+        Calculates pattern time of in PECCARY routine, based on 
+        sampling size and sampling interval
 
-    #     Parameters
-    #     ----------
-    #     dt : float
-    #         Timestep interval
-    #     sampInt : int or ndarray, optional
-    #         Sampling interval, by default 1
+        Parameters
+        ----------
+        dt : float
+            Timestep interval
+        sampInt : int or ndarray, optional
+            Sampling interval, by default 1
 
-    #     Returns
-    #     -------
-    #     float or ndarray
-    #         Pattern time(s) corresponding to inputted sampling interval(s)
-    #     """
-    #     return sampInt * dt * (self.n - 1.)
+        Returns
+        -------
+        float or ndarray
+            Pattern time(s) corresponding to inputted sampling interval(s)
+        """
+        return utils.ell2tpat(ell=sampInt, n=self.n, dt=self.dt)
     
-    # def ell_from_tPat(self, dt, tPat):
-    #     """
-    #     Calculates the sampling interval in PECCARY routine based 
-    #     on the pattern time and sampling size
+    def ell_from_tPat(self, tPat):
+        """
+        Calculates the sampling interval in PECCARY routine based 
+        on the pattern time and sampling size
 
-    #     Parameters
-    #     ----------
-    #     dt : float
-    #         Timestep interval
-    #     tPat : float or ndarray
-    #         Pattern time
+        Parameters
+        ----------
+        dt : float
+            Timestep interval
+        tPat : float or ndarray
+            Pattern time
 
-    #     Returns
-    #     -------
-    #     float or ndarray
-    #         Sampling interval(s) corresponding to inputted pattern time(s)
-    #     """
-    #     return tPat/(dt * (self.n - 1.))
+        Returns
+        -------
+        float or ndarray
+            Sampling interval(s) corresponding to inputted pattern time(s)
+        """
+        return utils.tpat2ell(tpat=tPat, n=self.n, dt=self.dt)
     
     def getPtot(self,sampInt=1):
         """
@@ -125,7 +133,7 @@ class peccary:
         int
             Total number of permutations
         """
-        return self.t - sampInt*(self.n - 1) # Total number of order n permutations in T; Weck+2015 Eq.(1) denominator
+        return self.tlen - sampInt*(self.n - 1) # Total number of order n permutations in T; Weck+2015 Eq.(1) denominator
 
     def constructPatternCount(self,sampInt=1):
         """
@@ -143,9 +151,9 @@ class peccary:
         Ptot : int 
             Total number of permutations
         """
-        Ptot = self.t - sampInt*(self.n - 1) # Total number of order n permutations in T; Weck+2015 Eq.(1) denominator
+        Ptot = self.tlen - sampInt*(self.n - 1) # Total number of order n permutations in T; Weck+2015 Eq.(1) denominator
         
-        patterns = np.array([self.T[i:i+(self.n-1)*sampInt+1:sampInt].argsort(kind='stable') for i in range(Ptot)]) # Get patterns based on sampling size and interval
+        patterns = np.array([self.tser[i:i+(self.n-1)*sampInt+1:sampInt].argsort(kind='stable') for i in range(Ptot)]) # Get patterns based on sampling size and interval
         count = np.unique(patterns, axis=0, return_counts=True) # Count the number of unique ordinal patterns
         
         return count, Ptot
@@ -168,9 +176,9 @@ class peccary:
         Ptot : int 
             Total number of permutations
         """
-        Ptot = self.t - sampInt*(self.n - 1) # Total number of order n permutations in T; Weck+2015 Eq.(1) denominator
+        Ptot = self.tlen - sampInt*(self.n - 1) # Total number of order n permutations in T; Weck+2015 Eq.(1) denominator
         
-        patterns = np.array([self.T[i:i+(self.n-1)*sampInt+1:sampInt].argsort(kind='stable') for i in range(Ptot)]) # Get patterns based on sampling size and interval
+        patterns = np.array([self.tser[i:i+(self.n-1)*sampInt+1:sampInt].argsort(kind='stable') for i in range(Ptot)]) # Get patterns based on sampling size and interval
         count = np.unique(patterns, axis=0, return_counts=True) # Count the number of unique ordinal patterns
         
         return count[0], count[1], Ptot
