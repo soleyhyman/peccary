@@ -37,9 +37,31 @@ def henonMap(n, a=1.4, b=0.3):
 
     Returns
     -------
-    ``Timeseries`` object from ``peccary``
-        Timeseries for Hénon map, stored in ``data`` attribute
-        of ``Timeseries`` object
+    peccary.timeseries.Timeseries
+        Timeseries for Hénon map, stored in ``x`` attribute
+        of ``Timeseries`` class
+
+    References
+    ----------
+    [1] For more information on the Hénon map, see Wolfram Mathworld's `entry <https://mathworld.wolfram.com/HenonMap.html>`_.
+
+    Examples
+    --------
+    To create a chaotic timeseries of 10 points using the Hénon map, e.g.,
+    
+    >>> import peccary.examples as ex
+    >>> henon = ex.henonMap(10)
+
+    The data can be called as follows:
+
+    >>> henon.x
+    array([ 1.        ,  0.6       ,  0.796     ,  0.2929376 ,  1.11866259,
+       -0.6640871 ,  0.71818243,  0.07867346,  1.20678941, -1.01527491])
+
+    The default parameters are :math:`a=1.4` and :math:b=0.3`, which give a
+    chaotic timeseries (i.e., the classical Hénon map). Other values for the
+    parameters can result in chaotic, intermittent chaotic and periodic, or
+    converging periodic behavior.
     """
     X = np.zeros((2,n))
     X[0,0] = 1.
@@ -48,11 +70,11 @@ def henonMap(n, a=1.4, b=0.3):
         X[0,i] = 1. - a * X[0,i-1] ** 2. + X[1,i-1]
         X[1,i] = b * X[0,i-1]
 
-    return Timeseries(t=np.arange(n), data=X[0,:], dt=1.)
+    return Timeseries(t=np.arange(n), x=X[0,:], dt=1.)
 
 def tentMap(n, mu=2.):
     """
-    Generate timeseries from tent map with parameter mu
+    Generate timeseries from tent map with parameter :math:`\mu`
 
     Parameters
     ----------
@@ -63,23 +85,42 @@ def tentMap(n, mu=2.):
 
     Returns
     -------
-    ``Timeseries`` object from ``peccary``
-        Timeseries for tent map, stored in ``data`` attribute
-        of ``Timeseries`` object
+    peccary.timeseries.Timeseries
+        Timeseries for tent map, stored in ``x`` attribute
+        of ``Timeseries`` class
+
+    References
+    ----------
+    [1] For more information on the tent map, see Wolfram Mathworld's `entry <https://mathworld.wolfram.com/TentMap.html>`_.
+
+
+    Examples
+    --------
+    To create a timeseries of 10 points using the tent map, e.g.,
+    
+    >>> import peccary.examples as ex
+    >>> tent = ex.tentMap(10)
+
+    The data can be called as follows:
+
+    >>> tent.x
+    array([  0.1,   0.2,   0.4,   0.8,   1.6,   3.2,  -4.4,  -8.8, -17.6, -35.2])
+
+    The :math:`\mu` parameter can be changed to produce different types of behavior.
     """
     X = np.zeros([n])
     X[0] = 0.1
 
     for i in range(1,n):
-        if X[i-1] < mu:
+        if X[i-1] < 0.5:
             X[i] = mu*X[i-1]
         else:
             X[i] = mu*(1 - X[i-1])
-    return Timeseries(t=np.arange(n), data=X, dt=1.)
+    return Timeseries(t=np.arange(n), x=X, dt=1.)
 
 def asymmTentMap(n, a=0.1847):
     """
-    Generate timeseries from asymmetric tent map with parameter a
+    Generate timeseries from asymmetric tent map with parameter :math:`a`
 
     Parameters
     ----------
@@ -90,9 +131,24 @@ def asymmTentMap(n, a=0.1847):
 
     Returns
     -------
-    ``Timeseries`` object from ``peccary``
-        Timeseries for asymmetric tent map, stored in ``data`` attribute
-        of ``Timeseries`` object
+    peccary.timeseries.Timeseries
+        Timeseries for asymmetric tent map, stored in ``x`` attribute
+        of ``Timeseries`` class
+
+    Examples
+    --------
+    To create a timeseries of 10 points using the asymmetric tent map, e.g.,
+    
+    >>> import peccary.examples as ex
+    >>> atent = ex.asymmTentMap(10)
+
+    The data can be called as follows:
+
+    >>> atent.x
+    array([0.1       , 0.54141852, 0.56246962, 0.53664955, 0.56831896,
+           0.52947508, 0.57711875, 0.51868178, 0.5903572 , 0.50244425])
+
+    The :math:`a` parameter can be changed to produce different types of behavior.
     """
     X = np.zeros([n])
     X[0] = 0.1
@@ -102,11 +158,11 @@ def asymmTentMap(n, a=0.1847):
             X[i] = X[i-1]/a
         else:
             X[i] = (1 - X[i-1])/(1 - a)
-    return Timeseries(t=np.arange(n), data=X, dt=1.)
+    return Timeseries(t=np.arange(n), x=X, dt=1.)
 
 def logisticMap(n, r=4.):
     """
-    Generate timeseries from logistic map with growth rate parameter r
+    Generate timeseries from logistic map with growth rate parameter :math:`r`
 
     Parameters
     ----------
@@ -117,17 +173,72 @@ def logisticMap(n, r=4.):
 
     Returns
     -------
-    ``Timeseries`` object from ``peccary``
+    peccary.timeseries.Timeseries
         Timeseries for logisitic map with parameter r, 
-        stored in ``data`` attribute of ``Timeseries`` object
+        stored in ``x`` attribute of ``Timeseries`` class
+
+    References
+    ----------
+    [1] For more information on the logistic map, see Wolfram Mathworld's `entry <https://mathworld.wolfram.com/LogisticMap.html>`_.
+
+    Examples
+    --------
+    To create a timeseries of 10 points using the logistic map, e.g.,
+    
+    >>> import peccary.examples as ex
+    >>> logis = ex.logisticMap(10)
+
+    The data can be called as follows:
+
+    >>> logis.x
+    array([0.1       , 0.36      , 0.9216    , 0.28901376, 0.82193923,
+           0.58542054, 0.97081333, 0.11333925, 0.40197385, 0.9615635 ])
+
+    The parameter :math:`r=4` is used to produce chaotic timeseries, but
+    other values may be used for different behavior. 
     """
     X = np.zeros([n])
     X[0] = 0.1
     for i in range(1,n):
         X[i] = r * X[i-1] * (1 - X[i-1])
-    return Timeseries(t=np.arange(n), data=X, dt=1.)
+    return Timeseries(t=np.arange(n), x=X, dt=1.)
 
 class lorenz:
+    """
+    The ``lorenz`` class can be used to generate the x-, y-, and z-coordinates
+    of the Lorenz strange attractor, which is chaotic for certain values of the
+    input parameters :math:`\sigma`, :math:`\\rho`, and :math:`\\beta`.
+
+    References
+    ----------
+    [1] Code modified and expanded from a `Matplotlib tutorial <https://matplotlib.org/stable/gallery/mplot3d/lorenz_attractor.html>`_
+
+    Examples
+    --------
+    To initialize the class using the default input parameters (:math:`\sigma = 10`, :math:`\\rho = 20`, :math:`\\beta = 2.667`)
+    and initial values (:math:`x_0 = 0`, :math:`y_0 = 1`, :math:`z = 1.05`), run the following code:
+
+    >>> import peccary.examples as ex
+    >>> lorenzSys = ex.lorenz()
+
+    To integrate the system, use the ``integrate`` method. The timestep 
+    resolution can be controlled with the ``dt`` parameter (default 0.01) 
+    and either the number of timesteps ``nsteps`` (default 10000) or the
+    duration parameter ``tDur`` for the number of "seconds". The ``tDur`` 
+    parameter is by default not used, but when specified, it supersedes 
+    ``nsteps``. To integrate the initialized system for 250.0 seconds, run:
+
+    >>> lor = lorenzSys.integrate(tDur=250.0)
+
+    The 3D data is stored in a ``peccary.timeseries.Timeseries`` class with
+    the attributes ``x``, ``y``, and ``z``, with the timesteps stored in 
+    the ``t`` attribute. The data can be extracted and plotted, e.g.,
+
+    >>> import matplotlib.pyplot as plt
+    >>> ax = plt.figure().add_subplot(projection='3d')
+    >>> ax.plot(lor.x, lor.y, lor.z, lw=0.5)
+    >>> plt.show()
+    """
     def __init__(self, s=10, r=20, b=2.667, initialVals=(0.,1.,1.05)):
         """
         Initialize Lorenz Strange Attractor class.
@@ -153,11 +264,6 @@ class lorenz:
             Beta parameter
         initialVals: 3-tuple
             Initial values for system
-
-        Notes
-        -----
-        Modified from `Matplotlib tutorial <https://matplotlib.org/stable/gallery/mplot3d/lorenz_attractor.html>`_
-
         """
         self.s = s
         self.r = r
@@ -184,9 +290,9 @@ class lorenz:
         z_dot = x*y - self.b*z
         return np.array([x_dot, y_dot, z_dot])
     
-    def generate(self, dt=0.01, nsteps=10000, tDur=None, t0=0.):
+    def integrate(self, dt=0.01, nsteps=10000, tDur=None):
         """
-        Generate x/y/z timeseries for Lorenz strange attractor
+        Integrate x/y/z timeseries for Lorenz strange attractor
 
         Parameters
         ----------
@@ -197,9 +303,6 @@ class lorenz:
         tDur : float, optional
             Duration of time to integrate over, supersedes nsteps,
             by default None
-        t0 : float, optional
-            Initial time value, only used if tDur is not None,
-            by default 0.
 
         Attributes
         ----------
@@ -216,17 +319,16 @@ class lorenz:
 
         Returns
         -------
-        ``Timeseries`` object from ``peccary``
+        peccary.timeseries.Timeseries
             Timeseries for x-, y-, and z- coordinates of Lorenz strange
-            attractor, stored in ``x``, ``y``, and ``z`` attributes of ``Timeseries`` object
+            attractor, stored in ``x``, ``y``, and ``z`` attributes of ``Timeseries`` class
         """
         self.dt = dt
         self.nsteps = nsteps 
         self.tDur = tDur
-        self.t0 = t0
         if self.tDur is not None:
             # check if time duration has been set, if so create times array from that
-            self.t = np.arange(self.t0,self.tDur+self.dt,self.dt)
+            self.t = np.arange(0.,self.tDur+self.dt,self.dt)
             self.nsteps = len(self.t[:-1])
         else:
             # if duration has not be set, create "times" array from nsteps and dt
@@ -243,15 +345,60 @@ class lorenz:
         return Timeseries(t=self.t, x=x, y=y, z=z, dt=self.dt)
     
 class doublePendulum:
+    """
+    The ``doublePendulum`` class can be used to generate the x- and y-timeseries
+    of a specified double pendulum system. 
+    
+    References
+    ----------
+    [1] Code based on a `Matplotlib tutorial <https://matplotlib.org/stable/gallery/animation/double_pendulum.html>`_
+    [2] The formulae in that tutorial turn were translated from the C code by `Michael S. Wheatland <http://www.physics.usyd.edu.au/~wheat/dpend_html/solve_dpend.c>`_
+    
+    Examples
+    --------
+    By default, the lengths of the pendulum rods are 1 meter and the two masses 
+    are 1 kilogram each, but these can be changed using the parameters ``L1``, 
+    ``L2``, ``M1``, and ``M2``. To initialize the class with the defaults, use: 
+
+    >>> import peccary.examples as ex
+    >>> pendSys = ex.doublePendulum()
+
+    The ``integrate`` method allows for control of the timestep resolution
+    (default :math:`2^{-6}`), the time to integrate over ``tDur``, and the initial
+    conditions (:math:`\\theta_1=120^\circ`, :math:`\omega_1=0^\circ \\text{s}^{-1}`, :math:`\\theta_2=-10^\circ`, :math:`\omega_1=0^\circ \\text{s}^{-1}`).
+    To integrate the systems for 10.0 seconds with the default resolution and
+    initial conditions, use:
+
+    >>> pend = pendSys.integrate(tDur=10.0)
+
+    The x- and y- coordinates are stored in a ``peccary.timeseries.Timeseries``
+    class in the ``x`` and ``y`` attributes in (2,n)-shape arrays. For example,
+    to index the x-coordinates of mass 2, use:
+
+    >>> pend.x[1]
+
+    There are also two plotting methods built in to the ``doublePendulum`` class:
+    ``plotStatic`` and ``plotAnimate``. The method ``plotStatic`` plots the xy-plane
+    of the pendulum system, as well as the x- and y-timeseires of the specified 
+    pendulum mass. By default, it plots the lower mass, mass 2, but mass 1 can be 
+    selected setting the ``mass`` argument to ``mass=1``. The method returns
+    ``matplotlib.figure.Figure`` and ``matplotlib.axes.Axes`` objects, which can
+    be plotted or saved to a file. To plot, call the method for the initialized
+    system and use the integrated ``Timeseries`` for the parameter ``tser``, i.e.,
+
+    >>> fig,ax = pendSys.plotStatic(pend)
+    >>> plt.show() # to show plot
+    >>> ### OR ###
+    >>> plt.savefig('pend.png') # to save plot
+    
+    The ``plotAnimate`` method works the same way, except that it animates the
+    xy-plane only. It can be used as follows:
+
+    >>> pendSys.plotAnimate(pend)
+    """
     def __init__(self, L1=1.0, L2=1.0, M1=1.0, M2=1.0):
         """
         Initialize double pendulum function
-
-        Notes
-        -----
-        Code based on a `Matplotlib tutorial <https://matplotlib.org/stable/gallery/animation/double_pendulum.html>`_
-        and translated into a Python class by Sóley Hyman.
-        The formulae in that tutorial turn were translated from the C code by `Michael S. Wheatland <http://www.physics.usyd.edu.au/~wheat/dpend_html/solve_dpend.c>`_
 
         Parameters
         ----------
@@ -337,13 +484,13 @@ class doublePendulum:
 
         return dydx
     
-    def integrate(self, tf=2.5, dt=np.power(2.,-6.), th1=120.0, w1=0.0, th2=-10.0, w2=0.0):
+    def integrate(self, tDur=2.5, dt=np.power(2.,-6.), th1=120.0, w1=0.0, th2=-10.0, w2=0.0):
         """
         Integrate double pendulum system
 
         Parameters
         ----------
-        tf : float, optional
+        tDur : float, optional
             How many seconds to simulate, by default 2.5
         dt : float, optional
             Time resolution in seconds, by default 0.015625
@@ -367,8 +514,8 @@ class doublePendulum:
         ndarray
             Timeseries of y-coordinates for mass 2
         """
-        # create a time array from 0 to tf, sampled at intervals of dt
-        t = np.arange(0, tf, dt)
+        # create a time array from 0 to tDur, sampled at intervals of dt
+        t = np.arange(0, tDur, dt)
 
         # initial state
         state = np.radians([th1, w1, th2, w2])
@@ -383,15 +530,17 @@ class doublePendulum:
 
         return Timeseries(t=t, x=np.vstack((x1,x2)), y=np.vstack((y1,y2)), dt=dt)
 
-    def plotStatic(self, tser):
+    def plotStatic(self, tser, mass=2):
         """
-        Quick-plot y(x), x(t), and y(t) for the second mass (lower mass)
+        Quick-plot y(x), x(t), and y(t) for one of the masses
         of a double pendulum system.
 
         Parameters
         ----------
-        tser : Timeseries object
-            Timeseries object created by doublePendulum.integrate()
+        tser : peccary.timeseries.Timeseries
+            ``Timeseries`` class created by doublePendulum.integrate()
+        mass : int, optional
+            Pendulum mass to plot, by default 2 (lower mass)
 
         Returns
         -------
@@ -400,18 +549,25 @@ class doublePendulum:
         ax : array of ``matplotlib.axes.Axes``
             Array of ``matplotlib`` Axes created for plot
         """
+        m = int(mass-1)
+
         fig,axs = plt.subplots(1,3, figsize=(15, 4))
-        axs[0].set_aspect('equal')
-        axs[0].plot(tser.x[1],tser.y[1])
-        axs[0].set_title('Double Pendulum Mass 2')
+        plt.subplots_adjust(wspace=0.3)
+        axs[0].axis('equal')
+        axs[0].plot(tser.x[m],tser.y[m])
+        axs[0].set_title('Double pendulum Mass {}'.format(int(mass)))
+        axs[0].set_xlabel('x (meters)')
+        axs[0].set_ylabel('y (meters)')
 
-        axs[1].plot(tser.t,tser.x[1])
+        axs[1].plot(tser.t,tser.x[m])
         axs[1].set_xlabel('Time (seconds)')
-        axs[1].set_title('Mass 2 x-coordinate')
+        axs[1].set_ylabel('x (meters)')
+        axs[1].set_title('Mass {} x-coordinate'.format(int(mass)))
 
-        axs[2].plot(tser.t,tser.y[1])
+        axs[2].plot(tser.t,tser.y[m])
         axs[2].set_xlabel('Time (seconds)')
-        axs[2].set_title('Mass 2 x-coordinate')
+        axs[2].set_ylabel('y (meters)')
+        axs[2].set_title('Mass {} y-coordinate'.format(int(mass)))
 
         return fig,axs
     
@@ -429,8 +585,8 @@ class doublePendulum:
         ----------
         i : int
             Index of the frame to animate
-        tser : Timeseries object
-            Timeseries object created by doublePendulum.integrate()
+        tser : peccary.timeseries.Timeseries
+            ``Timeseries`` class created by doublePendulum.integrate()
 
         Returns
         -------
@@ -458,8 +614,8 @@ class doublePendulum:
 
         Parameters
         ----------
-        tser : Timeseries object
-            Timeseries object created by doublePendulum.integrate()
+        tser : peccary.timeseries.Timeseries
+            ``Timeseries`` class created by doublePendulum.integrate()
         """
         fig = plt.figure(figsize=(5, 4))
         ax = fig.add_subplot(autoscale_on=False, xlim=(-self.L, self.L), ylim=(-self.L, 1.))
@@ -476,6 +632,35 @@ class doublePendulum:
         plt.show()
 
 class noiseColors:
+    """
+    The ``noiseColors`` class generates noisy timeseries of length ``n``
+    with different power spectra. Various methods generate timesereis for
+    white noise (flat power density spectrum), blue noise (density :math:`\propto \\nu`), 
+    violet noise (density :math:`\propto \\nu^2`), Brownian/red noise (density :math:`\propto \\nu^{-2}`), 
+    and pink noise (density :math:`\propto \\nu^{-1}`).
+
+    Examples
+    --------
+    To initialize the ``noiseColors`` class for 1000 points, use:
+
+    >>> import peccary.examples as ex
+    >>> noise = ex.noiseColors(1000)
+
+    To generate the different noise power spectra, use:
+
+    >>> white = noise.white()
+    >>> blue = noise.blue()
+    >>> violet = noise.violet()
+    >>> red = noise.red() # this is equivalent to using noise.brownian()
+    >>> pink = noise.pink()
+
+    The timeseries are stored in the ``x`` attribute with all of the methods.
+    
+    Alternatively, the method ``getNoiseTypes`` can be used to generate a list
+    of all available noise colors, e.g.,
+
+    >>> noises = ex.noiseColors(1000).getNoiseTypes()
+    """
     def __init__(self, n):
         """
         Initialize noiseColors class to generate noisy timeseries
@@ -513,87 +698,87 @@ class noiseColors:
 
         Returns
         -------
-        ``Timeseries`` object from ``peccary``
-            Timeseries for white noise, stored in ``data`` attribute
-            of ``Timeseries`` object
+        peccary.timeseries.Timeseries
+            Timeseries for white noise, stored in ``x`` attribute
+            of ``Timeseries`` class
         """
         freqs = np.power(self.whiteFreq,0.)
         freqs = freqs/np.sqrt(np.mean(freqs**2))
         noiseSpec = self.whiteFFT*freqs
-        return Timeseries(t=self.tArt, data=sfft.irfft(noiseSpec), dt=1.)
+        return Timeseries(t=self.tArt, x=sfft.irfft(noiseSpec), dt=1.)
       
     def blue(self):
         """
-        Generate blue noise (density :math:`\propto f`)
+        Generate blue noise (density :math:`\propto \\nu`)
 
         Returns
         -------
-        ``Timeseries`` object from ``peccary``
-            Timeseries for blue noise, stored in ``data`` attribute
-            of ``Timeseries`` object
+        peccary.timeseries.Timeseries
+            Timeseries for blue noise, stored in ``x`` attribute
+            of ``Timeseries`` class
         """
         freqs = np.power(self.whiteFreq,0.5)
         freqs = freqs/np.sqrt(np.mean(freqs**2))
         noiseSpec = self.whiteFFT*freqs
-        return Timeseries(t=self.tArt, data=sfft.irfft(noiseSpec), dt=1.)
+        return Timeseries(t=self.tArt, x=sfft.irfft(noiseSpec), dt=1.)
     
     def violet(self):
         """
-        Generate violet noise (density :math:`\propto f^2`)
+        Generate violet noise (density :math:`\propto \\nu^2`)
 
         Returns
         -------
-        ``Timeseries`` object from ``peccary``
-            Timeseries for violet noise, stored in ``data`` attribute
-            of ``Timeseries`` object
+        peccary.timeseries.Timeseries
+            Timeseries for violet noise, stored in ``x`` attribute
+            of ``Timeseries`` class
         """
         freqs = np.power(self.whiteFreq,1.)
         freqs = freqs/np.sqrt(np.mean(freqs**2))
         noiseSpec = self.whiteFFT*freqs
-        return Timeseries(t=self.tArt, data=sfft.irfft(noiseSpec), dt=1.)
+        return Timeseries(t=self.tArt, x=sfft.irfft(noiseSpec), dt=1.)
     
     def brownian(self):
         """
-        Generate Brownian noise (density :math:`\propto 1/f^2`)
+        Generate Brownian noise (density :math:`\propto \\nu^{-2}`)
 
         Returns
         -------
-        ``Timeseries`` object from ``peccary``
+        peccary.timeseries.Timeseries
             Timeseries for Brownian/red noise noise, stored in 
-            ``data`` attribute of ``Timeseries`` object
+            ``x`` attribute of ``Timeseries`` class
         """
         freqs = np.power(self.nonzeroFreq,-1.)
         freqs = freqs/np.sqrt(np.mean(freqs**2))
         noiseSpec = self.whiteFFT*freqs
-        return Timeseries(t=self.tArt, data=sfft.irfft(noiseSpec), dt=1.)
+        return Timeseries(t=self.tArt, x=sfft.irfft(noiseSpec), dt=1.)
     
     def red(self):
         """
-        Generate red noise (density :math:`\propto 1/f^2`).
+        Generate red noise (density :math:`\propto \\nu^{-2}`).
         This is an alias of the Brownian noise function
 
         Returns
         -------
-        ``Timeseries`` object from ``peccary``
+        peccary.timeseries.Timeseries
             Timeseries for red/Brownian noise noise, stored in 
-            ``data`` attribute of ``Timeseries`` object
+            ``x`` attribute of ``Timeseries`` class
         """
         return self.brownian()
     
     def pink(self):
         """
-        Generate pink noise (density :math:`\propto 1/f`)
+        Generate pink noise (density :math:`\propto \\nu^{-1}`)
 
         Returns
         -------
-        ``Timeseries`` object from ``peccary``
-            Timeseries for pink noise, stored in ``data`` attribute
-            of ``Timeseries`` object
+        peccary.timeseries.Timeseries
+            Timeseries for pink noise, stored in ``x`` attribute
+            of ``Timeseries`` class
         """
         freqs = np.power(self.nonzeroFreq,-0.5)
         freqs = freqs/np.sqrt(np.mean(freqs**2))
         noiseSpec = self.whiteFFT*freqs
-        return Timeseries(t=self.tArt, data=sfft.irfft(noiseSpec), dt=1.)
+        return Timeseries(t=self.tArt, x=sfft.irfft(noiseSpec), dt=1.)
     
     def getNoiseTypes(self):
         """
