@@ -20,6 +20,24 @@ import utils
 __all__ = ["peccary"]
 
 class peccary:
+    """
+    The ``peccary`` class is the core of the PECCARY method, which is based
+    on work by Bandt & Pompe (2002), Rosso et al. (2007), and Weck et al. (2015).
+    The class extracts ordinal patterns of a specified sampling size :math:`n` 
+    (default :math:`n=5`) and calculates a probability distribution of all possible
+    ordinal pattern permutations. After the pattern distribution has been created,
+    the values for Permutation Entropy and Jensen-Shanon Statistical Complexity can 
+    be calculated. See the Examples section for a demostration.
+
+    References
+    ----------
+    [1] Bandt, C., & Pompe, B. 2002, Phys Rev Lett, 88 (American Physical Society), 174102, https://link.aps.org/doi/10.1103/PhysRevLett.88.174102
+
+    [2] Rosso, O. A., Larrondo, H. A., Martin, M. T., Plastino, A., & Fuentes, M. A. 2007, Phys Rev Lett, 99 (American Physical Society), 154102, 
+        https://link.aps.org/doi/10.1103/PhysRevLett.99.154102
+    
+    [3] Weck, P. J., Schaffner, D. A., Brown, M. R., & Wicks, R. T. 2015, Phys Rev E, 91 (American Physical Society), 023101, https://link.aps.org/doi/10.1103/PhysRevE.91.023101
+    """
     def __init__(self, data, n=5, attr=None, dt=None):
         """
         Initialize PECCARY class
@@ -202,7 +220,7 @@ class peccary:
         count,Ptot = self.constructPatternCount(sampInt) # Get pattern counts and total number of permutations
         invPtot=1./Ptot # Inverse of total number of permutations
 
-        #Calculate S from the count
+        # Calculate S from the count
         probabilities = count[1]*invPtot # Probability of each pattern occurence; Weck+2015 Eq.(1)
         S = -1.*np.sum([p*np.log2(p) for p in probabilities]) # Shannon entropy formula for pattern probabilities
         Se = -1.*np.sum([P_Pe_sum_2*np.log2(P_Pe_sum_2) for P_Pe_sum_2 in 0.5*(probabilities+self.invN)]) + 0.5*(self.N-len(probabilities))*self.invN*(1+self.log2_N) # Disequilibrium between distribution and uniform distribution; Schaffner & Daniel (in prep), Eq.(8)
