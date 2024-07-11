@@ -38,7 +38,7 @@ class peccary:
     
     [3] Weck, P. J., Schaffner, D. A., Brown, M. R., & Wicks, R. T. 2015, Phys Rev E, 91 (American Physical Society), 023101, https://link.aps.org/doi/10.1103/PhysRevE.91.023101
     """
-    def __init__(self, data, n=5, attr=None, dt=None):
+    def __init__(self, data, n=5, attr=None, dt=None, ptcl=None):
         """
         Initialize PECCARY class
 
@@ -47,12 +47,15 @@ class peccary:
         data : 1-D array
             Timeseries data for PECCARY 
         n : int, optional
-            Sampling size, by default 5
+            Sampling size, by default 5, by default 5
         attr : str, optional
             Timeseries attribute; needed if extracting a coordinate
-            or data attribute from a Timeseries object
+            or data attribute from a Timeseries object, by default None
         dt : float, optional
-            Timestep resolution; needed if using built-in
+            Timestep resolution; needed if using built-in, 
+            by default None
+        ptcl: int, optional
+            Particle index, by default None
 
         Attributes
         ----------
@@ -87,9 +90,15 @@ class peccary:
         else:
             # Setting up data
             self.tser=np.array(data) # data timeseries
+
+        if ptcl is not None:
+            if type(ptcl) is int:
+                self.tser = self.tser[ptcl]
+            else:
+                raise TypeError('Particle index (ptcl) must be integer')
         
         if len(self.tser.shape)>1:
-            raise TypeError( 'Data must be a 1-D array')
+            raise TypeError('Data must be a 1-D array')
 
         # Precalculate constant values for later use
         self.tlen = len(self.tser) # length of timeseries
@@ -339,14 +348,16 @@ class peccary:
 
         Returns
         -------
-        :math:`H(\ell)` : array
-            Normalized Shannon Perumation Entropy as function of sampling interval :math:`\ell`
-        :math:`C(\ell)` : array
-            Normalized Jensen-Shannon complexity as function of sampling interval :math:`\ell`
+        Hvals : ndarray
+            Normalized Shannon Perumation Entropy as function of sampling interval, :math:`H(\ell)`
+        Cvals : ndarray
+            Normalized Jensen-Shannon complexity as function of sampling interval, :math:`C(\ell)`
+        sampInts : ndarray
+            Sampling interval (:math:`\ell`) values
         """
         if type(sampIntArray) != type(None):
             sampInts = sampIntArray # Array of sampling intervals from sampIntArray
         else:
             sampInts = np.arange(min_sampInt,max_sampInt,step_sampInt) # Make array of sampling intervals from min_sampInt to max_sampInt, increasing by 1
         Hvals, Cvals = np.array([self.calcHC(sampInt=int(sampInts[i])) for i in range(len(sampInts))]).T # Get normalized permutation entropy and statisical complexity for each of the sampling intervals
-        return Hvals, Cvals
+        return Hvals, Cvals, sampInts
