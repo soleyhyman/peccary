@@ -43,7 +43,7 @@ def henonMap(n, a=1.4, b=0.3):
 
     References
     ----------
-    [1] For more information on the Hénon map, see Wolfram Mathworld's `entry <https://mathworld.wolfram.com/HenonMap.html>`_.
+    [1] For more information on the Hénon map, see Wolfram Mathworld's `entry <https://mathworld.wolfram.com/HenonMap.html>`__.
 
     Examples
     --------
@@ -91,7 +91,7 @@ def tentMap(n, mu=2.):
 
     References
     ----------
-    [1] For more information on the tent map, see Wolfram Mathworld's `entry <https://mathworld.wolfram.com/TentMap.html>`_.
+    [1] For more information on the tent map, see Wolfram Mathworld's `entry <https://mathworld.wolfram.com/TentMap.html>`__.
 
 
     Examples
@@ -179,7 +179,7 @@ def logisticMap(n, r=4.):
 
     References
     ----------
-    [1] For more information on the logistic map, see Wolfram Mathworld's `entry <https://mathworld.wolfram.com/LogisticMap.html>`_.
+    [1] For more information on the logistic map, see Wolfram Mathworld's `entry <https://mathworld.wolfram.com/LogisticMap.html>`__.
 
     Examples
     --------
@@ -211,7 +211,7 @@ class lorenz:
 
     References
     ----------
-    [1] Code modified and expanded from a `Matplotlib tutorial <https://matplotlib.org/stable/gallery/mplot3d/lorenz_attractor.html>`_
+    [1] Code modified and expanded from a `Matplotlib tutorial <https://matplotlib.org/stable/gallery/mplot3d/lorenz_attractor.html>`__
 
     Examples
     --------
@@ -351,8 +351,9 @@ class doublePendulum:
     
     References
     ----------
-    [1] Code based on a `Matplotlib tutorial <https://matplotlib.org/stable/gallery/animation/double_pendulum.html>`_
-    [2] The formulae in that tutorial turn were translated from the C code by `Michael S. Wheatland <http://www.physics.usyd.edu.au/~wheat/dpend_html/solve_dpend.c>`_
+    [1] Code based on a `Matplotlib tutorial <https://matplotlib.org/stable/gallery/animation/double_pendulum.html>`__
+    
+    [2] The formulae in that tutorial turn were translated from the C code by `Michael S. Wheatland <http://www.physics.usyd.edu.au/~wheat/dpend_html/solve_dpend.c>`__
     
     Examples
     --------
@@ -365,7 +366,7 @@ class doublePendulum:
 
     The ``integrate`` method allows for control of the timestep resolution
     (default :math:`2^{-6}`), the time to integrate over ``tDur``, and the initial
-    conditions (:math:`\\theta_1=120^\circ`, :math:`\omega_1=0^\circ \\text{s}^{-1}`, :math:`\\theta_2=-10^\circ`, :math:`\omega_1=0^\circ \\text{s}^{-1}`).
+    conditions (:math:`\\theta_1=120^\circ`, :math:`\omega_1=0^\circ ~\\text{s}^{-1}`, :math:`\\theta_2=-10^\circ`, :math:`\omega_1=0^\circ ~\\text{s}^{-1}`).
     To integrate the systems for 10.0 seconds with the default resolution and
     initial conditions, use:
 
