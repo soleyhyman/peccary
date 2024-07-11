@@ -58,7 +58,7 @@ def plotBoundsHC(ax, n=5, nsteps=1000, **kwargs):
     ax.plot(np.array([minHVal,maxHVal]), np.array([maxC[argMinH_CmaxCurve], maxC[argMaxH_CmaxCurve]]), **kwargs)
 
 def HCplane(H=None, C=None, ax=None, n=5, nsteps=1000, fontsize=12, showAxLabels=True, showBoundaries=True, annotatePlane=False, 
-            savePlot=False, savePath='', kwargsHC={'ls':'-','color':'k','zorder':0}, kwargsBnds={}, kwargsPts={}, annotateFontsize=None):
+            savePlot=False, savePath='', kwargsFig={'figsize':(8,6)}, kwargsHC={'ls':'-','color':'k','zorder':0}, kwargsBnds={}, kwargsPts={}, annotateFontsize=None):
     """
     Creates a blank HC plane with maximum and minimum curves for the given embedding dimension
 
@@ -84,6 +84,9 @@ def HCplane(H=None, C=None, ax=None, n=5, nsteps=1000, fontsize=12, showAxLabels
     savePath : str, optional
         Path to save plot if savePlot set to True, by default ''
         Note: Use only forward slashes in savePath
+    kwargsFig : dict, optional
+        Style arguments for HC plane figure and axis passed to 
+        ``matplotlib.pyplot.subplots``, if none given uses PECCARY defaults
     kwargsHC : dict, optional
         Style arguments for HC plane envelope lines passed to 
         ``matplotlib.pyplot.plot``, if none given uses PECCARY defaults
@@ -102,7 +105,7 @@ def HCplane(H=None, C=None, ax=None, n=5, nsteps=1000, fontsize=12, showAxLabels
     # Check if an existing axis has been inputted
     # Otherwise, create figure and subplot
     if ax is None:
-        fig, ax = plt.subplots(1,1)
+        fig, ax = plt.subplots(1,1,**kwargsFig)
         returnAx = True
     else:
         returnAx = False
