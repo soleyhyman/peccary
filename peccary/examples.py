@@ -11,11 +11,7 @@ import scipy.fft as sfft
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
-### USE THIS LINE FOR DISTRIBUTION ###
-# from peccary.timeseries import Timeseries
-
-### USING THIS LOCAL VERSION FOR NOW ###
-from timeseries import Timeseries
+from .timeseries import Timeseries
 
 __all__ = ["henonMap", "tentMap", "asymmTentMap", "logisticMap", "lorenz", "doublePendulum", "noiseColors"]
 

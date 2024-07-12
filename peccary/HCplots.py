@@ -7,18 +7,12 @@ diagnostics, interpretation, and analysis with PECCARY.
 """
 
 import numpy as np
-from math import factorial
 import matplotlib.pylab as plt
 
-### USE THIS LINE FOR DISTRIBUTION ###
-# import peccary.utils
-
-### USING THIS LOCAL VERSION FOR NOW ###
-import utils
+from . import utils
 
 __all__ = ["plotBoundsHC","HCplane"]
 
-# def plotBoundsHC(ax, n=5, nsteps=1000, lw=1., ls='--', color='k', alpha=0.5):
 def plotBoundsHC(ax, n=5, nsteps=1000, **kwargs):
     """
     Plots region boundary lines on HC plane

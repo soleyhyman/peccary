@@ -3,8 +3,6 @@ Timeseries class wrapper
 """
 
 import numpy as np
-from math import factorial
-import matplotlib.pylab as plt
 
 __all__ = ["Timeseries"]
 

@@ -4,7 +4,6 @@ Utility functions for PECCARY
 
 import numpy as np
 from math import factorial
-import matplotlib.pylab as plt
 
 __all__ = ["ell2tpat", "tpat2ell", "HmaxPer", "HminPer", "calcHCplane", "getMaxC"]
 
