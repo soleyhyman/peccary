@@ -10,8 +10,8 @@ for all of the code in the ``peccary`` package.
 .. toctree::
     :maxdepth: 1
 
-    examples/index
-    HCplots/index
-    peccary/index
-    timeseries/index
-    utils/index
+    source/examples/index
+    source/HCplots/index
+    source/peccary/index
+    source/timeseries/index
+    source/utils/index
