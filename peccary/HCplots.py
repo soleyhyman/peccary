@@ -11,7 +11,7 @@ import matplotlib.pylab as plt
 
 from . import utils
 
-__all__ = ["plotBoundsHC","HCplane"]
+__all__ = ["plotBoundsHC","HCplane","HCcurves"]
 
 def plotBoundsHC(ax, n=5, nsteps=1000, **kwargs):
     """
@@ -58,6 +58,10 @@ def HCplane(H=None, C=None, ax=None, n=5, nsteps=1000, fontsize=12, showAxLabels
 
     Parameters
     ----------
+    H : ndarray, optional
+        Permutation Entropy values, by default None
+    C : ndarray, optional
+        Statistical Complexity values, by default None
     ax : Matplotlib axis
         Axis on which to plot empty HC curves
     n : int, optional
@@ -154,3 +158,76 @@ def HCplane(H=None, C=None, ax=None, n=5, nsteps=1000, fontsize=12, showAxLabels
         plt.savefig(savefile+'.png')
     elif returnAx:
         return fig, ax
+    
+def HCcurves(H=None, C=None, sampInts=None, axes=None, fontsize=12, showAxLabels=True, 
+            savePlot=False, savePath='', kwargsFig={'figsize':(10,4)}, kwargsPts={}):
+    """
+    Plots H- and C-curves or sets up blank figure for plotting H- and a blank HC plane with maximum and minimum curves for the given embedding dimension
+
+    Parameters
+    ----------
+    H : ndarray, optional
+        Permutation Entropy values corresponding to array of
+        sampling intervals, by default None
+    C : ndarray, optional
+        Statistical Complexity values corresponding to array of
+        sampling intervals, by default None
+    sampInts : ndarray, optional
+        Array of sampling intervals, by default None
+    axes : List of Matplotlib axess
+        Axes H- and C- curves
+    fontsize : integer or float, optional
+        Fontsize of axis labels, by default 12
+    showAxLabels : bool, optional
+        Show pre-defined axis labels, by default True
+    savePlot : bool, optional
+        Saves plot if set to True, by default False
+    savePath : str, optional
+        Path to save plot if savePlot set to True, by default ''
+        Note: Use only forward slashes in savePath
+    kwargsFig : dict, optional
+        Style arguments for figure and axis passed to 
+        ``matplotlib.pyplot.subplots``, if none given uses PECCARY defaults
+    kwargsPts : dict, optional
+        Style arguments for [H,C] values plotted on HC-plane with 
+        ``matplotlib.pyplot.scatter``, if none given uses PECCARY defaults
+    """
+    # Check if an existing axis has been inputted
+    # Otherwise, create figure and subplots
+    if axes is None:
+        fig, axes = plt.subplots(1,2,**kwargsFig)
+        plt.subplots_adjust(wspace=0.35)
+        axes[0].set_ylim(0,1.0)
+        axes[1].set_ylim(0,0.5)
+        returnAx = True
+    else:
+        returnAx = False
+
+    # Check whether H and C values have been inputted
+    # If so, plot them
+    if (H is None) or (C is None) or (sampInts is None):
+        pass
+    else:
+        axes[0].plot(sampInts, H, **kwargsPts)
+        axes[1].plot(sampInts, C, **kwargsPts)
+
+    # Check whether to include axis labels
+    if showAxLabels:
+        axes[0].set_ylabel(r"Permutation Entropy, $H$", fontsize=fontsize)
+        axes[1].set_ylabel(r"Statistical Complexity, $C$", fontsize=fontsize)
+        
+        for axi in axes:
+            axi.set_xlabel(r"Sampling interval, $\ell$", fontsize=fontsize)
+            axi.tick_params(axis='both', labelsize=fontsize-2)
+    else:
+        pass
+    
+    # Check whether to save plot
+    if savePlot:
+        if savePath.endswith('/'):
+            savefile=savePath + 'HCcurves'
+        else:
+            savefile=savePath + '/HCcurves'
+        plt.savefig(savefile+'.png')
+    elif returnAx:
+        return fig, axes
