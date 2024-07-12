@@ -1,0 +1,6 @@
+# Defining the exact version will make sure things don't break
+sphinx==7.1.2
+pydata-sphinx-theme==0.15.4
+readthedocs-sphinx-search==0.1.1
+numpydoc==1.7.0
+sphinx_automodapi
