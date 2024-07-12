@@ -17,7 +17,7 @@ setup(
     url='https://github.com/soleyhyman/peccary',
     author='Sóley Hyman',
     author_email='soleyhyman@arizona.edu',
-    packages=find_packages(),
+    packages=find_packages(include=["peccary","peccary.*"]),
     python_requires='>=3.8',
     install_requires=["numpy >= 1.14","scipy >= 0.19","matplotlib"],
     package_data={"": ["README.md","LICENSE"]},
