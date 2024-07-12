@@ -29,26 +29,25 @@ keywords = ["astrophysics", "dynamics", "physics", "plasma",
             "plasma physics", "science", "chaos", "permutation", 
             "entropy", "statistical", "complexity", "peccary"]
 classifiers = [
-    Development Status :: 4 - Beta,
-    Intended Audience :: Science/Research,
-    Natural Language :: English,
-    Operating System :: OS Independent,
-    Programming Language :: Python :: 3,
-    Programming Language :: Python :: 3,
-    Programming Language :: Python :: 3.8,
-    Programming Language :: Python :: 3.9,
-    Programming Language :: Python :: 3.10,
-    Programming Language :: Python :: 3.11,
-    Programming Language :: Python :: 3.12,
-    Topic :: Education
-    Topic :: Scientific/Engineering,
-    Topic :: Scientific/Engineering :: Astronomy,
-    Topic :: Scientific/Engineering :: Physics,
-    Topic :: Software Development :: Libraries :: Python Modules.
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Astronomy",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 
 [project.urls]
 Documentation = "https://readthedocs.org"
 Repository = "https://github.com/soleyhyman/peccary"
 Issues = "https://github.com/soleyhyman/peccary/issues"
-
