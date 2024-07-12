@@ -7,15 +7,9 @@ all of the Permutation Entropy and Statistical Complexity calculations.
 
 import numpy as np
 from math import factorial
-import matplotlib.pylab as plt
 
-### USE THIS LINE FOR DISTRIBUTION ###
-# from peccary.timeseries import Timeseries
-# from peccary.utils import ell2tpat, tpat2ell
-
-### USING THIS LOCAL VERSION FOR NOW ###
-from timeseries import Timeseries
-import utils
+from .timeseries import Timeseries
+from . import utils
 
 __all__ = ["peccary"]
 
