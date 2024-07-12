@@ -49,30 +49,6 @@ Citation and Attribution
 
 If you make use of this code, please cite the paper:
 
-.. .. code-block:: bibtex
-
-..     @article{gala,
-..       doi = {10.21105/joss.00388},
-..       url = {https://doi.org/10.21105%2Fjoss.00388},
-..       year = 2017,
-..       month = {oct},
-..       publisher = {The Open Journal},
-..       volume = {2},
-..       number = {18},
-..       author = {Adrian M. Price-Whelan},
-..       title = {Gala: A Python package for galactic dynamics},
-..       journal = {The Journal of Open Source Software}}
-
-.. Please also cite the Zenodo DOI |DOI| of the version you used as a software
-.. citation:
-
-.. .. include:: ZENODO.rst
-
-.. .. |JOSS| image:: http://joss.theoj.org/papers/10.21105/joss.00388/status.svg
-..    :target: http://joss.theoj.org/papers/10.21105/joss.00388
-.. .. |DOI| image:: https://zenodo.org/badge/17577779.svg
-..    :target: https://zenodo.org/badge/latestdoi/17577779
-
 
 Indices and tables
 ------------------
