@@ -1,0 +1,54 @@
+[build-system]
+requires = [
+    "setuptools >= 41.2",
+    "setuptools_scm",
+    "wheel >= 0.29.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "peccary"
+version="0.1"
+dependencies = [
+    "numpy >= 1.14",
+    "scipy >= 0.19",
+    "matplotlib"
+]
+requires-python = ">= 3.8"
+authors = [
+  {name = "Sóley Hyman", email = "soleyhyman@arizona.edu"},
+  {name = "David Schaffner"},
+  {name = "Peter Weck"}
+]
+maintainers = [
+  {name = "Sóley Hyman", email = "soleyhyman@arizona.edu"},
+]
+description = "Package for identifying regular, complex, and stochastic behavior in timeseries"
+readme = "README.md"
+license = {file = "LICENSE"}
+keywords = ["astrophysics", "dynamics", "physics", "plasma", 
+            "plasma physics", "science", "chaos", "permutation", 
+            "entropy", "statistical", "complexity", "peccary"]
+classifiers = [
+    Development Status :: 4 - Beta,
+    Intended Audience :: Science/Research,
+    Natural Language :: English,
+    Operating System :: OS Independent,
+    Programming Language :: Python :: 3,
+    Programming Language :: Python :: 3,
+    Programming Language :: Python :: 3.8,
+    Programming Language :: Python :: 3.9,
+    Programming Language :: Python :: 3.10,
+    Programming Language :: Python :: 3.11,
+    Programming Language :: Python :: 3.12,
+    Topic :: Education
+    Topic :: Scientific/Engineering,
+    Topic :: Scientific/Engineering :: Astronomy,
+    Topic :: Scientific/Engineering :: Physics,
+    Topic :: Software Development :: Libraries :: Python Modules.
+]
+
+[project.urls]
+Documentation = "https://readthedocs.org"
+Repository = "https://github.com/soleyhyman/peccary"
+Issues = "https://github.com/soleyhyman/peccary/issues"
+
