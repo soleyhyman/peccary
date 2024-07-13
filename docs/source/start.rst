@@ -7,13 +7,23 @@ The following example will walk you through the basic functions of the
 ``peccary`` package. Additional descriptions and examples for all
 functions and class can be found in the :ref:`User Guide <user-guide>`.
 
+Initializing double pendulum system
+-----------------------------------
+
 First, import ``peccary`` (the core analysis of the package), 
 ``examples`` (which can generate a variety of different
-timeseries), and ``HCplots`` (used for plotting on the :math:`HC`-plane):
+timeseries), and ``HCplots`` (used for plotting on the :math:`HC`-plane),
+as well as some additional packages:
 
+>>> import numpy as np
+>>> import matplotlib.pyplot as plt
 >>> from peccary import peccary
 >>> import peccary.examples as ex
 >>> from peccary import HCplots
+>>> from peccary import utils
+
+Integration and initializing PECCARY
+------------------------------------
 
 To start with PECCARY, you need some sort of timeseries to analyze. 
 Let's set up a double pendulum system where each mass is 1 kg and 
@@ -62,6 +72,9 @@ the x-coordinates for the the second particle (or mass) in the system:
 
 >>> pecc = peccary(pend, attr='x', ptcl=1)
 
+Calculating and plotting :math:`H` and :math:`C`
+------------------------------------------------
+
 To run PECCARY for a range of sampling intervals, we use the ``calcHCcurves`` method.
 By default, it will run the analysis for sampling intervals from :math:`\ell = 1` to 
 :math:`\ell = 100` at increments of 1. This can be changed via the ``min_sampInt``,
@@ -99,6 +112,37 @@ This gives us the plot:
 
 .. raw:: html
 
-   <img src="_static/pendEx-HC.png" width="100%"
+   <img src="_static/pendEx-HCcurves.png" width="100%"
     style="margin-bottom: 32px;"/>
-[continue writeup]
+
+While this is useful when chaotic behavior is expected, to use PECCARY on a timeseries where the
+behavior is not know, it is better to use the idealized sampling scheme discussed in Section 3.2
+of Hyman, Daniel, & Schaffner (in prep). These recommendations are to use 
+:math:`0.3 \lesssim t_{pat}/t_{nat} \lesssim 0.5` and :math:`t_{dur}/t_{nat} \geq 1.5`. Since the
+double pendulum is a chaotic system, we need to approximate its natural timescale by using the
+``utils.tNatApprox`` function.
+
+>>> tNat = utils.tNatApprox(pend.t, pend.x[1])
+
+We can convert our desired time resolution ratio of :math:`t_{pat}/t_{nat} = 0.4` to a sampling 
+interval using the natural timescale we calculated and the function ``utils.tpat2ell``:
+
+>>> ell = utils.tpat2ell(0.4*tNat, dt=pend.dt)
+
+We can now calculate the ideal :math:`H` and :math:`C` calues for  using:
+
+>>> idealH, idealC = pecc.calcHC(sampInt=ell)
+>>> HCplots.HCplane(idealH, idealC)
+>>> plt.show()
+
+This gives us the plot of the :math:`HC`-plane, which indicates that our timeseries
+is indeed complex:
+
+.. raw:: html
+
+   <img src="_static/pendEx-HCideal.png" width="100%"
+    style="margin-bottom: 32px;"/>
+
+In-depth discussion of the choices and interpretations for :math:`H` and :math:`C`
+can be found in Hyman, Daniel, & Schaffner (in prep). Additional documentation and
+examples for each function can be found in the :ref:`User Guide <user-guide>`.
