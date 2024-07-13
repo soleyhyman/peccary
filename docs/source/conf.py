@@ -55,4 +55,15 @@ html_theme = "pydata_sphinx_theme"
 html_static_path = ['_static']
 html_logo = "_static/peccary-logo-banner.png"
 html_favicon = "_static/peccary-logo-icon.ico"
+html_theme_options = {
+  "show_nav_level": 2,
+  "icon_links": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/soleyhyman/peccary",
+            "icon": "fa-brands fa-square-github",
+            "type": "fontawesome",
+        },
+    ],
+}
 autosummary_generate = True
