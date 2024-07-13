@@ -52,7 +52,7 @@ This gives us the plot:
 
 .. raw:: html
 
-   <img src="source/_static/pendEx.png" width="100%"
+   <img src="_static/pendEx.png" width="100%"
     style="margin-bottom: 32px;"/>
 
 That looks good! Now, let's run PECCARY on the x-coordinates of the second mass (mass 2)
@@ -81,7 +81,7 @@ This gives us the plot:
 
 .. raw:: html
 
-   <img src="source/_static/pendEx-HC.png" width="100%"
+   <img src="_static/pendEx-HC.png" width="100%"
     style="margin-bottom: 32px;"/>
 
 The documentation for ``HCplots.HCplane`` lists additional arguments for modifying the styles
@@ -99,6 +99,6 @@ This gives us the plot:
 
 .. raw:: html
 
-   <img src="source/_static/pendEx-HC.png" width="100%"
+   <img src="_static/pendEx-HC.png" width="100%"
     style="margin-bottom: 32px;"/>
 [continue writeup]

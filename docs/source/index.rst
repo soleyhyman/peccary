@@ -5,7 +5,7 @@
 
 .. raw:: html
 
-   <img src="source/_static/peccary-logo-banner.png" width="70%"
+   <img src="_static/peccary-logo-banner.png" width="70%"
     style="margin-bottom: 32px;"/>
 
 
