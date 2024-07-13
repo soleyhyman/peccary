@@ -54,8 +54,6 @@ def HmaxPer(n=5):
     """
     Calculate maximum Permutation Entropy value (H) for a
     periodic function given the specified sampling size n.
-    
-    Equation: [insert equation here]
 
     Parameters
     ----------
@@ -74,8 +72,6 @@ def HminPer(n=5):
     """
     Calculate minimum Permutation Entropy value (H) for a
     periodic function given the specified sampling size n.
-    
-    Equation: [insert equation here]
 
     Parameters
     ----------
@@ -97,7 +93,7 @@ def calcHCplane(n=5, nsteps=1000):
     Parameters
     ----------
     n : int, optional
-        Embedding dimension/pattern length, by default 5
+        Sampling size, by default 5
     nsteps : int, optional
         Number of steps to use for generating HC bounding curves,
         by default 1000
@@ -163,7 +159,7 @@ def getMaxC(n=5, nsteps=1000):
     Parameters
     ----------
     n : int, optional
-        Embedding dimension/pattern length, by default 5
+        Sampling, by default 5
     nsteps : int, optional
         Number of steps to use for generating HC bounding curves,
         by default 1000
