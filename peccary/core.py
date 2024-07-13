@@ -21,16 +21,26 @@ class peccary:
     (default :math:`n=5`) and calculates a probability distribution of all possible
     ordinal pattern permutations. After the pattern distribution has been created,
     the values for Permutation Entropy and Jensen-Shanon Statistical Complexity can 
-    be calculated. See the Examples section for a demostration.
+    be calculated. 
+
+    The ``peccary`` class can be initialized with either a 1-D array or a
+    ``Timeseries`` instance. In the case of a timeseries object, the desired attribute
+    to use for analysis should be indicated with the ``attr`` parameter. If there
+    are multiple particles for the data, the desired particle should be indexed with
+    the ``ptcl`` parameter. Although the ``dt`` parameter is optional, it is recommended
+    to specifiy it if ``data`` is a standard 1-D array, since it is used in the convenience
+    methods of ``tPat`` and ``ell_from_tPat``.
+    
+    See :ref:`Getting started <start>` for a demostration of how to initialize ``peccary`` with a 
+    ``Timeseries`` instance. 
 
     References
     ----------
-    [1] Bandt, C., & Pompe, B. 2002, Phys Rev Lett, 88 (American Physical Society), 174102, https://link.aps.org/doi/10.1103/PhysRevLett.88.174102
+    [1] `Bandt, C., & Pompe, B. 2002, Phys Rev Lett, 88 (American Physical Society), 174102 <https://link.aps.org/doi/10.1103/PhysRevLett.88.174102>`__
 
-    [2] Rosso, O. A., Larrondo, H. A., Martin, M. T., Plastino, A., & Fuentes, M. A. 2007, Phys Rev Lett, 99 (American Physical Society), 154102, 
-        https://link.aps.org/doi/10.1103/PhysRevLett.99.154102
+    [2] `Rosso, O. A., Larrondo, H. A., Martin, M. T., Plastino, A., & Fuentes, M. A. 2007, Phys Rev Lett, 99 (American Physical Society), 154102 <https://link.aps.org/doi/10.1103/PhysRevLett.99.154102>`__
     
-    [3] Weck, P. J., Schaffner, D. A., Brown, M. R., & Wicks, R. T. 2015, Phys Rev E, 91 (American Physical Society), 023101, https://link.aps.org/doi/10.1103/PhysRevE.91.023101
+    [3] `Weck, P. J., Schaffner, D. A., Brown, M. R., & Wicks, R. T. 2015, Phys Rev E, 91 (American Physical Society), 023101 <https://link.aps.org/doi/10.1103/PhysRevE.91.023101>`__
     """
     def __init__(self, data, n=5, attr=None, dt=None, ptcl=None):
         """
