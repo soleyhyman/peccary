@@ -18,5 +18,5 @@ discrete and chaotic systems to noisy systems.
 API
 ===
 
-.. automodapi:: examples
+.. automodapi:: peccary.examples
     :no-inheritance-diagram:

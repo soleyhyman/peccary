@@ -20,5 +20,5 @@ and calculating the allowed region of the HC plane.
 API
 ===
 
-.. automodapi:: utils
+.. automodapi:: peccary.utils
     :no-inheritance-diagram:

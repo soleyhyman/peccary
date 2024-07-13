@@ -3,7 +3,7 @@
 .. _peccary-peccary:
 
 ***********************************
-Core Analysis (``peccary.peccary``)
+Core Analysis (``peccary.core``)
 ***********************************
 
 Introduction
@@ -18,5 +18,5 @@ Permutation Entropy, and Jensen-Shannon Statistical Complexity.
 API
 ===
 
-.. automodapi:: peccary
+.. automodapi:: peccary.core
     :no-inheritance-diagram:

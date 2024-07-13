@@ -18,5 +18,5 @@ line functions.
 API
 ===
 
-.. automodapi:: HCplots
+.. automodapi:: peccary.HCplots
     :no-inheritance-diagram:

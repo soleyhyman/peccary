@@ -24,6 +24,6 @@ the ``Timeseries`` class.
 API
 ===
 
-.. automodapi:: timeseries
+.. automodapi:: peccary.timeseries
     :no-inheritance-diagram:
     :automodsumm_included_members: __init__
