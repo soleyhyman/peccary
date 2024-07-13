@@ -4,10 +4,13 @@ Utility functions for PECCARY
 
 import numpy as np
 from math import factorial
+from scipy.signal import argrelmax, argrelmin
+
+from .timeseries import Timeseries
 
 __all__ = ["ell2tpat", "tpat2ell", "HmaxPer", "HminPer", "calcHCplane", "getMaxC"]
 
-def ell2tpat(ell,n,dt):
+def ell2tpat(ell,dt,n=5):
     """
     Convert sampling interval to pattern timescale
 
@@ -15,10 +18,10 @@ def ell2tpat(ell,n,dt):
     ----------
     ell : float
         Sampling interval
-    n : float
-        Sampling size
     dt : float
         Timestep or timeseries resolution
+    n : int, optional
+        Sampling size, by default 5
 
     Returns
     -------
@@ -27,7 +30,7 @@ def ell2tpat(ell,n,dt):
     """
     return ell*dt*(n-1.)
 
-def tpat2ell(tpat,n,dt):
+def tpat2ell(tpat,dt,n=5):
     """
     Convert pattern timescale to sampling interval
 
@@ -35,17 +38,17 @@ def tpat2ell(tpat,n,dt):
     ----------
     tpat : float
         Pattern timescale
-    n : float
-        Sampling size
     dt : float
         Timestep or timeseries resolution
+    n : int, optional
+        Sampling size, by default 5
 
     Returns
     -------
-    float
+    int
         Equivalent sampling interval
     """
-    return tpat/(dt*(n-1.))
+    return int(np.round(tpat/(dt*(n-1.))))
 
 def HmaxPer(n=5): 
     """
@@ -172,3 +175,59 @@ def getMaxC(n=5, nsteps=1000):
     """
     Cminx, Cminy, Cmaxx, Cmaxy = calcHCplane(n=n, nsteps=nsteps)
     return np.max(Cmaxy)
+
+def tNatApprox(t, data, n=5, method='ncross', attr=None, dt=None, ptcl=None, crossVal=None):
+    """
+    Approximate the natural timescale for an inputted timeseries.
+
+    Parameters
+    ----------
+    t : 1-D array
+        Timesteps data
+    data : 1-D array
+        Timeseries data
+    n : int, optional
+        Sampling size, by default 5, by default 5
+    method : str, optional
+        Method to use for natural timescale approximation, choose
+        from 'minavg', 'maxavg', 'ncross', by default 'ncross'
+    attr : str, optional
+        Timeseries attribute; needed if extracting a coordinate
+        or data attribute from a Timeseries object, by default None
+    dt : float, optional
+        Timestep resolution; needed if using built-in, 
+        by default None
+    ptcl: int, optional
+        Particle index, by default None
+    crossVal: float, optional
+        Central value used for 'ncross' method, by default None
+    """
+    # Check if data is Timeseries object
+    if isinstance(data, Timeseries):
+        tser = getattr(data, attr) # data timeseries
+    else:
+        # Setting up data
+        tser=np.array(data) # data timeseries
+
+    if ptcl is not None:
+        if type(ptcl) is int:
+            tser = tser[ptcl]
+        else:
+            raise TypeError('Particle index (ptcl) must be integer')
+    
+    if len(tser.shape)>1:
+        raise TypeError('Data must be a 1-D array')
+    
+    if method == 'minavg':
+        return np.mean(np.diff(t[argrelmin(tser)]))
+    elif method == 'maxavg':
+        return np.mean(np.diff(t[argrelmax(tser)]))
+    elif method == 'ncross':
+        if crossVal is None:
+            crossVal = np.mean(tser)
+        else:
+            pass
+        crossLocs = np.where(np.sign(tser[1:]-crossVal) != np.sign(tser[:-1]-crossVal))[0]
+        return t[-1]/(len(crossLocs)/2.)
+    else:
+        raise KeyError("Method {} does not exist. Please use either 'ncross', 'minavg', or 'maxavg'.".format(method))
