@@ -18,7 +18,7 @@ sys.path.insert(0, pathlib.Path(__file__).resolve().parents[2].as_posix()+'/pecc
 project = 'PECCARY'
 copyright = '2024, Sóley Hyman'
 author = 'Sóley Hyman'
-release = '0.1'
+release = '1.0.0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
