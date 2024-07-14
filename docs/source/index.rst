@@ -17,9 +17,9 @@ PECCARY
 is a Python package for distinguishing between regular, complex, and stochastic
 behavior in timeseries. It is based on the work by 
 `Bandt & Pompe <https://ui.adsabs.harvard.edu/#abs/2002PhRvL..88q4102B/abstract>`_ (2002), 
-`Rosso et al. <https://ui.adsabs.harvard.edu/#abs/2007PhRvL..99o4102R/abstract>`_ (2007). 
+`Rosso et al. <https://ui.adsabs.harvard.edu/#abs/2007PhRvL..99o4102R/abstract>`_ (2007), 
 and 
-`Weck et al. <https://ui.adsabs.harvard.edu/#abs/2015PhRvE..91b3101W/abstract>`_ (2015),
+`Weck et al. <https://ui.adsabs.harvard.edu/#abs/2015PhRvE..91b3101W/abstract>`_ (2015).
 In addition to calculating the Permutation Entropy (:math:`H`) and Statistical Complexity
 (:math:`C`) values, this package also has plotting tools for the :math:`HC`-plane and 
 visualizing the resulting :math:`[H,C]` values for various timeseries, examples timeseries, 

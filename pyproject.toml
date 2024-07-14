@@ -23,7 +23,7 @@ maintainers = [
   {name = "Sóley Hyman", email = "soleyhyman@arizona.edu"},
 ]
 description = "Package for identifying regular, complex, and stochastic behavior in timeseries"
-readme = "README.md"
+readme = "README.rst"
 license = {file = "LICENSE"}
 keywords = ["astrophysics", "dynamics", "physics", "plasma", 
             "plasma physics", "science", "chaos", "permutation", 

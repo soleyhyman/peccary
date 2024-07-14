@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 here = os.path.abspath(os.path.dirname(__file__))
 
 # get long description
-with open("README.md", "r") as fh:
+with open("README.rst", "r") as fh:
     long_description = fh.read()
 
 setup(
@@ -13,14 +13,14 @@ setup(
     version='0.1.0',
     description='Package for identifying regular, complex, and stochastic behavior in timeseries',
     long_description=long_description,
-    long_description_content_type="text/markdown",
+    long_description_content_type="text/rst",
     url='https://github.com/soleyhyman/peccary',
     author='Sóley Hyman',
     author_email='soleyhyman@arizona.edu',
     packages=find_packages(include=["peccary","peccary.*"]),
     python_requires='>=3.8',
     install_requires=["numpy >= 1.14","scipy >= 0.19","matplotlib"],
-    package_data={"": ["README.md","LICENSE"]},
+    package_data={"": ["README.rst","LICENSE"]},
     license='GPL-3.0',
     classifiers=[
         "Development Status :: 4 - Beta",
