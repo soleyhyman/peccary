@@ -1,4 +1,7 @@
-# PECCARY
+*******
+PECCARY
+*******
+
 PECCARY (Permutation Entropy and statistiCal Complexity Analysis for astRophYsics) 
 is a pure-python package for distinguishing between regular, complex, and stochastic
 behavior in timeseries. It is based on the work by 
