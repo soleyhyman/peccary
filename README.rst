@@ -1,3 +1,5 @@
+|logo|
+
 *******
 PECCARY
 *******
@@ -15,3 +17,11 @@ resulting $[H,C]$ values for various timeseries.
 A detailed summary of the PECCARY method can be found in Hyman, Daniel, & Schaffner (in prep). 
 If you make use of PECCARY, please include a citation to Hyman, Daniel, & Schaffner (in prep) 
 in any publications.
+
+.. |PyPI| image:: https://badge.fury.io/py/peccary.svg
+   :target: https://pypi.org/project/peccary/
+.. |Documentation Status| image:: https://readthedocs.org/projects/peccary/badge/?version=latest
+   :target: http://peccary.readthedocs.io/en/latest/?badge=latest
+.. |logo| image:: https://peccary.readthedocs.io/en/latest/_static/peccary-logo-banner.png
+   :target: https://github.com/soleyhyman/peccary
+   :width: 400
