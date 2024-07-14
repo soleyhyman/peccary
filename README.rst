@@ -3,6 +3,7 @@
 *******
 PECCARY
 *******
+|Build status|
 
 PECCARY (Permutation Entropy and statistiCal Complexity Analysis for astRophYsics) 
 is a pure-python package for distinguishing between regular, complex, and stochastic
@@ -17,6 +18,27 @@ resulting $[H,C]$ values for various timeseries.
 A detailed summary of the PECCARY method can be found in Hyman, Daniel, & Schaffner (in prep). 
 If you make use of PECCARY, please include a citation to Hyman, Daniel, & Schaffner (in prep) 
 in any publications.
+
+Documentation
+-------------
+|Documentation Status|
+
+The documentation for ``peccary`` is hosted on `Read the Docs <http://peccary.readthedocs.io>`__.
+
+Installation and Dependencies
+-----------------------------
+
+The recommended way to install the latest stable version of ``peccary`` 
+is with ``pip`` via the terminal with the command:
+
+>>> pip install peccary
+
+You can also use the command:
+
+>>> python -m pip install peccary
+
+See the `installation instructions <https://peccary.readthedocs.io/en/latest/installation.html>`__
+in the `documentation <https://peccary.readthedocs.io>`__ for more instructions.
 
 .. |PyPI| image:: https://badge.fury.io/py/peccary.svg
    :target: https://pypi.org/project/peccary/
