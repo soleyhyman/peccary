@@ -56,7 +56,8 @@ Citation and Attribution
 If you make use of this code, please cite the paper:
 
 .. code-block:: bibtex
-   @ARTICLE{2024arXiv240711970H,
+
+   @article{2024arXiv240711970H,
        author = {{Hyman}, S{\'o}ley {\'O}. and {Daniel}, Kathryne J. and {Schaffner}, David A.},
         title = "{PECCARY: A novel approach for characterizing orbital complexity, stochasticity, and regularity}",
       journal = {arXiv e-prints},
