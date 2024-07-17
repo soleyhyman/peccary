@@ -18,8 +18,8 @@ In addition to calculating the Permutation Entropy ($H$) and Statistical Complex
 ($C$) values, this package also has plotting tools for the $HC$-plane and visualizing the 
 resulting $[H,C]$ values for various timeseries.
 
-A detailed summary of the PECCARY method can be found in Hyman, Daniel, & Schaffner (`arXiv:2407.11970 <https://arxiv.org/abs/2407.11970>__`). 
-If you make use of PECCARY, please include a citation to Hyman, Daniel, & Schaffner (Hyman, Daniel, & Schaffner (`arXiv:2407.11970 <https://arxiv.org/abs/2407.11970>__`)) 
+A detailed summary of the PECCARY method can be found in Hyman, Daniel, & Schaffner (`arXiv:2407.11970 <https://arxiv.org/abs/2407.11970>`__). 
+If you make use of PECCARY, please include a citation to Hyman, Daniel, & Schaffner (`arXiv:2407.11970 <https://arxiv.org/abs/2407.11970>__`)
 in any publications.
 
 Documentation

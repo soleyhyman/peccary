@@ -28,9 +28,9 @@ In addition to calculating the Permutation Entropy (:math:`H`) and Statistical C
 visualizing the resulting :math:`[H,C]` values for various timeseries, examples timeseries, 
 and utility functions.
 
-A detailed summary of the PECCARY method can be found in Hyman, Daniel, & Schaffner (in prep). 
+A detailed summary of the PECCARY method can be found in Hyman, Daniel, & Schaffner (`arXiv:2407.11970 <https://arxiv.org/abs/2407.11970>`__). 
 If you make use of PECCARY, please include a :ref:`citation <cite>` to 
-Hyman, Daniel, & Schaffner (`arXiv:2407.11970 <https://arxiv.org/abs/2407.11970>__`) in any publications.
+Hyman, Daniel, & Schaffner (`arXiv:2407.11970 <https://arxiv.org/abs/2407.11970>`__) in any publications.
 
 .. note::
    This project is under active development.
