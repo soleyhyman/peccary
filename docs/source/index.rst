@@ -55,7 +55,7 @@ Citation and Attribution
 
 If you make use of this code, please cite the paper:
 
-.. code-block:: bibtex
+.. code-block::
 
     @article{peccary,
       author = {{Hyman}, S{\'o}ley {\'O}. and {Daniel}, Kathryne J. and {Schaffner}, David A.},
