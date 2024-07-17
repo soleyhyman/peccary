@@ -57,21 +57,20 @@ If you make use of this code, please cite the paper:
 
 .. code-block:: bibtex
 
-   @article{2024arXiv240711970H,
-       author = {{Hyman}, S{\'o}ley {\'O}. and {Daniel}, Kathryne J. and {Schaffner}, David A.},
-        title = "{PECCARY: A novel approach for characterizing orbital complexity, stochasticity, and regularity}",
+    @article{peccary,
+      author = {{Hyman}, S{\'o}ley {\'O}. and {Daniel}, Kathryne J. and {Schaffner}, David A.},
+      title = "{PECCARY: A novel approach for characterizing orbital complexity, stochasticity, and regularity}",
       journal = {arXiv e-prints},
-     keywords = {Astrophysics - Instrumentation and Methods for Astrophysics, Astrophysics - Astrophysics of Galaxies},
-         year = 2024,
-        month = jul,
-          eid = {arXiv:2407.11970},
-        pages = {arXiv:2407.11970},
-archivePrefix = {arXiv},
-       eprint = {2407.11970},
- primaryClass = {astro-ph.IM},
-       adsurl = {https://ui.adsabs.harvard.edu/abs/2024arXiv240711970H},
+      keywords = {Astrophysics - Instrumentation and Methods for Astrophysics, Astrophysics - Astrophysics of Galaxies},
+      year = 2024,
+      month = jul,
+      eid = {arXiv:2407.11970},
+      pages = {arXiv:2407.11970},
+      archivePrefix = {arXiv},
+      eprint = {2407.11970},
+      primaryClass = {astro-ph.IM},
+      adsurl = {https://ui.adsabs.harvard.edu/abs/2024arXiv240711970H},
       adsnote = {Provided by the SAO/NASA Astrophysics Data System}}
-
 
 Indices and tables
 ------------------
