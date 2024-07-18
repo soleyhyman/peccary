@@ -30,25 +30,35 @@ def ell2tpat(ell,dt,n=5):
     """
     return ell*dt*(n-1.)
 
-def tpat2ell(tpat,dt,n=5):
+def tpat2ell(tpat,dt,n=5,returnInt=True):
     """
     Convert pattern timescale to sampling interval
 
     Parameters
     ----------
-    tpat : float
+    tpat : float or ndarray
         Pattern timescale
     dt : float
         Timestep or timeseries resolution
     n : int, optional
         Sampling size, by default 5
+    returnInt : boolean, optional
+        Return integer or 
 
     Returns
     -------
-    int
-        Equivalent sampling interval
-    """
-    return int(np.round(tpat/(dt*(n-1.))))
+    int, list of int, or ndarray
+        Equivalent sampling interval(s); returns int if
+        tpat is a single value, list of ints if tpat is
+        array/list, and ndarray if tpat is array/list and
+        returnInt is set to False
+    """    
+    if type(tpat)==int or type(tpat)==float:
+        return int(np.round(tpat/(dt*(n-1.))))
+    elif returnInt:
+        return [int(np.round(tp/(dt*(n-1.)))) for tp in tpat]
+    else:
+        return np.array(tpat)/(dt*(n-1.))
 
 def HmaxPer(n=5): 
     """

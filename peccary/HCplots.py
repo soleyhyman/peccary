@@ -209,6 +209,11 @@ def HCcurves(H=None, C=None, sampInts=None, axes=None, fontsize=12, showAxLabels
         by default None
     n : int, optional
         Sampling size, only needed if tPatAx is True, by default 5
+
+    Raises
+    ------
+    TypeError
+        If tPatAx is True, dt must be a float
     """
     # Check if an existing axis has been inputted
     # Otherwise, create figure and subplots
@@ -253,16 +258,18 @@ def HCcurves(H=None, C=None, sampInts=None, axes=None, fontsize=12, showAxLabels
         pass
 
     # Check whether secondary tPat axes should be created
-    if tPatAx:
+    if tPatAx and type(dt) != type(None):
         if orientation.startswith('v'):
-            secAx = axes[0].secondary_xaxis('top', functions=(partial(utils.ell2tpat,n=5,dt=dt), partial(utils.tpat2ell,n=5,dt=dt)))
+            secAx = axes[0].secondary_xaxis('top', functions=(partial(utils.ell2tpat,n=5,dt=dt), partial(utils.tpat2ell,n=5,dt=dt,returnInt=False)))
             secAx.set_xlabel('Pattern timescale', fontsize=fontsize)
             secAx.tick_params(axis='both', which='major', labelsize=fontsize-2)
         else:
             for axi in axes:
-                secAx = axi.secondary_xaxis('top', functions=(partial(utils.ell2tpat,n=5,dt=dt), partial(utils.tpat2ell,n=5,dt=dt)))
+                secAx = axi.secondary_xaxis('top', functions=(partial(utils.ell2tpat,n=5,dt=dt), partial(utils.tpat2ell,n=5,dt=dt,returnInt=False)))
                 secAx.set_xlabel('Pattern timescale', fontsize=fontsize)
                 secAx.tick_params(axis='both', which='major', labelsize=fontsize-2)
+    elif tPatAx and type(dt) != float:
+        raise TypeError('If tPatAx is True, dt must be a float')
     else:
         pass
 
