@@ -7,12 +7,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "peccary"
-version="0.1.0"
 dependencies = [
     "numpy >= 1.14",
     "scipy >= 0.19",
     "matplotlib"
 ]
+dynamic = ["version"]
 requires-python = ">= 3.8"
 authors = [
   {name = "Sóley Hyman", email = "soleyhyman@arizona.edu"},
@@ -50,3 +50,5 @@ classifiers = [
 Documentation = "https://peccary.readthedocs.io/"
 Repository = "https://github.com/soleyhyman/peccary"
 Issues = "https://github.com/soleyhyman/peccary/issues"
+
+[tool.setuptools_scm]

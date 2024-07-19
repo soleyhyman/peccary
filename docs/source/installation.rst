@@ -51,7 +51,3 @@ To build and install the project (from the root of the source tree, e.g., inside
 the cloned ``git`` directory):
 
 >>> python -m pip install .
-
-You can also use the ``setup.py`` file with the command:
-
->>> python setup.py install
