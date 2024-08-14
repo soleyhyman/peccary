@@ -3,7 +3,7 @@
 *******
 PECCARY
 *******
-|PyPI| |License|
+|PyPI| |Zenodo| |License|
 
 PECCARY (Permutation Entropy and statistiCal Complexity Analysis for astRophYsics) 
 is a pure-python package for distinguishing between regular, complex, and stochastic
@@ -52,3 +52,5 @@ in the `documentation <https://peccary.readthedocs.io>`__ for more instructions.
    :width: 400
 .. |License| image:: http://img.shields.io/badge/license-MIT-blue.svg?style=flat
    :target: https://github.com/soleyhyman/peccary/blob/main/LICENSE
+.. |Zenodo| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.13168299.svg
+   :target: https://doi.org/10.5281/zenodo.13168299

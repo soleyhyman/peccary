@@ -52,6 +52,7 @@ Contents
 
 Citation and Attribution
 ------------------------
+|Zenodo|
 
 If you make use of this code, please cite the paper:
 
@@ -72,9 +73,28 @@ If you make use of this code, please cite the paper:
       adsurl = {https://ui.adsabs.harvard.edu/abs/2024arXiv240711970H},
       adsnote = {Provided by the SAO/NASA Astrophysics Data System}}
 
+Please also cite the PECCARY version you used as a software citation using the Zenodo DOI |Zenodo|:
+
+.. code-block::
+
+    @software{soley_hyman_2024_13168299,
+      author = {Sóley Hyman and
+                        dschaffner},
+      title = {soleyhyman/peccary: v0.1.1},
+      month = aug,
+      year = 2024,
+      publisher = {Zenodo},
+      version = {v0.1.1},
+      doi = {10.5281/zenodo.13168299},
+      url = {https://doi.org/10.5281/zenodo.13168299}
+}
+
 Indices and tables
 ------------------
 
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+.. |Zenodo| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.13168299.svg
+   :target: https://doi.org/10.5281/zenodo.13168299
