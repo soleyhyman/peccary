@@ -86,8 +86,7 @@ Please also cite the PECCARY version you used as a software citation using the Z
       publisher = {Zenodo},
       version = {v0.1.1},
       doi = {10.5281/zenodo.13168299},
-      url = {https://doi.org/10.5281/zenodo.13168299}
-}
+      url = {https://doi.org/10.5281/zenodo.13168299}}
 
 Indices and tables
 ------------------
