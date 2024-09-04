@@ -38,6 +38,16 @@ You can also use the command:
 >>> python -m pip install peccary
 
 
+.. _condaInstall:
+
+Using ``conda``
+:::::::::::::::::::::::::::
+
+``peccary`` can also be installed using ``conda`` the command:
+
+>>> conda install -c conda-forge peccary
+
+
 .. _gitInstall:
 
 From source: 

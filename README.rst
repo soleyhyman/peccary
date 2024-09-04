@@ -3,7 +3,7 @@
 *******
 PECCARY
 *******
-|PyPI| |Zenodo| |License|
+|PyPI| |conda| |Zenodo| |License|
 
 PECCARY (Permutation Entropy and statistiCal Complexity Analysis for astRophYsics) 
 is a pure-python package for distinguishing between regular, complex, and stochastic
@@ -40,11 +40,17 @@ You can also use the command:
 
 >>> python -m pip install peccary
 
+or with ``conda`` via:
+
+>>> conda install -c conda-forge peccary
+
 See the `installation instructions <https://peccary.readthedocs.io/en/latest/installation.html>`__
 in the `documentation <https://peccary.readthedocs.io>`__ for more instructions.
 
 .. |PyPI| image:: https://badge.fury.io/py/peccary.svg
    :target: https://pypi.org/project/peccary/
+.. |conda| image:: https://anaconda.org/conda-forge/peccary/badges/version.svg
+   :target: https://anaconda.org/conda-forge/peccary
 .. |Documentation Status| image:: https://readthedocs.org/projects/peccary/badge/?version=latest
    :target: http://peccary.readthedocs.io/en/latest/?badge=latest
 .. |logo| image:: https://peccary.readthedocs.io/en/latest/_static/peccary-logo-banner.png
