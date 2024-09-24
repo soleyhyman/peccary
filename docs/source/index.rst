@@ -58,7 +58,7 @@ If you make use of this code, please cite the paper:
 
 .. code-block::
 
-    @article{peccary,
+    @article{peccaryPaper,
       author = {{Hyman}, S{\'o}ley {\'O}. and {Daniel}, Kathryne J. and {Schaffner}, David A.},
       title = "{PECCARY: A novel approach for characterizing orbital complexity, stochasticity, and regularity}",
       journal = {arXiv e-prints},
@@ -77,7 +77,7 @@ Please also cite the PECCARY version you used as a software citation using the Z
 
 .. code-block::
 
-    @software{soley_hyman_2024_13168299,
+    @software{peccaryZenodo,
       author = {Sóley Hyman and
                         dschaffner},
       title = {soleyhyman/peccary: v0.1.1},
