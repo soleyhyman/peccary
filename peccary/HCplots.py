@@ -53,8 +53,8 @@ def plotBoundsHC(ax, n=5, nsteps=1000, **kwargs):
     ax.plot(np.array([maxHVal,maxHVal]), np.array([minC[argMaxH_CminCurve], maxC[argMaxH_CmaxCurve]]), **kwargs)
     ax.plot(np.array([minHVal,maxHVal]), np.array([maxC[argMinH_CmaxCurve], maxC[argMaxH_CmaxCurve]]), **kwargs)
 
-def HCplane(H=None, C=None, ax=None, n=5, nsteps=1000, fontsize=12, showAxLabels=True, showBoundaries=True, annotatePlane=False, 
-            savePlot=False, savePath='', kwargsFig={'figsize':(8,6)}, kwargsHC={'ls':'-','color':'k','zorder':0}, kwargsBnds={}, kwargsPts={}, annotateFontsize=None):
+def HCplane(H=None, C=None, fig=None, ax=None, n=5, nsteps=1000, fontsize=12, showAxLabels=True, showBoundaries=True, annotatePlane=False, 
+            savePlot=False, savePath='', rtax=False, kwargsFig={'figsize':(8,6)}, kwargsHC={'ls':'-','color':'k','zorder':0}, kwargsBnds={}, kwargsPts={}, annotateFontsize=None):
     """
     Plot :math:`HC`-plane upper and lower allowed bounds, as well as
     :math:`[H,C]` coordinates and/or region annotations, if specified.
@@ -67,6 +67,7 @@ def HCplane(H=None, C=None, ax=None, n=5, nsteps=1000, fontsize=12, showAxLabels
         Permutation Entropy values, by default None
     C : ndarray, optional
         Statistical Complexity values, by default None
+    fig : Matplotlib figure, optional
     ax : Matplotlib axis
         Axis on which to plot empty HC curves
     n : int, optional
@@ -87,6 +88,8 @@ def HCplane(H=None, C=None, ax=None, n=5, nsteps=1000, fontsize=12, showAxLabels
     savePath : str, optional
         Path to save plot if savePlot set to True, by default ''
         Note: Use only forward slashes in savePath
+    rtax : bool, optional
+        request return axis and figure for inputed axis and figure use
     kwargsFig : dict, optional
         Style arguments for HC plane figure and axis passed to 
         ``matplotlib.pyplot.subplots``, if none given uses PECCARY defaults
@@ -111,7 +114,10 @@ def HCplane(H=None, C=None, ax=None, n=5, nsteps=1000, fontsize=12, showAxLabels
         fig, ax = plt.subplots(1,1,**kwargsFig)
         returnAx = True
     else:
-        returnAx = False
+        if rtax:
+            returnAx = True
+        else:
+            returnAx = False
 
     # Plot HC envelope
     ax.plot(Cminx,Cminy,**kwargsHC)
@@ -164,8 +170,8 @@ def HCplane(H=None, C=None, ax=None, n=5, nsteps=1000, fontsize=12, showAxLabels
     elif returnAx:
         return fig, ax
     
-def HCcurves(H=None, C=None, sampInts=None, axes=None, fontsize=12, showAxLabels=True, 
-            savePlot=False, savePath='', kwargsFig={'figsize':(10,4)}, kwargsPts={},
+def HCcurves(H=None, C=None, sampInts=None, fig=None, axes=None, fontsize=12, showAxLabels=True, 
+            savePlot=False, savePath='', rtax=False, kwargsFig={'figsize':(10,4)}, kwargsPts={},
             orientation='horizontal', tPatAx=False, dt=None, n=5):
     """
     Plots H- and C-curves or sets up blank figure for plotting H- and C- curves.
@@ -180,6 +186,7 @@ def HCcurves(H=None, C=None, sampInts=None, axes=None, fontsize=12, showAxLabels
         sampling intervals, by default None
     sampInts : ndarray, optional
         Array of sampling intervals, by default None
+    fig : Matplotlib figure, optional
     axes : List of Matplotlib axess
         Axes H- and C- curves
     fontsize : integer or float, optional
@@ -191,6 +198,8 @@ def HCcurves(H=None, C=None, sampInts=None, axes=None, fontsize=12, showAxLabels
     savePath : str, optional
         Path to save plot if savePlot set to True, by default ''
         Note: Use only forward slashes in savePath
+    rtax : bool, optional
+        request return axis and figure for inputed axis and figure use
     kwargsFig : dict, optional
         Style arguments for figure and axis passed to 
         ``matplotlib.pyplot.subplots``, if none given uses PECCARY defaults
@@ -232,7 +241,10 @@ def HCcurves(H=None, C=None, sampInts=None, axes=None, fontsize=12, showAxLabels
             axes[1].set_ylim(0,0.5)
             returnAx = True
     else:
-        returnAx = False
+        if rtax = True:
+            returnAx = True
+        else:
+            returnAx = False
 
     # Check whether H and C values have been inputted
     # If so, plot them
