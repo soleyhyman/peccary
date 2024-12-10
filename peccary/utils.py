@@ -53,7 +53,7 @@ def tpat2ell(tpat,dt,n=5,returnInt=True):
         array/list, and ndarray if tpat is array/list and
         returnInt is set to False
     """    
-    if type(tpat)==int or type(tpat)==float:
+    if isinstance(tpat,(int, float)):
         return int(np.round(tpat/(dt*(n-1.))))
     elif returnInt:
         return [int(np.round(tp/(dt*(n-1.)))) for tp in tpat]

@@ -144,5 +144,5 @@ is indeed complex:
     style="margin-bottom: 32px;"/>
 
 In-depth discussion of the choices and interpretations for :math:`H` and :math:`C`
-can be found in Hyman, Daniel, & Schaffner (in prep). Additional documentation and
-examples for each function can be found in the :ref:`User Guide <user-guide>`.
+can be found in Hyman, Daniel, & Schaffner (`arXiv:2407.11970 <https://arxiv.org/abs/2407.11970>`__). 
+Additional documentation and examples for each function can be found in the :ref:`User Guide <user-guide>`.
