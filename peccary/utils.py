@@ -237,3 +237,37 @@ def tNatApprox(t, data, n=5, method='ncross', attr=None, dt=None, ptcl=None, cro
         return t[-1]/(len(crossLocs)/2.)
     else:
         raise KeyError("Method {} does not exist. Please use either 'ncross', 'minavg', or 'maxavg'.".format(method))
+    
+def calcSampInt(tnat:float, dt:float|None=None, n:int=5) -> tuple:
+    """
+    Return upper and lower bounds for recommended ordinal pattern
+    sampling. 
+    
+    By default, will return the recommended range of 
+    pattern timescales for sampling; providing a value for the
+    time resolution dt will cause it to return the recommended
+    range of sampling intervals.
+
+    Parameters
+    ----------
+    tnat : float
+        Natural timescale
+    dt : float | None, optional
+        Time resolution between timesteps, by default None. 
+        If None, returns recommended pattern timescale
+    n : int, optional
+        Sampling size, by default 5. If dt is None, this
+        parameter is ignored
+
+    Returns
+    -------
+    tuple
+        Returns lower and higher bounds of recommended sampling
+        pattern timescale (if dt=None) or sampling interval
+        (if dt is assigned a value).
+    """
+    if dt==None:
+        return 0.3*tnat, 0.5*tnat
+    else:
+        val = tnat/(dt*(n-1))
+        return int(np.round(0.3*val)), int(np.round(0.5*val))
