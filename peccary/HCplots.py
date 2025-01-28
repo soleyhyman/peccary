@@ -8,21 +8,23 @@ diagnostics, interpretation, and analysis with PECCARY.
 
 import numpy as np
 import matplotlib.pylab as plt
+from matplotlib.ticker import FormatStrFormatter 
+from functools import partial
 
 from . import utils
 
-__all__ = ["plotBoundsHC","HCplane"]
+__all__ = ["plotBoundsHC","HCplane","HCcurves"]
 
 def plotBoundsHC(ax, n=5, nsteps=1000, **kwargs):
     """
-    Plots region boundary lines on HC plane
-
+    Plots region boundary lines on HC plane. 
+    
     Parameters
     ----------
     ax : Matplotlib axis
         Axis on which to plot empty HC curves
     n : int, optional
-        Embedding dimension/pattern length, by default 5
+        Sampling size, by default 5
     nsteps : int, optional
         Number of steps to use for generating HC bounding curves,
         by default 1000
@@ -54,14 +56,21 @@ def plotBoundsHC(ax, n=5, nsteps=1000, **kwargs):
 def HCplane(H=None, C=None, ax=None, n=5, nsteps=1000, fontsize=12, showAxLabels=True, showBoundaries=True, annotatePlane=False, 
             savePlot=False, savePath='', kwargsFig={'figsize':(8,6)}, kwargsHC={'ls':'-','color':'k','zorder':0}, kwargsBnds={}, kwargsPts={}, annotateFontsize=None):
     """
-    Creates a blank HC plane with maximum and minimum curves for the given embedding dimension
+    Plot :math:`HC`-plane upper and lower allowed bounds, as well as
+    :math:`[H,C]` coordinates and/or region annotations, if specified.
+    If no Matplotlib axis is specified, it will return Matplotlib
+    figure and axis instances. 
 
     Parameters
     ----------
+    H : ndarray, optional
+        Permutation Entropy values, by default None
+    C : ndarray, optional
+        Statistical Complexity values, by default None
     ax : Matplotlib axis
         Axis on which to plot empty HC curves
     n : int, optional
-        Embedding dimension/pattern length, by default 5
+        Sampling size, by default 5
     nsteps : int, optional
         Number of steps to use for generating HC bounding curves,
         by default 1000
@@ -154,3 +163,123 @@ def HCplane(H=None, C=None, ax=None, n=5, nsteps=1000, fontsize=12, showAxLabels
         plt.savefig(savefile+'.png')
     elif returnAx:
         return fig, ax
+    
+def HCcurves(H=None, C=None, sampInts=None, axes=None, fontsize=12, showAxLabels=True, 
+            savePlot=False, savePath='', kwargsFig={'figsize':(10,4)}, kwargsPts={},
+            orientation='horizontal', tPatAx=False, dt=None, n=5):
+    """
+    Plots H- and C-curves or sets up blank figure for plotting H- and C- curves.
+
+    Parameters
+    ----------
+    H : ndarray, optional
+        Permutation Entropy values corresponding to array of
+        sampling intervals, by default None
+    C : ndarray, optional
+        Statistical Complexity values corresponding to array of
+        sampling intervals, by default None
+    sampInts : ndarray, optional
+        Array of sampling intervals, by default None
+    axes : List of Matplotlib axess
+        Axes H- and C- curves
+    fontsize : integer or float, optional
+        Fontsize of axis labels, by default 12
+    showAxLabels : bool, optional
+        Show pre-defined axis labels, by default True
+    savePlot : bool, optional
+        Saves plot if set to True, by default False
+    savePath : str, optional
+        Path to save plot if savePlot set to True, by default ''
+        Note: Use only forward slashes in savePath
+    kwargsFig : dict, optional
+        Style arguments for figure and axis passed to 
+        ``matplotlib.pyplot.subplots``, if none given uses PECCARY defaults
+    kwargsPts : dict, optional
+        Style arguments for [H,C] values plotted on HC-plane with 
+        ``matplotlib.pyplot.scatter``, if none given uses PECCARY defaults
+    orientation : str, optional
+        Choose between 1 row x 2 column orientation ('horizontal') or 
+        2 rows x 1 column (and shared x axis) orientation ('vertical'),
+        by default 'horizontal'
+    tPatAx : boolean, optional
+        Choose whether to plot secondary x-axis with pattern timescale values,
+        by default False
+    dt : float, optional
+        Timestep or timeseries resolution, only needed if tPatAx is True,
+        by default None
+    n : int, optional
+        Sampling size, only needed if tPatAx is True, by default 5
+
+    Raises
+    ------
+    TypeError
+        If tPatAx is True, dt must be a float
+    """
+    # Check if an existing axis has been inputted
+    # Otherwise, create figure and subplots
+    if axes is None:
+        if orientation.startswith('v'):
+            fig, axes = plt.subplots(2,1, sharex=True, **kwargsFig)
+            plt.subplots_adjust(hspace=0.)
+            axes[0].set_ylim(-0.1,1.1)
+            axes[0].yaxis.set_major_formatter(FormatStrFormatter('%.1f'))
+            axes[1].set_ylim(-0.02,utils.getMaxC())
+            returnAx = True
+        else:
+            fig, axes = plt.subplots(1,2,**kwargsFig)
+            plt.subplots_adjust(wspace=0.35)
+            axes[0].set_ylim(0,1.0)
+            axes[1].set_ylim(0,0.5)
+            returnAx = True
+    else:
+        returnAx = False
+
+    # Check whether H and C values have been inputted
+    # If so, plot them
+    if (H is None) or (C is None) or (sampInts is None):
+        pass
+    else:
+        axes[0].plot(sampInts, H, **kwargsPts)
+        axes[1].plot(sampInts, C, **kwargsPts)
+
+    # Check whether to include axis labels
+    if showAxLabels:
+        if orientation.startswith('v'):
+            axes[0].set_ylabel('Permutation Entropy, $H$', fontsize=fontsize)
+            axes[1].set_xlabel('Sampling interval', fontsize=fontsize)
+            axes[1].set_ylabel('Statistical Complexity, $C$', fontsize=fontsize)
+        else:
+            axes[0].set_ylabel(r"Permutation Entropy, $H$", fontsize=fontsize)
+            axes[1].set_ylabel(r"Statistical Complexity, $C$", fontsize=fontsize)
+            for axi in axes:
+                axi.set_xlabel(r"Sampling interval, $\ell$", fontsize=fontsize)
+                axi.tick_params(axis='both', labelsize=fontsize-2)
+    else:
+        pass
+
+    # Check whether secondary tPat axes should be created
+    if tPatAx and type(dt) != type(None):
+        if orientation.startswith('v'):
+            secAx = axes[0].secondary_xaxis('top', functions=(partial(utils.ell2tpat,n=5,dt=dt), partial(utils.tpat2ell,n=5,dt=dt,returnInt=False)))
+            secAx.set_xlabel('Pattern timescale', fontsize=fontsize)
+            secAx.tick_params(axis='both', which='major', labelsize=fontsize-2)
+        else:
+            for axi in axes:
+                secAx = axi.secondary_xaxis('top', functions=(partial(utils.ell2tpat,n=5,dt=dt), partial(utils.tpat2ell,n=5,dt=dt,returnInt=False)))
+                secAx.set_xlabel('Pattern timescale', fontsize=fontsize)
+                secAx.tick_params(axis='both', which='major', labelsize=fontsize-2)
+    elif tPatAx and type(dt) != float:
+        raise TypeError('If tPatAx is True, dt must be a float')
+    else:
+        pass
+
+    
+    # Check whether to save plot
+    if savePlot:
+        if savePath.endswith('/'):
+            savefile=savePath + 'HCcurves'
+        else:
+            savefile=savePath + '/HCcurves'
+        plt.savefig(savefile+'.png')
+    elif returnAx:
+        return fig, axes
