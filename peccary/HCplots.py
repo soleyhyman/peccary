@@ -241,7 +241,7 @@ def HCcurves(H=None, C=None, sampInts=None, fig=None, axes=None, fontsize=12, sh
             axes[1].set_ylim(0,0.5)
             returnAx = True
     else:
-        if rtax = True:
+        if rtax == True:
             returnAx = True
         else:
             returnAx = False
