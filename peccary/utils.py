@@ -8,7 +8,7 @@ from scipy.signal import argrelmax, argrelmin
 
 from .timeseries import Timeseries
 
-__all__ = ["ell2tpat", "tpat2ell", "HmaxPer", "HminPer", "calcHCplane", "getMaxC"]
+__all__ = ["ell2tpat", "tpat2ell", "HmaxPer", "HminPer", "calcHCplane", "getMaxC", "tNatApprox", "calcSampInt"]
 
 def ell2tpat(ell,dt,n=5):
     """
