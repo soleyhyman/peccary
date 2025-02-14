@@ -42,7 +42,7 @@ class peccary:
     
     [3] `Weck, P. J., Schaffner, D. A., Brown, M. R., & Wicks, R. T. 2015, Phys Rev E, 91 (American Physical Society), 023101 <https://link.aps.org/doi/10.1103/PhysRevE.91.023101>`__
     """
-    def __init__(self, data, n=5, attr=None, dt=None, ptcl=None):
+    def __init__(self, data, n=5, attr=None, dt=None, ptcl=None, indStart=0, indEnd=None):
         """
         Initialize PECCARY class
 
@@ -51,7 +51,7 @@ class peccary:
         data : 1-D array
             Timeseries data for PECCARY 
         n : int, optional
-            Sampling size, by default 5, by default 5
+            Sampling size, by default 5
         attr : str, optional
             Timeseries attribute; needed if extracting a coordinate
             or data attribute from a Timeseries object, by default None
@@ -60,6 +60,10 @@ class peccary:
             by default None
         ptcl: int, optional
             Particle index, by default None
+        indStart : int, optional
+            Index for data selection start, by default 0
+        indEnd : int, optional
+            Index for data selection end, by default None
 
         Attributes
         ----------
@@ -89,7 +93,7 @@ class peccary:
             # attrCheck = np.array([x is not None for x in [data.x, data.y, data.z, data.data]])
             # if np.sum(attrCheck) > 1:
             #     self.tser = np.where(attrCheck)
-            self.tser = getattr(data, attr) # data timeseries
+            self.tser = getattr(data, attr)[indStart:indEnd] # data timeseries
             self.dt = data.dt
         else:
             # Setting up data
