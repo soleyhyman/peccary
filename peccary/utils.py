@@ -182,7 +182,7 @@ def getMaxC(n=5, nsteps=1000):
     Cminx, Cminy, Cmaxx, Cmaxy = calcHCplane(n=n, nsteps=nsteps)
     return np.max(Cmaxy)
 
-def tNatApprox(t, data, n=5, method='ncross', attr=None, dt=None, ptcl=None, crossVal=None):
+def tNatApprox(t, data, n=5, method='maxavg', attr=None, dt=None, ptcl=None, crossVal=None):
     """
     Approximate the natural timescale for an inputted timeseries.
 
