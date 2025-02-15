@@ -225,18 +225,23 @@ def tNatApprox(t, data, n=5, method='maxavg', attr=None, dt=None, ptcl=None, cro
         raise TypeError('Data must be a 1-D array')
     
     if method == 'minavg':
-        return np.mean(np.diff(t[argrelmin(tser)]))
+        tNat= np.mean(np.diff(t[argrelmin(tser)]))
     elif method == 'maxavg':
-        return np.mean(np.diff(t[argrelmax(tser)]))
+        tNat= np.mean(np.diff(t[argrelmax(tser)]))
     elif method == 'ncross':
         if crossVal is None:
             crossVal = np.mean(tser)
         else:
             pass
         crossLocs = np.where(np.sign(tser[1:]-crossVal) != np.sign(tser[:-1]-crossVal))[0]
-        return t[-1]/(len(crossLocs)/2.)
+        tNat = t[-1]/(len(crossLocs)/2.)
     else:
-        raise KeyError("Method {} does not exist. Please use either 'ncross', 'minavg', or 'maxavg'.".format(method))
+        raise KeyError("Method {} does not exist. Please use either 'maxavg', 'minavg', or 'ncross'.".format(method))
+
+    if np.isnan(tNat) == False:
+        return tNat
+    else:
+        raise RuntimeError("Insufficient data to approximate natural timescale with method '{}'. Try using a different method or provide more data.".format(method))
     
 def calcSampInt(tnat:float, dt:float|None=None, n:int=5) -> tuple:
     """
