@@ -70,7 +70,7 @@ def henonMap(n, a=1.4, b=0.3):
 
 def tentMap(n, mu=2.):
     """
-    Generate timeseries from tent map with parameter :math:`\mu`
+    Generate timeseries from tent map with parameter :math:`\\mu`
 
     Parameters
     ----------
@@ -102,7 +102,7 @@ def tentMap(n, mu=2.):
     >>> tent.x
     array([  0.1,   0.2,   0.4,   0.8,   1.6,   3.2,  -4.4,  -8.8, -17.6, -35.2])
 
-    The :math:`\mu` parameter can be changed to produce different types of behavior.
+    The :math:`\\mu` parameter can be changed to produce different types of behavior.
     """
     X = np.zeros([n])
     X[0] = 0.1
@@ -203,7 +203,7 @@ class lorenz:
     """
     The ``lorenz`` class can be used to generate the x-, y-, and z-coordinates
     of the Lorenz strange attractor, which is chaotic for certain values of the
-    input parameters :math:`\sigma`, :math:`\\rho`, and :math:`\\beta`.
+    input parameters :math:`\\sigma`, :math:`\\rho`, and :math:`\\beta`.
 
     References
     ----------
@@ -211,7 +211,7 @@ class lorenz:
 
     Examples
     --------
-    To initialize the class using the default input parameters (:math:`\sigma = 10`, :math:`\\rho = 20`, :math:`\\beta = 2.667`)
+    To initialize the class using the default input parameters (:math:`\\sigma = 10`, :math:`\\rho = 20`, :math:`\\beta = 2.667`)
     and initial values (:math:`x_0 = 0`, :math:`y_0 = 1`, :math:`z = 1.05`), run the following code:
 
     >>> import peccary.examples as ex
@@ -362,7 +362,7 @@ class doublePendulum:
 
     The ``integrate`` method allows for control of the timestep resolution
     (default :math:`2^{-6}`), the time to integrate over ``tDur``, and the initial
-    conditions (:math:`\\theta_1=120^\circ`, :math:`\omega_1=0^\circ ~\\text{s}^{-1}`, :math:`\\theta_2=-10^\circ`, :math:`\omega_1=0^\circ ~\\text{s}^{-1}`).
+    conditions (:math:`\\theta_1=120^\\circ`, :math:`\\omega_1=0^\\circ ~\\text{s}^{-1}`, :math:`\\theta_2=-10^\\circ`, :math:`\\omega_1=0^\\circ ~\\text{s}^{-1}`).
     To integrate the systems for 10.0 seconds with the default resolution and
     initial conditions, use:
 
@@ -632,9 +632,9 @@ class noiseColors:
     """
     The ``noiseColors`` class generates noisy timeseries of length ``n``
     with different power spectra. Various methods generate timesereis for
-    white noise (flat power density spectrum), blue noise (density :math:`\propto \\nu`), 
-    violet noise (density :math:`\propto \\nu^2`), Brownian/red noise (density :math:`\propto \\nu^{-2}`), 
-    and pink noise (density :math:`\propto \\nu^{-1}`).
+    white noise (flat power density spectrum), blue noise (density :math:`\\propto \\nu`), 
+    violet noise (density :math:`\\propto \\nu^2`), Brownian/red noise (density :math:`\\propto \\nu^{-2}`), 
+    and pink noise (density :math:`\\propto \\nu^{-1}`).
 
     Examples
     --------
@@ -706,7 +706,7 @@ class noiseColors:
       
     def blue(self):
         """
-        Generate blue noise (density :math:`\propto \\nu`)
+        Generate blue noise (density :math:`\\propto \\nu`)
 
         Returns
         -------
@@ -721,7 +721,7 @@ class noiseColors:
     
     def violet(self):
         """
-        Generate violet noise (density :math:`\propto \\nu^2`)
+        Generate violet noise (density :math:`\\propto \\nu^2`)
 
         Returns
         -------
@@ -736,7 +736,7 @@ class noiseColors:
     
     def brownian(self):
         """
-        Generate Brownian noise (density :math:`\propto \\nu^{-2}`)
+        Generate Brownian noise (density :math:`\\propto \\nu^{-2}`)
 
         Returns
         -------
@@ -751,7 +751,7 @@ class noiseColors:
     
     def red(self):
         """
-        Generate red noise (density :math:`\propto \\nu^{-2}`).
+        Generate red noise (density :math:`\\propto \\nu^{-2}`).
         This is an alias of the Brownian noise function
 
         Returns
@@ -764,7 +764,7 @@ class noiseColors:
     
     def pink(self):
         """
-        Generate pink noise (density :math:`\propto \\nu^{-1}`)
+        Generate pink noise (density :math:`\\propto \\nu^{-1}`)
 
         Returns
         -------

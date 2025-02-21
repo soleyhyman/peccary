@@ -78,9 +78,9 @@ class peccary:
         invN : float
             Probability of all ordinal patterns for unifor distribution (:math:`1/n!`)
         log2_N : float
-            Calculated value of :math:`\log_2 (n!)`
+            Calculated value of :math:`\\log_2 (n!)`
         log2_Np1 : float
-            Calculated value of :math:`\log_2 (n! + 1)`
+            Calculated value of :math:`\\log_2 (n! + 1)`
 
         Raises
         ------
@@ -336,7 +336,7 @@ class peccary:
     def calcHCcurves(self, min_sampInt=1, max_sampInt=100, step_sampInt=1, sampIntArray=None):
         """
         Returns Permutation Entropy and Statistical Complexity values for multiple
-        sampling interval values, i.e., :math:`H(\ell)` and :math:`C(\ell)`
+        sampling interval values, i.e., :math:`H(\\ell)` and :math:`C(\\ell)`
 
         Parameters
         ----------
@@ -357,11 +357,11 @@ class peccary:
         Returns
         -------
         Hvals : ndarray
-            Normalized Shannon Perumation Entropy as function of sampling interval, :math:`H(\ell)`
+            Normalized Shannon Perumation Entropy as function of sampling interval, :math:`H(\\ell)`
         Cvals : ndarray
-            Normalized Jensen-Shannon complexity as function of sampling interval, :math:`C(\ell)`
+            Normalized Jensen-Shannon complexity as function of sampling interval, :math:`C(\\ell)`
         sampInts : ndarray
-            Sampling interval (:math:`\ell`) values
+            Sampling interval (:math:`\\ell`) values
         """
         if type(sampIntArray) != type(None):
             sampInts = sampIntArray # Array of sampling intervals from sampIntArray
