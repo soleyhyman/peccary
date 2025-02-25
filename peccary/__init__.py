@@ -9,7 +9,7 @@ __author__ = "Sóley Hyman"
 from importlib.metadata import version
 __version__ = version(__package__)
 
-__all__ = ["peccary","HCplots","timeseries","examples","utils"]
+__all__ = ["peccary","HCplots","timeseries","examples","utils","exceptions","routines"]
 
 # import modules and important classes
 from .core import peccary
@@ -17,3 +17,5 @@ from . import HCplots
 from . import timeseries
 from . import examples
 from . import utils
+from . import exceptions
+from . import routines
