@@ -89,7 +89,8 @@ def doPeccary(timeseries, attr, tIndStart=0, tIndEnd=None, tNat=None, tNatMethod
 
     # get ideal sampling intervals
     sampRange = utils.calcSampInt(tnat=tNat, dt=pecc.dt)
-    sampRangeArr = np.arange(sampRange[0], sampRange[1])
+    sampRangeArr = np.arange(sampRange[0], sampRange[1]+1)
+    sampRangeArr = sampRangeArr[sampRangeArr>0]
     condition = (tDur/sampRangeArr)>0.3
     sampRangeArr = np.extract(condition, sampRangeArr)
 
