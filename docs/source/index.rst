@@ -58,35 +58,46 @@ If you make use of this code, please cite the paper:
 
 .. code-block::
 
-    @article{peccaryPaper,
-      author = {{Hyman}, S{\'o}ley {\'O}. and {Daniel}, Kathryne J. and {Schaffner}, David A.},
-      title = "{PECCARY: A novel approach for characterizing orbital complexity, stochasticity, and regularity}",
-      journal = {arXiv e-prints},
-      keywords = {Astrophysics - Instrumentation and Methods for Astrophysics, Astrophysics - Astrophysics of Galaxies},
-      year = 2024,
-      month = jul,
-      eid = {arXiv:2407.11970},
-      pages = {arXiv:2407.11970},
+   @article{peccaryPaper,
+      author        = {{Hyman}, S{\'o}ley {\'O}. and {Daniel}, Kathryne J. and {Schaffner}, David A.},
+      title         = "{PECCARY: A Novel Approach for Characterizing Orbital Complexity, Stochasticity, and Regularity}",
+      journal       = {\apj},
+      keywords      = {Theoretical techniques, Galaxy dynamics, Orbits, Orbit determination, Time series analysis, Astronomical methods, Astronomy software, 2093, 591, 1184, 1175, 1916, 1043, 1855, Instrumentation and Methods for Astrophysics, Astrophysics of Galaxies},
+      year          = 2025,
+      month         = jul,
+      volume        = {987},
+      number        = {2},
+      eid           = {195},
+      pages         = {195},
+      doi           = {10.3847/1538-4357/adda3e},
       archivePrefix = {arXiv},
-      eprint = {2407.11970},
-      primaryClass = {astro-ph.IM},
-      adsurl = {https://ui.adsabs.harvard.edu/abs/2024arXiv240711970H},
-      adsnote = {Provided by the SAO/NASA Astrophysics Data System}}
+      eprint        = {2407.11970},
+      primaryClass  = {astro-ph.IM},
+      adsurl        = {https://ui.adsabs.harvard.edu/abs/2025ApJ...987..195H},
+      adsnote       = {Provided by the SAO/NASA Astrophysics Data System}
+   }
 
 Please also cite the PECCARY version you used as a software citation using the Zenodo DOI |Zenodo|:
 
 .. code-block::
 
-    @software{peccaryZenodo,
-      author = {Sóley Hyman and
-                        dschaffner},
-      title = {soleyhyman/peccary: v0.1.1},
-      month = aug,
-      year = 2024,
-      publisher = {Zenodo},
-      version = {v0.1.1},
-      doi = {10.5281/zenodo.13168299},
-      url = {https://doi.org/10.5281/zenodo.13168299}}
+   @software{peccaryZenodo,
+      author       = {Hyman, Sóley and
+                        Schaffner, David},
+      title        = {soleyhyman/peccary: v0.1.1},
+      month        = jul,
+      year         = 2024,
+      publisher    = {Zenodo},
+      version      = {v0.1.1},
+      doi          = {10.5281/zenodo.13168299},
+      url          = {https://doi.org/10.5281/zenodo.13168299},
+      swhid        = {swh:1:dir:2268b12e64f82631437df8024f5cd6904a85c396
+                        ;origin=https://doi.org/10.5281/zenodo.13168298;vi
+                        sit=swh:1:snp:d7900e21d7d057b5b231c93c616cdb6b8dcd
+                        b9ae;anchor=swh:1:rel:73c52e8ebc846b6f6ba39fcad830
+                        8c60fcc9481c;path=/
+                        },
+      }
 
 Indices and tables
 ------------------
