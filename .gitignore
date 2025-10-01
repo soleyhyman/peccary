@@ -1,0 +1,7 @@
+*__pycache*
+docs/build/*
+docs/Makefile
+docs/make.bat
+dist/*
+.vscode/*
+*.egg-info/*
