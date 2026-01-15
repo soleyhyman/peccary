@@ -21,7 +21,7 @@ and utility functions.
 
 A detailed summary of the PECCARY method can be found in 
 `Hyman, Daniel, & Schaffner (2025) <https://iopscience.iop.org/article/10.3847/1538-4357/adda3e>`__. 
-If you make use of PECCARY, please include a :ref:`citation <cite>` to 
+If you make use of PECCARY, please include a citation to 
 `Hyman, Daniel, & Schaffner (2025) <https://iopscience.iop.org/article/10.3847/1538-4357/adda3e>`__ 
 in any publications.
 
