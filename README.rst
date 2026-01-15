@@ -56,7 +56,7 @@ in the `documentation <https://peccary.readthedocs.io>`__ for more instructions.
    :target: https://anaconda.org/conda-forge/peccary
 .. |Documentation Status| image:: https://readthedocs.org/projects/peccary/badge/?version=latest
    :target: http://peccary.readthedocs.io/en/latest/?badge=latest
-.. |logo| image:: https://peccary.readthedocs.io/en/latest/_static/peccary-logo-banner.png
+.. |logo| image:: docs/source/_static/peccary-logo-banner.png
    :target: http://peccary.readthedocs.io/en/latest
    :width: 400
 .. |License| image:: http://img.shields.io/badge/license-MIT-blue.svg?style=flat
