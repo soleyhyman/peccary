@@ -117,7 +117,8 @@ This gives us the plot:
 
 While this is useful when chaotic behavior is expected, to use PECCARY on a timeseries where the
 behavior is not know, it is better to use the idealized sampling scheme discussed in Section 3.2
-of Hyman, Daniel, & Schaffner (in prep). These recommendations are to use 
+of `Hyman, Daniel, & Schaffner (2025) <https://iopscience.iop.org/article/10.3847/1538-4357/adda3e>`__.
+These recommendations are to use 
 :math:`0.3 \lesssim t_{pat}/t_{nat} \lesssim 0.5` and :math:`t_{dur}/t_{nat} \geq 1.5`. Since the
 double pendulum is a chaotic system, we need to approximate its natural timescale by using the
 ``utils.tNatApprox`` function.
@@ -144,5 +145,5 @@ is indeed complex:
     style="margin-bottom: 32px;"/>
 
 In-depth discussion of the choices and interpretations for :math:`H` and :math:`C`
-can be found in Hyman, Daniel, & Schaffner (`arXiv:2407.11970 <https://arxiv.org/abs/2407.11970>`__). 
+can be found in `Hyman, Daniel, & Schaffner (2025) <https://iopscience.iop.org/article/10.3847/1538-4357/adda3e>`__. 
 Additional documentation and examples for each function can be found in the :ref:`User Guide <user-guide>`.
