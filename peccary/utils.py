@@ -5,6 +5,7 @@ Utility functions for PECCARY
 import numpy as np
 from math import factorial
 from scipy.signal import argrelmax, argrelmin
+from astropy.units import Quantity
 
 from .timeseries import Timeseries
 
@@ -55,6 +56,8 @@ def tpat2ell(tpat,dt,n=5,returnInt=True):
     """    
     if isinstance(tpat,(int, float)):
         return int(np.round(tpat/(dt*(n-1.))))
+    elif isinstance(tpat,Quantity):
+        return (tpat/(dt*(n-1.))).value
     elif returnInt:
         return [int(np.round(tp/(dt*(n-1.)))) for tp in tpat]
     else:
